@@ -3,6 +3,7 @@
 import { supabase } from "@/lib/supabase";
 
 export default function PostAdPage() {
+ 
   async function handleSubmit(
   event: React.FormEvent<HTMLFormElement>
 ) {
@@ -47,26 +48,29 @@ export default function PostAdPage() {
     imageUrl = publicUrlData.publicUrl;
   }
 
-  const { error } = await supabase.from("rentals").insert({
-    title: formData.get("title"),
-    property_type: formData.get("property_type"),
-    price: Number(formData.get("price")),
-    location: formData.get("location"),
-    bedrooms: bedroomsValue ? Number(bedroomsValue) : null,
-    bathrooms: bathroomsValue ? Number(bathroomsValue) : null,
-    description: formData.get("description"),
-    phone: formData.get("phone"),
-    whatsapp: formData.get("whatsapp"),
-    email: formData.get("email"),
-    image_url: imageUrl,
-  });
+const { error } = await supabase.from("rentals").insert({
+  title: formData.get("title"),
+  property_type: formData.get("property_type"),
+  price: Number(formData.get("price")),
+  location: formData.get("location"),
+  bedrooms: bedroomsValue ? Number(bedroomsValue) : null,
+  bathrooms: bathroomsValue ? Number(bathroomsValue) : null,
+  description: formData.get("description"),
+  phone: formData.get("phone"),
+  whatsapp: formData.get("whatsapp"),
+  email: formData.get("email"),
+  image_url: imageUrl,
+
+  status: "pending",
+  payment_status: "unpaid",
+});
 
   if (error) {
     alert(`Unable to submit rental: ${error.message}`);
     return;
   }
 
-  alert("Rental submitted successfully!");
+  alert("Rental saved as pending. Payment is required before publishing.");
   form.reset();
 }
   return (

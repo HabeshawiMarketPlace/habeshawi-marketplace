@@ -4,10 +4,12 @@ import ListingCard from "@/components/housing/ListingCard";
 
 export const dynamic = "force-dynamic";
 export default async function HousingPage() {
-  const { data: rentals, error } = await supabase
-    .from("rentals")
-    .select("*")
-    .order("created_at", { ascending: false });
+const { data: rentals, error } = await supabase
+  .from("rentals")
+  .select("*")
+  .eq("payment_status", "paid")
+  .eq("status", "approved")
+  .order("created_at", { ascending: false });
   if (error) {
     return <p className="p-8">Unable to load listings: {error.message}</p>;
   }

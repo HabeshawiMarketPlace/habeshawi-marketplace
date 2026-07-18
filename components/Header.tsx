@@ -1,10 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   const [language, setLanguage] = useState<"en" | "am">("en");
+  const [user, setUser] = useState<User | null>(null);
+
+useEffect(() => {
+  supabase.auth.getUser().then(({ data }) => {
+    setUser(data.user);
+  });
+
+  const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+    setUser(session?.user ?? null);
+  });
+
+  return () => {
+    data.subscription.unsubscribe();
+  };
+}, []);
+
+async function handleLogout() {
+  await supabase.auth.signOut();
+  setUser(null);
+}
   return (
     <>
       <div className="bg-[#064d2b] px-6 py-2 text-sm text-white">
@@ -86,9 +109,29 @@ export default function Header() {
           </nav>
 
           <div className="flex gap-3">
-            <button className="rounded-lg border border-[#087531] px-5 py-3 font-bold text-[#087531]">
-              Login
-            </button>
+{user ? (
+  <div className="flex items-center gap-3">
+    <span className="text-sm font-semibold">
+      {user.email}
+    </span>
+
+    <button
+      type="button"
+      onClick={handleLogout}
+      className="rounded-lg border border-red-600 px-5 py-3 font-bold text-red-600 hover:bg-red-50"
+    >
+      Logout
+    </button>
+  </div>
+) : (
+  <Link
+    href="/login"
+    className="rounded-lg border border-[#087531] px-5 py-3 font-bold text-[#087531] hover:bg-green-50"
+  >
+    Login
+  </Link>
+)}
+
 
             <button className="rounded-lg bg-yellow-400 px-5 py-3 font-bold">
               Register
