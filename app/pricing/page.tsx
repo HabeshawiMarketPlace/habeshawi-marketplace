@@ -1,13 +1,25 @@
 "use client";
+import { useSearchParams } from "next/navigation";
 export default function PricingPage() {
-    async function startCheckout(listingType: "housing" | "business") {
-        console.log("Housing checkout started:", listingType);
+
+  const searchParams = useSearchParams();
+  const rentalId = searchParams.get("rentalId");
+  
+  async function startCheckout(
+    listingType: "housing" | "business"
+  ) { if (!rentalId) {
+  alert("Rental listing ID is missing.");
+  return;
+}
   const response = await fetch("/api/create-checkout-session", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ listingType }),
+  body: JSON.stringify({
+  listingType,
+  rentalId,
+}),
   });
 
   const data = await response.json();
@@ -43,9 +55,11 @@ export default function PricingPage() {
             <li>✔ Edit anytime</li>
             <li>✔ Visible for 3 months</li>
           </ul>
+          
 
 <button
   type="button"
+
   onClick={() => startCheckout("housing")}
   className="mt-8 w-full rounded-lg bg-green-700 py-3 font-semibold text-white hover:bg-green-800"
 >
@@ -55,12 +69,7 @@ export default function PricingPage() {
 
         <div className="rounded-2xl border p-8 shadow">
           <h2 className="text-2xl font-bold">🏢 Business</h2>
-          <button
-  onClick={() => startCheckout("business")}
-  className="mt-8 w-full rounded-lg bg-green-700 py-3 font-semibold text-white hover:bg-green-800"
->
-  Pay $19.99
-</button>
+
 
           <p className="mt-4 text-5xl font-bold">
             $19.99
@@ -77,9 +86,13 @@ export default function PricingPage() {
             <li>✔ Social links</li>
           </ul>
 
-          <button className="mt-8 w-full rounded-lg bg-green-700 py-3 font-semibold text-white">
-            Continue
-          </button>
+<button
+  type="button"
+  onClick={() => startCheckout("business")}
+  className="mt-8 w-full rounded-lg bg-green-700 py-3 font-semibold text-white hover:bg-green-800"
+>
+  Pay $19.99
+</button>
         </div>
 
       </div>

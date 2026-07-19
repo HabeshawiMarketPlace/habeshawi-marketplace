@@ -48,7 +48,9 @@ export default function PostAdPage() {
     imageUrl = publicUrlData.publicUrl;
   }
 
-const { error } = await supabase.from("rentals").insert({
+const { data: rental, error } = await supabase
+  .from("rentals")
+  .insert({
   title: formData.get("title"),
   property_type: formData.get("property_type"),
   price: Number(formData.get("price")),
@@ -57,21 +59,27 @@ const { error } = await supabase.from("rentals").insert({
   bathrooms: bathroomsValue ? Number(bathroomsValue) : null,
   description: formData.get("description"),
   phone: formData.get("phone"),
-  whatsapp: formData.get("whatsapp"),
-  email: formData.get("email"),
+  whatsapp: formData.get("whatsapp") || null,
+  email: formData.get("email") || null,
   image_url: imageUrl,
 
   status: "pending",
   payment_status: "unpaid",
-});
+})
+.select("id")
+.single();
 
   if (error) {
     alert(`Unable to submit rental: ${error.message}`);
     return;
   }
 
-  alert("Rental saved as pending. Payment is required before publishing.");
-  form.reset();
+if (!rental) {
+  alert("Rental was saved, but its ID could not be retrieved.");
+  return;
+}
+
+window.location.href = `/pricing?rentalId=${rental.id}`;
 }
   return (
     <main className="min-h-screen bg-[#f7f8f5] px-6 py-12">
@@ -162,19 +170,20 @@ const { error } = await supabase.from("rentals").insert({
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              className="rounded-lg border border-slate-300 px-4 py-3"
-            />
+<input
+  type="tel"
+  name="phone"
+  placeholder="Phone Number"
+  required
+  className="col-span-2 rounded-lg border border-slate-300 px-4 py-3"
+/>
 
-            <input
-              type="text"
-              name="whatsapp"
-              placeholder="WhatsApp Number (Optional)"
-              className="rounded-lg border border-slate-300 px-4 py-3"
-            />
+<input
+  type="tel"
+  name="whatsapp"
+  placeholder="WhatsApp"
+  className="rounded-lg border border-slate-300 px-4 py-3"
+/>
           </div>
 
           <input

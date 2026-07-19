@@ -13,6 +13,8 @@ type ListingCardProps = {
   description: string;
   propertyType: string | null;
   createdAt: string;
+  phone: string | null;
+  whatsapp: string | null;
 };
 
 export default function ListingCard({
@@ -27,6 +29,8 @@ export default function ListingCard({
   description,
   propertyType,
   createdAt,
+  phone,
+  whatsapp,
 }: ListingCardProps) {
   return (
     <div
@@ -62,7 +66,44 @@ export default function ListingCard({
         <p className="mt-3 text-slate-600">
           {description}
         </p>
+<div className="mt-4 space-y-3">
+  <div className="flex flex-wrap gap-2">
+    {phone && (
+      <a
+        href={`tel:${phone}`}
+        className="rounded-lg bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700"
+      >
+        📞 Call
+      </a>
+    )}
 
+    {whatsapp && (
+      <a
+        href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="rounded-lg bg-[#25D366] px-4 py-2 font-semibold text-white hover:bg-[#1DA851]"
+      >
+        💬 WhatsApp
+      </a>
+    )}
+
+    {phone && (
+      <a
+        href={`sms:${phone}`}
+        className="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+      >
+        💬 Text
+      </a>
+    )}
+  </div>
+
+  {phone && (
+    <p className="text-sm text-slate-600">
+      ☎ {phone}
+    </p>
+  )}
+</div>
         <p className="mt-4 text-sm text-slate-500">
           Posted {new Date(createdAt).toLocaleDateString()}
         </p>

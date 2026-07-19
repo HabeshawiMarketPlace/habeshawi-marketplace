@@ -5,8 +5,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const listingType = body.listingType;
+    const { listingType, rentalId } = await request.json();
 
     let name: string;
     let amount: number;
@@ -27,6 +26,10 @@ export async function POST(request: Request) {
     const origin = request.headers.get("origin") ?? "http://localhost:3000";
 
     const session = await stripe.checkout.sessions.create({
+metadata: {
+  rentalId,
+  listingType,
+},
       mode: "payment",
       line_items: [
         {

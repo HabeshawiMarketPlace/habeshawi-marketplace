@@ -41,6 +41,8 @@ const { data: rentals, error } = await supabase
   description={rental.description ?? ""}
   propertyType={rental.property_type}
   createdAt={rental.created_at}
+  phone={rental.phone}
+  whatsapp={rental.whatsapp}
 />
 ))}
       </div>

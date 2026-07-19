@@ -6,6 +6,7 @@ type RentalCardProps = {
   price: string;
   location: string;
   description: string;
+  phone?: string;
   beds?: number;
   baths?: number;
   sqft?: number;
@@ -18,6 +19,7 @@ export default function RentalCard({
   price,
   location,
   description,
+  phone,
   beds,
   baths,
   sqft,
