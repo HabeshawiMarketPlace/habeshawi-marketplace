@@ -1,5 +1,6 @@
 import RentalCard from "@/components/housing/RentalCard";
 import SearchFilters from "@/components/housing/SearchFilters";
+import { Suspense } from "react";
 
 export default function RoommatesPage() {
   return (
@@ -8,7 +9,15 @@ export default function RoommatesPage() {
         <h1 className="text-4xl font-bold text-[#064d2b]">
           Roommates
         </h1>
-<SearchFilters />
+<Suspense
+  fallback={
+    <div className="mt-6 rounded-xl bg-slate-100 p-6 text-center text-slate-600">
+      Loading search filters...
+    </div>
+  }
+>
+  <SearchFilters />
+</Suspense>
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <RentalCard
             image="/housing/roommates/room-share1.jpg"

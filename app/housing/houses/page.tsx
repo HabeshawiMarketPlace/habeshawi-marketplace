@@ -1,5 +1,6 @@
 import RentalCard from "@/components/housing/RentalCard";
 import SearchFilters from "@/components/housing/SearchFilters";
+import { Suspense } from "react";
 
 export default function HousesPage() {
   return (
@@ -9,19 +10,28 @@ export default function HousesPage() {
   Houses
 </h1>
 
-<SearchFilters />
+<Suspense
+  fallback={
+    <div className="mt-6 rounded-xl bg-slate-100 p-6 text-center text-slate-600">
+      Loading search filters...
+    </div>
+  }
+>
+  <SearchFilters />
+</Suspense>
 
 <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <RentalCard
-            image="/housing/houses/house1.jpg"
-            title="Family House for Rent"
-            price="$2,800/month"
-            location="Silver Spring, MD"
-            description="Spacious house with parking and a large backyard."
-            beds={3}
-            baths={2}
-            sqft={1800}
-          />
+<RentalCard
+  id="house-1"
+  image="/housing/houses/house1.jpg"
+  title="Family House for Rent"
+  price="$2,800/month"
+  location="..."
+  description="..."
+  beds={3}
+  baths={2}
+  sqft={1800}
+/>
         </div>
       </div>
     </main>

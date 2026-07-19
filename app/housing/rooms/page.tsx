@@ -1,5 +1,6 @@
 import RentalCard from "@/components/housing/RentalCard";
 import SearchFilters from "@/components/housing/SearchFilters";
+import { Suspense } from "react";
 
 export default function RoomsPage() {
   return (
@@ -9,7 +10,15 @@ export default function RoomsPage() {
   Rooms for Rent
 </h1>
 
-<SearchFilters />
+<Suspense
+  fallback={
+    <div className="mt-6 rounded-xl bg-slate-100 p-6 text-center text-slate-600">
+      Loading search filters...
+    </div>
+  }
+>
+  <SearchFilters />
+</Suspense>
 
 <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <RentalCard
