@@ -6,7 +6,13 @@ export const dynamic = "force-dynamic";
 export default async function HousingPage() {
 const { data: rentals, error } = await supabase
   .from("rentals")
-  .select("*")
+  .select(`
+  *,
+  rental_images (
+    image_url,
+    display_order
+  )
+`)
   .eq("payment_status", "paid")
   .eq("status", "approved")
   .order("created_at", { ascending: false });
@@ -30,9 +36,10 @@ const { data: rentals, error } = await supabase
   id={rental.id}
   href={`/housing/${rental.id}`}
   image={
-  rental.image_url ||
-  "/housing/apartments/apartment1.jpg"
-}
+    rental.image_url ||
+    rental.rental_images?.[0]?.image_url ||
+    "/housing/apartments/apartment1.jpg"
+  }
   title={rental.title}
   location={rental.location ?? "Location not provided"}
   price={Number(rental.price ?? 0)}

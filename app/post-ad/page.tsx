@@ -14,39 +14,56 @@ export default function PostAdPage() {
 
   const bedroomsValue = formData.get("bedrooms");
   const bathroomsValue = formData.get("bathrooms");
-  const imageFile = formData.get("photos");
+  const imageFiles = formData
+  .getAll("photos")
+  .filter(
+    (file): file is File =>
+      file instanceof File && file.size > 0
+  );
 
-  let imageUrl: string | null = null;
+if (imageFiles.length === 0) {
+  alert("Please upload at least one property photo.");
+  return;
+}
 
-  if (imageFile instanceof File && imageFile.size > 0) {
-    if (imageFile.size > 5 * 1024 * 1024) {
-      alert("Image must be 5 MB or smaller.");
-      return;
-    }
+if (imageFiles.length > 5) {
+  alert("You can upload a maximum of 5 photos.");
+  return;
+}
 
-    const extension =
-      imageFile.name.split(".").pop()?.toLowerCase() ?? "jpg";
+const imageUrls: string[] = [];
 
-    const filePath = `rentals/${crypto.randomUUID()}.${extension}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("housing-images")
-      .upload(filePath, imageFile, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-
-    if (uploadError) {
-      alert(`Unable to upload image: ${uploadError.message}`);
-      return;
-    }
-
-    const { data: publicUrlData } = supabase.storage
-      .from("housing-images")
-      .getPublicUrl(filePath);
-
-    imageUrl = publicUrlData.publicUrl;
+for (const imageFile of imageFiles) {
+  if (imageFile.size > 5 * 1024 * 1024) {
+    alert(`${imageFile.name} must be 5 MB or smaller.`);
+    return;
   }
+
+  const extension =
+    imageFile.name.split(".").pop()?.toLowerCase() ?? "jpg";
+
+  const filePath = `rentals/${crypto.randomUUID()}.${extension}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("housing-images")
+    .upload(filePath, imageFile, {
+      cacheControl: "3600",
+      upsert: false,
+    });
+
+  if (uploadError) {
+    alert(`Unable to upload ${imageFile.name}: ${uploadError.message}`);
+    return;
+  }
+
+  const { data: publicUrlData } = supabase.storage
+    .from("housing-images")
+    .getPublicUrl(filePath);
+
+  imageUrls.push(publicUrlData.publicUrl);
+}
+
+const imageUrl = imageUrls[0];
 
 const { data: rental, error } = await supabase
   .from("rentals")
@@ -76,6 +93,25 @@ const { data: rental, error } = await supabase
 
 if (!rental) {
   alert("Rental was saved, but its ID could not be retrieved.");
+  return;
+}
+
+const rentalImages = imageUrls.map((url, index) => ({
+  rental_id: rental.id,
+  image_url: url,
+  display_order: index + 1,
+}));
+
+const { error: imagesError } = await supabase
+  .from("rental_images")
+  .insert(rentalImages);
+  console.log("Rental Images:", rentalImages);
+  console.log("Images Error:", imagesError);
+
+if (imagesError) {
+  alert(
+    `Rental saved, but the photo records could not be saved: ${imagesError.message}`
+  );
   return;
 }
 
@@ -262,23 +298,29 @@ window.location.href = `/pricing?rentalId=${rental.id}`;
             className="rounded-lg border border-slate-300 px-4 py-3"
           />
 
-          <div>
-            <label
-              htmlFor="photos"
-              className="mb-2 block font-semibold text-slate-700"
-            >
-              Property Photos
-            </label>
+<div>
+  <label
+    htmlFor="photos"
+    className="mb-2 block font-semibold text-slate-700"
+  >
+    Property Photos
+  </label>
 
-            <input
-              id="photos"
-              type="file"
-              name="photos"
-              multiple
-              accept="image/*"
-              className="w-full rounded-lg border border-slate-300 px-4 py-3"
-            />
-          </div>
+  <input
+    id="photos"
+    type="file"
+    name="photos"
+    multiple
+    required
+    accept="image/*"
+    className="w-full rounded-lg border border-slate-300 px-4 py-3"
+  />
+
+  <p className="mt-2 text-sm text-slate-500">
+    Upload 1 to 5 photos. Maximum 5 MB per photo.
+  </p>
+</div>
+
 
           <button
             type="submit"

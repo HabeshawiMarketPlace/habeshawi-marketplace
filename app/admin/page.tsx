@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 type Rental = {
   id: string;
@@ -12,6 +13,7 @@ type Rental = {
 };
 
 export default function AdminPage() {
+  const router = useRouter();
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,10 +55,43 @@ export default function AdminPage() {
       )
     );
   }
+async function deleteListing(rentalId: string) {
+  const confirmed = confirm(
+    "Are you sure you want to permanently delete this listing?"
+  );
 
-  useEffect(() => {
-    loadRentals();
-  }, []);
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("rentals")
+    .delete()
+    .eq("id", rentalId);
+
+  if (error) {
+    alert(`Unable to delete listing: ${error.message}`);
+    return;
+  }
+
+  setRentals((current) =>
+    current.filter((rental) => rental.id !== rentalId)
+  );
+}
+useEffect(() => {
+  async function checkAdmin() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      router.replace("/login");
+      return;
+    }
+
+    await loadRentals();
+  }
+
+  checkAdmin();
+}, [router]);
 
   return (
     <main className="mx-auto max-w-6xl p-8">
@@ -113,6 +148,13 @@ export default function AdminPage() {
                       >
                         Reject
                       </button>
+                      <button
+  type="button"
+  onClick={() => deleteListing(rental.id)}
+  className="rounded bg-gray-800 px-3 py-2 text-sm font-semibold text-white hover:bg-black"
+>
+  Delete
+</button>
                     </div>
                   </td>
                 </tr>

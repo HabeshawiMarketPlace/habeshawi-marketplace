@@ -35,8 +35,56 @@ function PricingContent() {
   }
 
   return (
-    <main className="mx-auto max-w-4xl p-10">
-      {/* Keep ALL of your existing JSX exactly as it is */}
+    <main className="min-h-screen bg-[#f7f8f5] px-6 py-12">
+      <div className="mx-auto max-w-4xl">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-[#064d2b]">
+            Choose a Listing Plan
+          </h1>
+
+          <p className="mt-3 text-slate-600">
+            Select the listing type you want to publish.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <div className="rounded-2xl bg-white p-8 shadow">
+            <h2 className="text-2xl font-bold text-[#064d2b]">
+              Housing Listing
+            </h2>
+
+            <p className="mt-3 text-slate-600">
+              Publish an apartment, house, room, or roommate listing.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => startCheckout("housing")}
+              className="mt-8 w-full rounded-lg bg-[#087531] px-6 py-3 font-semibold text-white hover:bg-[#064d2b]"
+            >
+              Continue with Housing
+            </button>
+          </div>
+
+          <div className="rounded-2xl bg-white p-8 shadow">
+            <h2 className="text-2xl font-bold text-[#064d2b]">
+              Business Listing
+            </h2>
+
+            <p className="mt-3 text-slate-600">
+              Promote a business, professional service, or community organization.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => startCheckout("business")}
+              className="mt-8 w-full rounded-lg bg-[#087531] px-6 py-3 font-semibold text-white hover:bg-[#064d2b]"
+            >
+              Continue with Business
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
