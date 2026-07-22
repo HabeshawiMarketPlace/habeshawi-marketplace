@@ -97,15 +97,15 @@ export default function Header() {
 
       {/* Main navigation */}
       <header className="sticky top-0 z-50 border-b bg-white/95 shadow-sm backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-6">
           <Link href="/" className="flex shrink-0 items-center">
             <Image
               src="/logo/habeshawi-logo.png"
               alt="Habeshawi Rentals"
-              width={360}
-              height={110}
+              width={520}
+              height={170}
               priority
-              className="h-auto max-h-20 w-auto"
+              className="h-auto max-h-42 w-auto"
             />
           </Link>
 
