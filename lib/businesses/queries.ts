@@ -14,6 +14,12 @@ function mapBusiness(row: any): BusinessDetails {
     email: row.email,
     website: row.website,
 
+coverImageUrl: row.image_url ?? undefined,
+logoImageUrl: row.logo_url ?? undefined,
+
+    // NEW
+    imageUrl: row.image_url ?? null,
+
     featured: row.featured ?? false,
     rating: row.rating ?? undefined,
     reviewCount: row.review_count ?? 0,

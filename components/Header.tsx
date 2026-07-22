@@ -9,7 +9,6 @@ import Link from "next/link";
 export default function Header() {
   const [language, setLanguage] = useState<"en" | "am">("en");
   const [user, setUser] = useState<User | null>(null);
-  const [servicesOpen, setServicesOpen] = useState(false);
   const [favoriteCount, setFavoriteCount] = useState(0);
 
   // Authentication
@@ -27,7 +26,7 @@ export default function Header() {
     };
   }, []);
 
-  // Favorites Counter
+  // Favorites counter
   useEffect(() => {
     function updateFavorites() {
       try {
@@ -59,15 +58,18 @@ export default function Header() {
 
   return (
     <>
-      {/* Top contact and language bar */}
-      <div className="bg-[#064d2b] px-6 py-2 text-sm text-white">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap gap-5">
+      {/* Compact top contact bar */}
+      <div className="bg-[#064d2b] px-4 py-1 text-xs text-white sm:px-6 sm:text-sm">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+          <div className="flex items-center gap-3 sm:gap-5">
             <span>☎ 240-391-8621</span>
-            <span>✉ habeshawi2023@gmail.com</span>
+
+            <span className="hidden sm:inline">
+              ✉ habeshawi2023@gmail.com
+            </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => setLanguage("en")}
@@ -95,171 +97,112 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main navigation */}
-      <header className="sticky top-0 z-50 border-b bg-white/95 shadow-sm backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-6">
-          <Link href="/" className="flex shrink-0 items-center">
+      {/* Compact main navigation */}
+      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
+        <div className="mx-auto flex h-[82px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex h-[72px] w-[250px] shrink-0 items-center overflow-hidden"
+          >
             <Image
               src="/logo/Habeshawi -logo.png"
-              alt="Habeshawi Rentals"
-              width={520}
-              height={170}
+              alt="Habeshawi Marketplace"
+              width={580}
+              height={220}
               priority
-              className="h-auto max-h-42 w-auto"
+              className="h-[88px] w-auto object-contain"
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-6 font-semibold lg:flex">
+          {/* Desktop navigation */}
+          <nav className="hidden items-center gap-5 text-sm font-semibold lg:flex xl:gap-6 xl:text-base">
             <Link
               href="/housing"
-              className="text-[#087531] transition hover:text-[#064d2b]"
+              className="whitespace-nowrap transition hover:text-[#087531]"
             >
-              🏠 Rent
+              🏠 Rentals
             </Link>
 
             <Link
-              href="/post-ad"
-              className="transition hover:text-[#087531]"
+              href="/marketplace"
+              className="whitespace-nowrap transition hover:text-[#087531]"
             >
-              ➕ Post Rental
+              🛒 Marketplace
             </Link>
 
             <Link
-              href="/my-listings"
-              className="transition hover:text-[#087531]"
+              href="/jobs"
+              className="whitespace-nowrap transition hover:text-[#087531]"
             >
-              📋 My Listings
+              💼 Jobs
+            </Link>
+
+            <Link
+              href="/businesses"
+              className="whitespace-nowrap transition hover:text-[#087531]"
+            >
+              🏪 Businesses
+            </Link>
+
+            <Link
+              href="/services"
+              className="whitespace-nowrap transition hover:text-[#087531]"
+            >
+              🤝 Services
             </Link>
 
             <Link
               href="/favorites"
-              className="transition hover:text-[#087531]"
+              className="whitespace-nowrap transition hover:text-[#087531]"
             >
               ❤️ Favorites ({favoriteCount})
             </Link>
 
             <Link
-              href="/pricing"
-              className="transition hover:text-[#087531]"
+              href="/post-ad"
+              className="whitespace-nowrap rounded-lg bg-[#087531] px-4 py-2 font-bold text-white transition hover:bg-[#064d2b]"
             >
-              💳 Pricing
+              📢 Post an Ad
             </Link>
-
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setServicesOpen(!servicesOpen)}
-                className="flex items-center gap-1 transition hover:text-[#087531]"
-              >
-                Services
-                <span className="text-xs">▼</span>
-              </button>
-
-              {servicesOpen && (
-                <div className="absolute right-0 top-full mt-3 w-56 overflow-hidden rounded-xl border bg-white py-2 shadow-xl">
-                  <Link
-                    href="/jobs"
-                    className="block px-5 py-3 hover:bg-green-50"
-                    onClick={() => setServicesOpen(false)}
-                  >
-                    💼 Jobs
-                  </Link>
-
-                  <Link
-                    href="/businesses"
-                    className="block px-5 py-3 hover:bg-green-50"
-                    onClick={() => setServicesOpen(false)}
-                  >
-                    🏪 Businesses
-                  </Link>
-
-                  <Link
-                    href="/marketplace"
-                    className="block px-5 py-3 hover:bg-green-50"
-                    onClick={() => setServicesOpen(false)}
-                  >
-                    🛒 Marketplace
-                  </Link>
-
-                  <Link
-                    href="/services"
-                    className="block px-5 py-3 hover:bg-green-50"
-                    onClick={() => setServicesOpen(false)}
-                  >
-                    🧰 Community Services
-                  </Link>
-                </div>
-              )}
-            </div>
           </nav>
 
-          {/* Right Side */}
-          <div className="flex items-center gap-3">
+          {/* Signed-in user actions */}
           {user ? (
-  <>
-    <Link
-      href="/admin"
-      className="hidden rounded-lg border border-[#087531] px-4 py-2 font-bold text-[#087531] transition hover:bg-green-50 sm:inline-flex"
-    >
-      Admin Dashboard
-    </Link>
+            <div className="hidden items-center gap-2 xl:flex">
+              <Link
+                href="/admin"
+                className="rounded-lg border border-[#087531] px-3 py-2 text-sm font-bold text-[#087531] transition hover:bg-green-50"
+              >
+                Admin
+              </Link>
 
-    <button
-      type="button"
-      onClick={handleLogout}
-      className="rounded-lg border border-red-600 px-4 py-2 font-bold text-red-600 transition hover:bg-red-50"
-    >
-      Logout
-    </button>
-  </>
-) : null}
-
-            <Link
-              href="/post-ad"
-              className="rounded-lg bg-[#087531] px-4 py-2 font-bold text-white transition hover:bg-[#064d2b]"
-            >
-              Post Rental
-            </Link>
-          </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="rounded-lg border border-red-600 px-3 py-2 text-sm font-bold text-red-600 transition hover:bg-red-50"
+              >
+                Logout
+              </button>
+            </div>
+          ) : null}
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="border-t px-4 py-3 lg:hidden">
+        {/* Mobile navigation */}
+        <div className="border-t px-4 py-2 lg:hidden">
           <div className="flex gap-2 overflow-x-auto whitespace-nowrap text-sm font-semibold">
             <Link
               href="/housing"
               className="rounded-full bg-green-50 px-4 py-2 text-[#087531]"
             >
-              🏠 Rent
+              🏠 Rentals
             </Link>
 
             <Link
-              href="/post-ad"
+              href="/marketplace"
               className="rounded-full bg-slate-100 px-4 py-2"
             >
-              ➕ Post
-            </Link>
-
-            <Link
-              href="/my-listings"
-              className="rounded-full bg-slate-100 px-4 py-2"
-            >
-              📋 My Listings
-            </Link>
-
-            <Link
-              href="/favorites"
-              className="rounded-full bg-slate-100 px-4 py-2"
-            >
-              ❤️ Favorites ({favoriteCount})
-            </Link>
-
-            <Link
-              href="/pricing"
-              className="rounded-full bg-slate-100 px-4 py-2"
-            >
-              💳 Pricing
+              🛒 Marketplace
             </Link>
 
             <Link
@@ -267,6 +210,34 @@ export default function Header() {
               className="rounded-full bg-slate-100 px-4 py-2"
             >
               💼 Jobs
+            </Link>
+
+            <Link
+              href="/businesses"
+              className="rounded-full bg-slate-100 px-4 py-2"
+            >
+              🏪 Businesses
+            </Link>
+
+            <Link
+              href="/services"
+              className="rounded-full bg-slate-100 px-4 py-2"
+            >
+              🤝 Services
+            </Link>
+
+            <Link
+              href="/favorites"
+              className="rounded-full bg-slate-100 px-4 py-2"
+            >
+              ❤️ Favorites ({favoriteCount})
+            </Link>
+
+            <Link
+              href="/post-ad"
+              className="rounded-full bg-[#087531] px-4 py-2 text-white"
+            >
+              📢 Post an Ad
             </Link>
           </div>
         </div>

@@ -44,8 +44,8 @@ export default function Hero() {
         <div className="w-1/3 bg-red-500" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 py-14 sm:py-16 lg:py-20">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="relative mx-auto max-w-7xl px-6 pt-4 pb-8 sm:pt-5 sm:pb-10 lg:pt-5 lg:pb-10">
+        <div className="grid items-center gap-5 lg:grid-cols-[1.45fr_0.55fr]">
           {/* Left side */}
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
@@ -53,12 +53,12 @@ export default function Hero() {
               Ethiopian & Eritrean Community Marketplace
             </div>
 
-            <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.08] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-3 max-w-4xl text-2xl font-black leading-[1.08] sm:text-3xl lg:text-[44px]">
               Everything the Habesha Community Needs
             </h1>
 
             <p className="mt-4 text-2xl font-black text-yellow-300 sm:text-3xl">
-              ሐበሻዊ ማርኬት
+              ሐበሻዊ ገበያ
             </p>
 
             <p className="mt-5 max-w-3xl text-lg leading-8 text-white/85 sm:text-xl">
@@ -74,7 +74,7 @@ export default function Hero() {
             <form
               action="/marketplace"
               method="get"
-              className="mt-8 overflow-hidden rounded-2xl bg-white p-2 text-slate-900 shadow-2xl"
+              className="mt-5 overflow-hidden rounded-2xl bg-white p-2 text-slate-900 shadow-2xl"
             >
               <div className="grid md:grid-cols-[1.4fr_0.8fr_auto]">
                 <div className="flex items-center">
@@ -94,7 +94,7 @@ export default function Hero() {
                     name="q"
                     type="search"
                     placeholder="Search apartments, cars, jobs, businesses..."
-                    className="min-w-0 flex-1 rounded-xl px-4 py-4 outline-none placeholder:text-slate-400"
+                    className="min-w-0 flex-1 rounded-xl px-4 py-3 outline-none placeholder:text-slate-400"
                   />
                 </div>
 
@@ -161,7 +161,7 @@ export default function Hero() {
           </div>
 
           {/* Right action panel */}
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-7 shadow-2xl backdrop-blur-sm sm:p-9">
+          <div className="rounded-3xl border border-white/15 bg-white/10 p-5 shadow-2xl backdrop-blur-sm sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-4xl font-black text-yellow-300 sm:text-5xl">
@@ -189,7 +189,7 @@ export default function Hero() {
               community members across the DMV area.
             </p>
 
-            <div className="mt-7 grid gap-3 sm:grid-cols-2">
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <Link
                 href="/post-ad"
                 className="flex items-center justify-center gap-2 rounded-xl bg-yellow-400 px-4 py-3 font-black text-[#053b24] transition hover:bg-yellow-300"
@@ -230,20 +230,20 @@ export default function Hero() {
         </div>
 
         {/* Four marketplace pillars */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {quickCategories.map((category) => (
             <Link
               key={category.title}
               href={category.href}
-              className="group rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm transition hover:-translate-y-1 hover:border-yellow-300/60 hover:bg-white/15 hover:shadow-xl"
+              className="group rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur-sm transition hover:-translate-y-1 hover:border-yellow-300/60 hover:bg-white/15 hover:shadow-xl"
             >
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-2xl shadow">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white text-2xl shadow">
                   {category.icon}
                 </div>
 
                 <div>
-                  <h2 className="text-lg font-black group-hover:text-yellow-300">
+                  <h2 className="text-base font-black group-hover:text-yellow-300">
                     {category.title}
                   </h2>
 
