@@ -2,6 +2,9 @@ import Link from "next/link";
 import BusinessList from "@/components/businesses/BusinessList";
 import { getBusinesses } from "@/lib/businesses/queries";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function BusinessesPage() {
   const businesses = await getBusinesses();
 
