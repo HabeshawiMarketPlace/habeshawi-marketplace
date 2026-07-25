@@ -105,11 +105,19 @@ export async function getMarketplaceListings(
   return (data ?? []).map(mapListing);
 }
 
-export async function getFeaturedMarketplaceListings(
-  limit = 8,
-): Promise<MarketplaceListing[]> {
-  return getMarketplaceListings({
+export async function getFeaturedMarketplaceListings(limit = 8) {
+  const featuredListings = await getMarketplaceListings({
     featured: true,
+    limit,
+  });
+
+  // If there are featured listings, show them.
+  if (featuredListings.length > 0) {
+    return featuredListings;
+  }
+
+  // Otherwise, show the newest approved listings.
+  return getMarketplaceListings({
     limit,
   });
 }

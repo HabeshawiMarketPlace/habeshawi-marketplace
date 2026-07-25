@@ -49,7 +49,8 @@ export default async function MarketplacePage({
 }: MarketplacePageProps) {
   const params = await searchParams;
 
-  const search = params.search?.trim() ?? "";
+  const search =
+   params.search?.trim() ?? "";
   const category = params.category?.trim() || "All";
   const minPrice = parsePrice(params.minPrice);
   const maxPrice = parsePrice(params.maxPrice);

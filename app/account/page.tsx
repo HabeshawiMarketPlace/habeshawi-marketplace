@@ -57,13 +57,13 @@ export default function AccountPage() {
     }
   }, [router]);
 
-useEffect(() => {
-  const timer = window.setTimeout(() => {
-    void loadAccount();
-  }, 0);
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void loadAccount();
+    }, 0);
 
-  return () => window.clearTimeout(timer);
-}, [loadAccount]);
+    return () => window.clearTimeout(timer);
+  }, [loadAccount]);
 
   async function handleLogout() {
     setLoading(true);
@@ -103,9 +103,9 @@ useEffect(() => {
 
               <p className="mt-2 text-gray-600">{email}</p>
 
-              {profile?.phone && (
+              {profile?.phone ? (
                 <p className="mt-1 text-gray-600">{profile.phone}</p>
-              )}
+              ) : null}
 
               <p className="mt-3 inline-flex rounded-full bg-green-100 px-3 py-1 text-sm font-semibold capitalize text-green-800">
                 {profile?.role ?? "user"} account
@@ -121,36 +121,38 @@ useEffect(() => {
           </div>
         </section>
 
-        {errorMessage && (
+        {errorMessage ? (
           <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
             {errorMessage}
           </div>
-        )}
+        ) : null}
 
-        {!profile && !errorMessage && (
+        {!profile && !errorMessage ? (
           <div className="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-yellow-800">
             Your profile record was not found. Create a new account after the
             profile SQL trigger was installed, or add the missing profile
             manually in Supabase.
           </div>
-        )}
+        ) : null}
 
         <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Link
-            href="/account/listings"
-            className="rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-          >
-            <h2 className="text-xl font-bold text-gray-900">My Listings</h2>
-            <p className="mt-2 text-gray-600">
-              View, edit and manage your marketplace listings.
-            </p>
-          </Link>
+<Link
+  href="/my-listings"
+  className="rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+>
+  <h2 className="text-xl font-bold text-gray-900">My Listings</h2>
+
+  <p className="mt-2 text-gray-600">
+    View, edit and manage your listings.
+  </p>
+</Link>
 
           <Link
             href="/promotion/dashboard"
             className="rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
           >
             <h2 className="text-xl font-bold text-gray-900">My Promotions</h2>
+
             <p className="mt-2 text-gray-600">
               Manage your advertisements and promotion packages.
             </p>
@@ -161,28 +163,35 @@ useEffect(() => {
             className="rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
           >
             <h2 className="text-xl font-bold text-gray-900">Favorites</h2>
+
             <p className="mt-2 text-gray-600">
               View listings that you have saved.
             </p>
           </Link>
 
-          <Link
-            href="/messages"
-            className="rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-          >
-            <h2 className="text-xl font-bold text-gray-900">Messages</h2>
+          <div className="cursor-not-allowed rounded-2xl bg-white p-6 opacity-70 shadow-sm">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-xl font-bold text-gray-900">Messages</h2>
+
+              <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-bold text-yellow-800">
+                Coming Soon
+              </span>
+            </div>
+
             <p className="mt-2 text-gray-600">
-              Read messages from buyers, sellers and businesses.
+              Messaging between buyers, sellers and businesses will be
+              available soon.
             </p>
-          </Link>
+          </div>
 
           <Link
             href="/post-ad"
             className="rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
           >
             <h2 className="text-xl font-bold text-gray-900">Post a Listing</h2>
+
             <p className="mt-2 text-gray-600">
-              Create a new marketplace or housing listing.
+              Create a new marketplace or rental listing.
             </p>
           </Link>
 
@@ -193,6 +202,7 @@ useEffect(() => {
             <h2 className="text-xl font-bold text-gray-900">
               Profile Settings
             </h2>
+
             <p className="mt-2 text-gray-600">
               Update your name, phone number and account information.
             </p>

@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const quickCategories = [
   {
@@ -32,10 +36,42 @@ const quickCategories = [
 ];
 
 export default function Hero() {
+  const router = useRouter();
+
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("all");
+
+  function handleSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const search = encodeURIComponent(query.trim());
+
+    switch (category) {
+      case "rentals":
+        router.push(`/housing?search=${search}`);
+        return;
+
+      case "marketplace":
+        router.push(`/marketplace?search=${search}`);
+        return;
+
+      case "jobs":
+        router.push(`/jobs?search=${search}`);
+        return;
+
+      case "businesses":
+        router.push(`/businesses?search=${search}`);
+        return;
+
+      default:
+        router.push(`/search?search=${search}`);
+    }
+  }
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#043820] via-[#087531] to-[#07532f] text-white">
-      {/* Decorative background */}
       <div className="pointer-events-none absolute -left-28 top-12 h-80 w-80 rounded-full bg-yellow-300/10 blur-3xl" />
+
       <div className="pointer-events-none absolute -right-28 bottom-0 h-96 w-96 rounded-full bg-red-500/10 blur-3xl" />
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-1">
@@ -44,9 +80,8 @@ export default function Hero() {
         <div className="w-1/3 bg-red-500" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-4 pb-8 sm:pt-5 sm:pb-10 lg:pt-5 lg:pb-10">
+      <div className="relative mx-auto max-w-7xl px-6 pb-8 pt-4 sm:pb-10 sm:pt-5 lg:pb-10 lg:pt-5">
         <div className="grid items-center gap-5 lg:grid-cols-[1.45fr_0.55fr]">
-          {/* Left side */}
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
               <span aria-hidden="true">🌍</span>
@@ -70,10 +105,8 @@ export default function Hero() {
               ይግዙ • ይሽጡ • ይከራዩ • ስራ ያግኙ • ንግድዎን ያስተዋውቁ
             </p>
 
-            {/* Universal marketplace search */}
             <form
-              action="/marketplace"
-              method="get"
+              onSubmit={handleSearch}
               className="mt-5 overflow-hidden rounded-2xl bg-white p-2 text-slate-900 shadow-2xl"
             >
               <div className="grid md:grid-cols-[1.4fr_0.8fr_auto]">
@@ -85,27 +118,31 @@ export default function Hero() {
                     🔎
                   </span>
 
-                  <label className="sr-only" htmlFor="marketplace-search">
+                  <label
+                    className="sr-only"
+                    htmlFor="marketplace-search"
+                  >
                     Search Habeshawi Marketplace
                   </label>
 
                   <input
                     id="marketplace-search"
-                    name="q"
                     type="search"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
                     placeholder="Search apartments, cars, jobs, businesses..."
                     className="min-w-0 flex-1 rounded-xl px-4 py-3 outline-none placeholder:text-slate-400"
                   />
                 </div>
 
                 <label className="sr-only" htmlFor="category">
-                  Select category
+                  Category
                 </label>
 
                 <select
                   id="category"
-                  name="category"
-                  defaultValue="all"
+                  value={category}
+                  onChange={(event) => setCategory(event.target.value)}
                   className="border-t border-slate-200 bg-white px-5 py-4 outline-none md:border-l md:border-t-0"
                 >
                   <option value="all">All Categories</option>
@@ -124,21 +161,20 @@ export default function Hero() {
               </div>
             </form>
 
-            {/* Popular searches */}
             <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
               <span className="mr-1 font-semibold text-white/65">
                 Popular:
               </span>
 
               <Link
-                href="/housing"
+                href="/housing?search=apartments"
                 className="rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold transition hover:bg-white/20"
               >
                 Apartments
               </Link>
 
               <Link
-                href="/marketplace"
+                href="/marketplace?search=cars"
                 className="rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold transition hover:bg-white/20"
               >
                 Cars
@@ -152,7 +188,7 @@ export default function Hero() {
               </Link>
 
               <Link
-                href="/businesses"
+                href="/businesses?search=restaurants"
                 className="rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold transition hover:bg-white/20"
               >
                 Restaurants
@@ -160,7 +196,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right action panel */}
           <div className="rounded-3xl border border-white/15 bg-white/10 p-5 shadow-2xl backdrop-blur-sm sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -229,32 +264,31 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Four marketplace pillars */}
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {quickCategories.map((category) => (
+          {quickCategories.map((item) => (
             <Link
-              key={category.title}
-              href={category.href}
+              key={item.title}
+              href={item.href}
               className="group rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur-sm transition hover:-translate-y-1 hover:border-yellow-300/60 hover:bg-white/15 hover:shadow-xl"
             >
               <div className="flex items-start gap-4">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white text-2xl shadow">
-                  {category.icon}
+                  {item.icon}
                 </div>
 
                 <div>
                   <h2 className="text-base font-black group-hover:text-yellow-300">
-                    {category.title}
+                    {item.title}
                   </h2>
 
                   <p className="mt-0.5 font-bold text-yellow-300">
-                    {category.amharic}
+                    {item.amharic}
                   </p>
                 </div>
               </div>
 
               <p className="mt-4 text-sm leading-6 text-white/70">
-                {category.description}
+                {item.description}
               </p>
 
               <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-white">

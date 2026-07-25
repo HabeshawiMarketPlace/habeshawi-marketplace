@@ -41,16 +41,22 @@ const rentalSelect = `
   )
 `;
 
-function mapRental(
-  row: Record<string, unknown>,
-): RentalListing {
-  const images: RentalImage[] = [...(row.rental_images ?? [])]
-    .map((image: Record<string, unknown>) => ({
-      imageUrl: String(image.image_url ?? ""),
-      displayOrder: Number(image.display_order ?? 0),
-    }))
+function mapRental(row: Record<string, unknown>): RentalListing {
+  const rawImages = Array.isArray(row.rental_images)
+    ? row.rental_images
+    : [];
+
+  const images: RentalImage[] = rawImages
+    .map((image) => {
+      const imageRecord = image as Record<string, unknown>;
+
+      return {
+        imageUrl: String(imageRecord.image_url ?? ""),
+        displayOrder: Number(imageRecord.display_order ?? 0),
+      };
+    })
     .filter((image) => Boolean(image.imageUrl))
-    .sort((a, b) => a.displayOrder - b.displayOrder);
+    .sort((first, second) => first.displayOrder - second.displayOrder);
 
   return {
     id: String(row.id),
@@ -58,29 +64,62 @@ function mapRental(
     description: String(row.description ?? ""),
     location: String(row.location ?? "Location not provided"),
     price: Number(row.price ?? 0),
+
     bedrooms:
       row.bedrooms === null || row.bedrooms === undefined
         ? null
         : Number(row.bedrooms),
+
     bathrooms:
       row.bathrooms === null || row.bathrooms === undefined
         ? null
         : Number(row.bathrooms),
-    propertyType: row.property_type ? String(row.property_type) : null,
-    phone: row.phone ? String(row.phone) : null,
-    whatsapp: row.whatsapp ? String(row.whatsapp) : null,
-    email: row.email ? String(row.email) : null,
+
+    propertyType:
+      row.property_type === null || row.property_type === undefined
+        ? null
+        : String(row.property_type),
+
+    phone:
+      row.phone === null || row.phone === undefined
+        ? null
+        : String(row.phone),
+
+    whatsapp:
+      row.whatsapp === null || row.whatsapp === undefined
+        ? null
+        : String(row.whatsapp),
+
+    email:
+      row.email === null || row.email === undefined
+        ? null
+        : String(row.email),
+
     imageUrl:
       images[0]?.imageUrl ||
       (row.image_url ? String(row.image_url) : FALLBACK_IMAGE),
+
     images,
-    availableDate: row.available_date ? String(row.available_date) : null,
-    createdAt: String(row.created_at ?? new Date(0).toISOString()),
+
+    availableDate:
+      row.available_date === null || row.available_date === undefined
+        ? null
+        : String(row.available_date),
+
+    createdAt: String(
+      row.created_at ?? new Date(0).toISOString(),
+    ),
   };
 }
 
-function isPositiveNumber(value: number | undefined): value is number {
-  return typeof value === "number" && Number.isFinite(value) && value > 0;
+function isPositiveNumber(
+  value: number | undefined,
+): value is number {
+  return (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    value > 0
+  );
 }
 
 export async function getRentals(
@@ -123,11 +162,18 @@ export async function getRentals(
     throw new Error(error.message);
   }
 
-  return (data ?? []).map(mapRental);
+  return (data ?? []).map((rental) =>
+    mapRental(rental as Record<string, unknown>),
+  );
 }
 
-export async function getLatestRentals(limit = 4): Promise<RentalListing[]> {
-  const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 4;
+export async function getLatestRentals(
+  limit = 4,
+): Promise<RentalListing[]> {
+  const safeLimit =
+    Number.isFinite(limit) && limit > 0
+      ? Math.floor(limit)
+      : 4;
 
   const { data, error } = await supabase
     .from("rentals")
@@ -142,10 +188,14 @@ export async function getLatestRentals(limit = 4): Promise<RentalListing[]> {
     return [];
   }
 
-  return (data ?? []).map(mapRental);
+  return (data ?? []).map((rental) =>
+    mapRental(rental as Record<string, unknown>),
+  );
 }
 
-export async function getRentalById(id: string): Promise<RentalListing | null> {
+export async function getRentalById(
+  id: string,
+): Promise<RentalListing | null> {
   const cleanId = id.trim();
 
   if (!cleanId) {
@@ -156,23 +206,30 @@ export async function getRentalById(id: string): Promise<RentalListing | null> {
     .from("rentals")
     .select(rentalSelect)
     .eq("id", cleanId)
-    .ilike("payment_status", "paid")
-    .ilike("status", "approved")
     .maybeSingle();
 
   if (error) {
-    console.error(`Unable to load rental ${cleanId}:`, error);
+    console.error(
+      `Unable to load rental ${cleanId}:`,
+      error,
+    );
+
     return null;
   }
 
-  return data ? mapRental(data) : null;
+  return data
+    ? mapRental(data as Record<string, unknown>)
+    : null;
 }
 
 export async function getSimilarRentals(
   rental: RentalListing,
   limit = 3,
 ): Promise<RentalListing[]> {
-  const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 3;
+  const safeLimit =
+    Number.isFinite(limit) && limit > 0
+      ? Math.floor(limit)
+      : 3;
 
   let query = supabase
     .from("rentals")
@@ -184,15 +241,26 @@ export async function getSimilarRentals(
     .limit(safeLimit);
 
   if (rental.propertyType) {
-    query = query.ilike("property_type", rental.propertyType);
+    query = query.ilike(
+      "property_type",
+      rental.propertyType,
+    );
   }
 
   const { data, error } = await query;
 
   if (error) {
-    console.error("Unable to load similar rentals:", error);
+    console.error(
+      "Unable to load similar rentals:",
+      error,
+    );
+
     return [];
   }
 
-  return (data ?? []).map(mapRental);
+  return (data ?? []).map((similarRental) =>
+    mapRental(
+      similarRental as Record<string, unknown>,
+    ),
+  );
 }

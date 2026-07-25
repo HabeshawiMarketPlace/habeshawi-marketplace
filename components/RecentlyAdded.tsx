@@ -70,28 +70,17 @@ export default async function RecentlyAdded() {
   }
 
   if (job) {
-    const jobLocation =
-      job.location ||
-      [job.city, job.state].filter(Boolean).join(", ") ||
-      "Location not provided";
+    const jobLocation = job.location || "Location not provided";
 
     recentItems.push({
       id: `job-${job.id}`,
       title: job.title || "Job Opportunity",
       category:
         job.employmentType ||
-        job.employment_type ||
         "Job",
       location: jobLocation,
-      price:
-        job.salary ||
-        job.salaryRange ||
-        job.salary_range ||
-        "View Position",
-      image:
-        job.imageUrl ||
-        job.image_url ||
-        "/jobs/default-job.jpg",
+      price: "View Position",
+      image: "/jobs/default-job.jpg",
       href: `/jobs/${job.id}`,
     });
   }
@@ -234,3 +223,7 @@ export default async function RecentlyAdded() {
     </Section>
   );
 }
+
+
+
+

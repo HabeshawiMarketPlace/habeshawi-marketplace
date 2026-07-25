@@ -33,15 +33,15 @@ const searchResults = [
 
 type MarketplaceSearchPageProps = {
   searchParams: Promise<{
-    q?: string;
+    search?: string;
   }>;
 };
 
 export default async function MarketplaceSearchPage({
   searchParams,
 }: MarketplaceSearchPageProps) {
-  const { q } = await searchParams;
-  const searchTerm = q?.trim() || "";
+  const { search } = await searchParams;
+  const searchTerm = search?.trim() || "";
 
   const filteredResults = searchTerm
     ? searchResults.filter((listing) => {
@@ -83,7 +83,7 @@ export default async function MarketplaceSearchPage({
         >
           <input
             type="search"
-            name="q"
+            name="search"
             defaultValue={searchTerm}
             placeholder="Search cars, phones, equipment..."
             className="min-w-0 flex-1 rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
@@ -192,3 +192,5 @@ export default async function MarketplaceSearchPage({
     </main>
   );
 }
+
+

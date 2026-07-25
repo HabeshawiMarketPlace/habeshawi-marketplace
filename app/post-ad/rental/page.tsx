@@ -1,31 +1,58 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-export default function PostAdPage() {
+const DEFAULT_RENTAL_IMAGE = "/default-rental.jpg";
+const REQUEST_TIMEOUT_MS = 20000;
+
+function withTimeout<T>(
+  promise: PromiseLike<T>,
+  timeoutMessage: string,
+): Promise<T> {
+  return Promise.race([
+    Promise.resolve(promise),
+    new Promise<T>((_, reject) => {
+      window.setTimeout(() => {
+        reject(new Error(timeoutMessage));
+      }, REQUEST_TIMEOUT_MS);
+    }),
+  ]);
+}
+
+export default function PostRentalPage() {
   const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [checkingUser, setCheckingUser] = useState(true);
   const [editLink, setEditLink] = useState("");
   const [createdRentalId, setCreatedRentalId] = useState("");
   const [copied, setCopied] = useState(false);
-  const [checkingUser, setCheckingUser] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [submitStatus, setSubmitStatus] = useState("");
 
   useEffect(() => {
     async function checkUser() {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
+      try {
+        const {
+          data: { user },
+          error,
+        } = await withTimeout(
+          supabase.auth.getUser(),
+          "Account check timed out.",
+        );
 
-      if (error || !user) {
+        if (error || !user) {
+          router.replace("/login");
+          return;
+        }
+
+        setCheckingUser(false);
+      } catch {
         router.replace("/login");
-        return;
       }
-
-      setCheckingUser(false);
     }
 
     void checkUser();
@@ -38,180 +65,275 @@ export default function PostAdPage() {
       await navigator.clipboard.writeText(editLink);
       setCopied(true);
 
-      setTimeout(() => {
+      window.setTimeout(() => {
         setCopied(false);
       }, 2000);
     } catch {
-      alert("Unable to copy the link. Please copy it manually.");
+      setErrorMessage(
+        "Unable to copy the link. Please copy it manually.",
+      );
     }
   }
 
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ) {
-    event.preventDefault();
-
-    if (isSubmitting) return;
-
-    setIsSubmitting(true);
-
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      alert("You must be signed in to post a rental.");
-      setIsSubmitting(false);
-      router.replace("/login");
-      return;
-    }
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    const bedroomsValue = formData.get("bedrooms");
-    const bathroomsValue = formData.get("bathrooms");
-    const availableDateValue = formData.get("available_date");
-
-    const imageFiles = formData
-      .getAll("photos")
-      .filter(
-        (file): file is File =>
-          file instanceof File && file.size > 0
-      );
-
+  async function uploadImages(
+    imageFiles: File[],
+    userId: string,
+  ): Promise<string[]> {
     if (imageFiles.length === 0) {
-      alert("Please upload at least one property photo.");
-      setIsSubmitting(false);
-      return;
+      return [DEFAULT_RENTAL_IMAGE];
     }
 
     if (imageFiles.length > 5) {
-      alert("You can upload a maximum of 5 photos.");
-      setIsSubmitting(false);
-      return;
+      throw new Error("You can upload a maximum of 5 photos.");
     }
 
     const imageUrls: string[] = [];
 
-    for (const imageFile of imageFiles) {
+    for (let index = 0; index < imageFiles.length; index += 1) {
+      const imageFile = imageFiles[index];
+
       if (imageFile.size > 5 * 1024 * 1024) {
-        alert(`${imageFile.name} must be 5 MB or smaller.`);
-        setIsSubmitting(false);
-        return;
+        throw new Error(
+          `${imageFile.name} must be 5 MB or smaller.`,
+        );
       }
 
+      if (!imageFile.type.startsWith("image/")) {
+        throw new Error(
+          `${imageFile.name} is not a supported image file.`,
+        );
+      }
+
+      setSubmitStatus(
+        `Uploading photo ${index + 1} of ${imageFiles.length}...`,
+      );
+
       const extension =
-        imageFile.name.split(".").pop()?.toLowerCase() ?? "jpg";
+        imageFile.name.split(".").pop()?.toLowerCase() || "jpg";
 
       const filePath =
-        `rentals/${user.id}/${crypto.randomUUID()}.${extension}`;
+        `rentals/${userId}/${crypto.randomUUID()}.${extension}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("housing-images")
-        .upload(filePath, imageFile, {
-          cacheControl: "3600",
-          upsert: false,
-        });
+      const { error: uploadError } = await withTimeout(
+        supabase.storage
+          .from("housing-images")
+          .upload(filePath, imageFile, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: imageFile.type,
+          }),
+        `Photo upload timed out for ${imageFile.name}.`,
+      );
 
       if (uploadError) {
-        alert(
-          `Unable to upload ${imageFile.name}: ${uploadError.message}`
+        throw new Error(
+          `Unable to upload ${imageFile.name}: ${uploadError.message}`,
         );
-        setIsSubmitting(false);
-        return;
       }
 
       const { data: publicUrlData } = supabase.storage
         .from("housing-images")
         .getPublicUrl(filePath);
 
+      if (!publicUrlData.publicUrl) {
+        throw new Error(
+          `Unable to create the public URL for ${imageFile.name}.`,
+        );
+      }
+
       imageUrls.push(publicUrlData.publicUrl);
     }
 
-    const imageUrl = imageUrls[0];
-    const editToken = crypto.randomUUID();
+    return imageUrls;
+  }
 
-    const { data: rental, error } = await supabase
-      .from("rentals")
-      .insert({
-        title: formData.get("title"),
-        property_type: formData.get("property_type"),
-        price: Number(formData.get("price")),
-        location: formData.get("location"),
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>,
+  ) {
+    event.preventDefault();
 
-        bedrooms: bedroomsValue
-          ? Number(bedroomsValue)
-          : null,
+    if (isSubmitting) return;
 
-        bathrooms: bathroomsValue
-          ? Number(bathroomsValue)
-          : null,
+    const form = event.currentTarget;
 
-        available_date: availableDateValue || null,
-        description: formData.get("description"),
-        phone: formData.get("phone"),
-        whatsapp: formData.get("whatsapp") || null,
-        email: formData.get("email") || null,
+    setIsSubmitting(true);
+    setErrorMessage("");
+    setSubmitStatus("Checking your account...");
+
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await withTimeout(
+        supabase.auth.getUser(),
+        "Account verification timed out.",
+      );
+
+      if (userError || !user) {
+        router.replace("/login");
+        throw new Error(
+          "You must be signed in to post a rental.",
+        );
+      }
+
+      const formData = new FormData(form);
+
+      const title = String(formData.get("title") ?? "").trim();
+      const propertyType = String(
+        formData.get("property_type") ?? "",
+      ).trim();
+      const priceValue = String(formData.get("price") ?? "").trim();
+      const location = String(
+        formData.get("location") ?? "",
+      ).trim();
+      const phone = String(formData.get("phone") ?? "").trim();
+      const description = String(
+        formData.get("description") ?? "",
+      ).trim();
+
+      if (
+        !title ||
+        !propertyType ||
+        !priceValue ||
+        !location ||
+        !phone
+      ) {
+        throw new Error(
+          "Please complete all required rental information.",
+        );
+      }
+
+      const price = Number(priceValue);
+
+      if (!Number.isFinite(price) || price < 0) {
+        throw new Error("Please enter a valid monthly rent.");
+      }
+
+      const imageFiles = formData
+        .getAll("photos")
+        .filter(
+          (value): value is File =>
+            value instanceof File && value.size > 0,
+        );
+
+      const imageUrls = await uploadImages(
+        imageFiles,
+        user.id,
+      );
+
+      const bedroomsText = String(
+        formData.get("bedrooms") ?? "",
+      ).trim();
+
+      const bathroomsText = String(
+        formData.get("bathrooms") ?? "",
+      ).trim();
+
+      const availableDateText = String(
+        formData.get("available_date") ?? "",
+      ).trim();
+
+      const whatsapp = String(
+        formData.get("whatsapp") ?? "",
+      ).trim();
+
+      const email = String(formData.get("email") ?? "").trim();
+
+      const editToken = crypto.randomUUID();
+
+      setSubmitStatus("Saving your rental...");
+
+      const { data: rental, error: rentalError } =
+        await withTimeout(
+          supabase
+            .from("rentals")
+            .insert({
+              user_id: user.id,
+              title,
+              property_type: propertyType,
+              price,
+              location,
+              bedrooms: bedroomsText
+                ? Number(bedroomsText)
+                : null,
+              bathrooms: bathroomsText
+                ? Number(bathroomsText)
+                : null,
+              available_date: availableDateText || null,
+              description: description || null,
+              phone,
+              whatsapp: whatsapp || null,
+              email: email || null,
+              image_url: imageUrls[0],
+              edit_token: editToken,
+              status: "draft",
+              payment_status: "unpaid",
+            })
+            .select("id")
+            .single(),
+          "Saving the rental timed out. Please try again.",
+        );
+
+      if (rentalError) {
+        throw new Error(
+          `Unable to submit rental: ${rentalError.message}`,
+        );
+      }
+
+      if (!rental?.id) {
+        throw new Error(
+          "The rental was not created correctly because no ID was returned.",
+        );
+      }
+
+      setSubmitStatus("Saving photo information...");
+
+      const rentalImages = imageUrls.map((imageUrl, index) => ({
+        rental_id: rental.id,
         image_url: imageUrl,
+        display_order: index + 1,
+      }));
 
-        edit_token: editToken,
-        status: "draft",
-        payment_status: "unpaid",
-      })
-      .select("id")
-      .single();
-
-    if (error) {
-      alert(`Unable to submit rental: ${error.message}`);
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!rental) {
-      alert(
-        "Rental was saved, but its ID could not be retrieved."
+      const { error: imagesError } = await withTimeout(
+        supabase.from("rental_images").insert(rentalImages),
+        "Saving the photo information timed out.",
       );
-      setIsSubmitting(false);
-      return;
-    }
 
-    const rentalImages = imageUrls.map((url, index) => ({
-      rental_id: rental.id,
-      image_url: url,
-      display_order: index + 1,
-    }));
+      if (imagesError) {
+        throw new Error(
+          `Rental saved, but photo information failed: ${imagesError.message}`,
+        );
+      }
 
-    const { error: imagesError } = await supabase
-      .from("rental_images")
-      .insert(rentalImages);
+      const privateEditLink =
+        `${window.location.origin}/post-ad/edit/${rental.id}` +
+        `?token=${editToken}`;
 
-    if (imagesError) {
-      alert(
-        `Rental saved, but the photo records could not be saved: ${imagesError.message}`
+      localStorage.setItem(
+        `rental-edit-link-${rental.id}`,
+        privateEditLink,
       );
+
+      setCreatedRentalId(String(rental.id));
+      setEditLink(privateEditLink);
+      setSubmitStatus("");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unable to submit the rental.";
+
+      console.error("Rental submission failed:", error);
+      setErrorMessage(message);
+      setSubmitStatus("");
+    } finally {
       setIsSubmitting(false);
-      return;
     }
-
-    const privateEditLink =
-      `${window.location.origin}/post-ad/edit/${rental.id}` +
-      `?token=${editToken}`;
-
-    localStorage.setItem(
-      `rental-edit-link-${rental.id}`,
-      privateEditLink
-    );
-
-    setCreatedRentalId(rental.id);
-    setEditLink(privateEditLink);
-    setIsSubmitting(false);
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
   }
 
   if (checkingUser) {
@@ -263,12 +385,12 @@ export default function PostAdPage() {
           </div>
 
           <div className="mt-8">
-            <a
+            <Link
               href={`/pricing?rentalId=${createdRentalId}`}
               className="block rounded-lg bg-[#087531] px-6 py-4 text-center text-lg font-semibold text-white hover:bg-[#064d2b]"
             >
               Continue to Payment
-            </a>
+            </Link>
           </div>
         </div>
       </main>
@@ -276,15 +398,22 @@ export default function PostAdPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f8f5] px-6 py-12">
-      <div className="mx-auto max-w-3xl rounded-2xl bg-white p-8 shadow">
+    <main className="min-h-screen bg-[#f7f8f5] px-4 py-12 sm:px-6">
+      <div className="mx-auto max-w-3xl rounded-2xl bg-white p-6 shadow sm:p-8">
         <h1 className="text-4xl font-bold text-[#064d2b]">
           Post a Rental
         </h1>
 
         <p className="mt-3 text-slate-600">
-          Add your apartment, house, room, or roommate listing.
+          Add a room, apartment, house, roommate space, or commercial
+          rental.
         </p>
+
+        {errorMessage ? (
+          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 font-medium text-red-700">
+            {errorMessage}
+          </div>
+        ) : null}
 
         <form
           onSubmit={handleSubmit}
@@ -305,13 +434,22 @@ export default function PostAdPage() {
             className="rounded-lg border border-slate-300 px-4 py-3"
           >
             <option value="" disabled>
-              Property type
+              Select property type
             </option>
 
+            <option value="room">Room</option>
             <option value="apartment">Apartment</option>
             <option value="house">House</option>
-            <option value="room">Room</option>
             <option value="roommate">Roommate</option>
+            <option value="retail">Retail Storefront</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="office">Office</option>
+            <option value="warehouse">Warehouse</option>
+            <option value="salon">Salon / Barbershop</option>
+            <option value="mixed-use">Mixed-Use</option>
+            <option value="commercial-other">
+              Other Commercial
+            </option>
           </select>
 
           <input
@@ -395,59 +533,27 @@ export default function PostAdPage() {
             </h2>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="amenities"
-                  value="parking"
-                />
-                Parking
-              </label>
+              {[
+                ["parking", "Parking"],
+                ["utilities-included", "Utilities Included"],
+                ["wifi-included", "Wi-Fi Included"],
+                ["laundry", "Laundry"],
+                ["air-conditioning", "Air Conditioning"],
+                ["pets-allowed", "Pets Allowed"],
+              ].map(([value, label]) => (
+                <label
+                  key={value}
+                  className="flex items-center gap-2"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenities"
+                    value={value}
+                  />
 
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="amenities"
-                  value="utilities-included"
-                />
-                Utilities Included
-              </label>
-
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="amenities"
-                  value="wifi-included"
-                />
-                Wi-Fi Included
-              </label>
-
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="amenities"
-                  value="laundry"
-                />
-                Laundry
-              </label>
-
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="amenities"
-                  value="air-conditioning"
-                />
-                Air Conditioning
-              </label>
-
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="amenities"
-                  value="pets-allowed"
-                />
-                Pets Allowed
-              </label>
+                  {label}
+                </label>
+              ))}
             </div>
           </div>
 
@@ -471,15 +577,22 @@ export default function PostAdPage() {
               type="file"
               name="photos"
               multiple
-              required
               accept="image/*"
               className="w-full rounded-lg border border-slate-300 px-4 py-3"
             />
 
             <p className="mt-2 text-sm text-slate-500">
-              Upload 1 to 5 photos. Maximum 5 MB per photo.
+              Optional. Upload up to 5 photos, maximum 5 MB each. If
+              you do not upload a photo, the default image will be
+              used.
             </p>
           </div>
+
+          {submitStatus ? (
+            <p className="rounded-lg bg-blue-50 p-3 text-center font-semibold text-blue-800">
+              {submitStatus}
+            </p>
+          ) : null}
 
           <button
             type="submit"

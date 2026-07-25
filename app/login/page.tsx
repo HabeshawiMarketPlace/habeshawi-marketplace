@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -14,6 +15,7 @@ export default function LoginPage() {
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     setLoading(true);
     setMessage("");
 
@@ -32,7 +34,6 @@ export default function LoginPage() {
     router.refresh();
   }
 
-
   return (
     <main className="mx-auto min-h-screen max-w-md px-6 py-16">
       <div className="rounded-2xl bg-white p-8 shadow-lg">
@@ -46,41 +47,51 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="mt-8 space-y-5">
           <div>
-            <label className="mb-2 block font-semibold">
+            <label
+              htmlFor="email"
+              className="mb-2 block font-semibold"
+            >
               Email
             </label>
 
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
+              autoComplete="email"
               className="w-full rounded-lg border px-4 py-3"
               placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label className="mb-2 block font-semibold">
+            <label
+              htmlFor="password"
+              className="mb-2 block font-semibold"
+            >
               Password
             </label>
 
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
               minLength={6}
+              autoComplete="current-password"
               className="w-full rounded-lg border px-4 py-3"
               placeholder="At least 6 characters"
             />
           </div>
 
-          {message && (
+          {message ? (
             <p className="rounded-lg bg-slate-100 p-3 text-sm">
               {message}
             </p>
-          )}
+          ) : null}
 
           <button
             type="submit"
@@ -89,28 +100,28 @@ export default function LoginPage() {
           >
             {loading ? "Please wait..." : "Login"}
           </button>
-
-<div className="mt-6 space-y-3 text-center">
-  <p className="text-sm text-slate-600">
-    Don&apos;t have an account?{" "}
-    <a
-      href="/signup"
-      className="font-semibold text-[#087531] hover:underline"
-    >
-      Create Account
-    </a>
-  </p>
-
-  <p>
-    <a
-      href="/forgot-password"
-      className="text-sm font-semibold text-[#087531] hover:underline"
-    >
-      Forgot Password?
-    </a>
-  </p>
-</div>
         </form>
+
+        <div className="mt-6 space-y-3 text-center">
+          <p className="text-sm text-slate-600">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/signup"
+              className="font-semibold text-[#087531] hover:underline"
+            >
+              Create Account
+            </Link>
+          </p>
+
+          <p>
+            <Link
+              href="/forgot-password"
+              className="text-sm font-semibold text-[#087531] hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );
