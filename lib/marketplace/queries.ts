@@ -26,7 +26,9 @@ export type MarketplaceFilters = {
   limit?: number;
 };
 
-function mapListing(row: any): MarketplaceListing {
+function mapListing(
+  row: Record<string, unknown>,
+): MarketplaceListing {
   return {
     id: String(row.id),
     title: String(row.title ?? "Untitled listing"),

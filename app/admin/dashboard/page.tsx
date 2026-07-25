@@ -97,9 +97,13 @@ export default function AdminDashboardPage() {
     }
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
+  const timer = window.setTimeout(() => {
     void loadDashboardCounts();
-  }, [loadDashboardCounts]);
+  }, 0);
+
+  return () => window.clearTimeout(timer);
+}, [loadDashboardCounts]);
 
   const dashboardCards = [
     {

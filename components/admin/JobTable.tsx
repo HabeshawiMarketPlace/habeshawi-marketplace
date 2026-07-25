@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+
 import JobStatusBadge, {
   type JobStatus,
 } from "@/components/admin/JobStatusBadge";
@@ -10,6 +10,13 @@ import {
   type AdminJob,
   updateAdminJobStatus,
 } from "@/lib/jobs/admin";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 const sections: Array<{
   status: JobStatus;
@@ -40,7 +47,7 @@ const sections: Array<{
 
 export default function JobTable() {
   const [jobs, setJobs] = useState<AdminJob[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [workingId, setWorkingId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
@@ -59,11 +66,14 @@ export default function JobTable() {
       setLoading(false);
     }
   }, []);
+const hasLoaded = useRef(false);
 
-  useEffect(() => {
-    void loadJobs();
-  }, [loadJobs]);
+useEffect(() => {
+  if (hasLoaded.current) return;
 
+  hasLoaded.current = true;
+  void loadJobs();
+}, [loadJobs]);
   const filteredJobs = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -71,8 +71,10 @@ const categories = [
 export default function PromotionPostPage() {
   const router = useRouter();
 
-  const [selectedPackage, setSelectedPackage] =
-    useState<PackageName>("silver");
+  const packageFromUrl = usePackageFromUrl();
+  const [selectedPackageOverride, setSelectedPackageOverride] =
+    useState<PackageName | null>(null);
+  const selectedPackage = selectedPackageOverride ?? packageFromUrl;
 
   const [businessName, setBusinessName] = useState("");
   const [title, setTitle] = useState("");
@@ -91,21 +93,6 @@ export default function PromotionPostPage() {
     useState<"success" | "error" | "">("");
 
   const currentPackage = packages[selectedPackage];
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const packageFromUrl = params.get("package");
-
-    if (
-      packageFromUrl === "free" ||
-      packageFromUrl === "bronze" ||
-      packageFromUrl === "silver" ||
-      packageFromUrl === "gold" ||
-      packageFromUrl === "platinum"
-    ) {
-      setSelectedPackage(packageFromUrl);
-    }
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -360,7 +347,7 @@ export default function PromotionPostPage() {
                       key={packageKey}
                       type="button"
                       onClick={() =>
-                        setSelectedPackage(packageKey)
+                        setSelectedPackageOverride(packageKey)
                       }
                       className={`rounded-2xl border p-4 text-left transition ${
                         isSelected
@@ -671,6 +658,42 @@ export default function PromotionPostPage() {
         </aside>
       </section>
     </main>
+  );
+}
+
+
+function isPackageName(value: string | null): value is PackageName {
+  return (
+    value === "free" ||
+    value === "bronze" ||
+    value === "silver" ||
+    value === "gold" ||
+    value === "platinum"
+  );
+}
+
+function subscribeToUrlChanges(onStoreChange: () => void) {
+  window.addEventListener("popstate", onStoreChange);
+
+  return () => {
+    window.removeEventListener("popstate", onStoreChange);
+  };
+}
+
+function getPackageSnapshot(): PackageName {
+  const packageName = new URLSearchParams(window.location.search).get("package");
+  return isPackageName(packageName) ? packageName : "silver";
+}
+
+function getServerPackageSnapshot(): PackageName {
+  return "silver";
+}
+
+function usePackageFromUrl(): PackageName {
+  return useSyncExternalStore(
+    subscribeToUrlChanges,
+    getPackageSnapshot,
+    getServerPackageSnapshot,
   );
 }
 

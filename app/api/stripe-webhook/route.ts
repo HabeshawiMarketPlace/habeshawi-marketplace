@@ -2,7 +2,6 @@ import Stripe from "stripe";
 import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
 import { render } from "@react-email/render";
-import React from "react";
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
 

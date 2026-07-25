@@ -12,7 +12,8 @@ export default function MyListingsPage() {
   const [listings, setListings] = useState<SavedListing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+useEffect(() => {
+  const timer = window.setTimeout(() => {
     const savedListings: SavedListing[] = [];
 
     for (let index = 0; index < localStorage.length; index++) {
@@ -38,7 +39,10 @@ export default function MyListingsPage() {
 
     setListings(savedListings);
     setIsLoading(false);
-  }, []);
+  }, 0);
+
+  return () => window.clearTimeout(timer);
+}, []);
 
   function removeListing(id: string) {
     localStorage.removeItem(`rental-edit-link-${id}`);

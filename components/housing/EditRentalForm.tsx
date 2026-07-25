@@ -1,9 +1,9 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import Image from "next/image";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import Image from "next/image";
 
 type Rental = {
   id: string;
@@ -28,29 +28,30 @@ export default function EditRentalForm({
   rental,
 }: EditRentalFormProps) {
   const router = useRouter();
+  const temporaryImageUrlRef = useRef<string | null>(null);
 
   const [title, setTitle] = useState(rental.title ?? "");
   const [propertyType, setPropertyType] = useState(
-    rental.property_type ?? ""
+    rental.property_type ?? "",
   );
   const [price, setPrice] = useState(
-    rental.price?.toString() ?? ""
+    rental.price?.toString() ?? "",
   );
   const [location, setLocation] = useState(
-    rental.location ?? ""
+    rental.location ?? "",
   );
   const [bedrooms, setBedrooms] = useState(
-    rental.bedrooms?.toString() ?? ""
+    rental.bedrooms?.toString() ?? "",
   );
   const [bathrooms, setBathrooms] = useState(
-    rental.bathrooms?.toString() ?? ""
+    rental.bathrooms?.toString() ?? "",
   );
   const [description, setDescription] = useState(
-    rental.description ?? ""
+    rental.description ?? "",
   );
   const [phone, setPhone] = useState(rental.phone ?? "");
   const [whatsapp, setWhatsapp] = useState(
-    rental.whatsapp ?? ""
+    rental.whatsapp ?? "",
   );
   const [email, setEmail] = useState(rental.email ?? "");
 
@@ -58,22 +59,35 @@ export default function EditRentalForm({
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
-    rental.image_url
+    rental.image_url,
   );
 
   useEffect(() => {
-    if (!imageFile) {
+    return () => {
+      if (temporaryImageUrlRef.current) {
+        URL.revokeObjectURL(temporaryImageUrlRef.current);
+      }
+    };
+  }, []);
+
+  function handleImageChange(file: File | null) {
+    if (temporaryImageUrlRef.current) {
+      URL.revokeObjectURL(temporaryImageUrlRef.current);
+      temporaryImageUrlRef.current = null;
+    }
+
+    setImageFile(file);
+    setMessage("");
+
+    if (!file) {
       setPreviewUrl(rental.image_url);
       return;
     }
 
-    const temporaryUrl = URL.createObjectURL(imageFile);
+    const temporaryUrl = URL.createObjectURL(file);
+    temporaryImageUrlRef.current = temporaryUrl;
     setPreviewUrl(temporaryUrl);
-
-    return () => {
-      URL.revokeObjectURL(temporaryUrl);
-    };
-  }, [imageFile, rental.image_url]);
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -86,6 +100,18 @@ export default function EditRentalForm({
     if (imageFile) {
       if (imageFile.size > 5 * 1024 * 1024) {
         setMessage("Image must be 5 MB or smaller.");
+        setLoading(false);
+        return;
+      }
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+      ];
+
+      if (!allowedTypes.includes(imageFile.type)) {
+        setMessage("Please select a JPG, PNG, or WebP image.");
         setLoading(false);
         return;
       }
@@ -104,7 +130,7 @@ export default function EditRentalForm({
 
       if (uploadError) {
         setMessage(
-          `Unable to upload image: ${uploadError.message}`
+          `Unable to upload image: ${uploadError.message}`,
         );
         setLoading(false);
         return;
@@ -118,7 +144,7 @@ export default function EditRentalForm({
 
       if (!imageUrl) {
         setMessage(
-          "The image uploaded, but its URL could not be created."
+          "The image uploaded, but its URL could not be created.",
         );
         setLoading(false);
         return;
@@ -128,16 +154,16 @@ export default function EditRentalForm({
     const { error } = await supabase
       .from("rentals")
       .update({
-        title,
+        title: title.trim(),
         property_type: propertyType || null,
         price: price ? Number(price) : null,
-        location: location || null,
+        location: location.trim() || null,
         bedrooms: bedrooms ? Number(bedrooms) : null,
         bathrooms: bathrooms ? Number(bathrooms) : null,
-        description: description || null,
-        phone: phone || null,
-        whatsapp: whatsapp || null,
-        email: email || null,
+        description: description.trim() || null,
+        phone: phone.trim() || null,
+        whatsapp: whatsapp.trim() || null,
+        email: email.trim() || null,
         image_url: imageUrl,
       })
       .eq("id", rental.id);
@@ -169,7 +195,7 @@ export default function EditRentalForm({
           {previewUrl ? (
             <Image
               src={previewUrl}
-              alt={rental.title}
+              alt={rental.title || "Rental property"}
               width={900}
               height={500}
               unoptimized={previewUrl.startsWith("blob:")}
@@ -196,31 +222,39 @@ export default function EditRentalForm({
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-5">
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="replacement-image"
+            className="mb-2 block font-semibold"
+          >
             Replace Image
           </label>
 
           <input
+            id="replacement-image"
             type="file"
             accept="image/png,image/jpeg,image/webp"
             onChange={(event) =>
-              setImageFile(event.target.files?.[0] ?? null)
+              handleImageChange(event.target.files?.[0] ?? null)
             }
             className="block w-full rounded-lg border border-gray-300 p-3"
           />
 
           <p className="mt-1 text-sm text-gray-500">
             Leave this empty to keep the renter&apos;s submitted
-            image. JPG, PNG or WebP. Maximum size: 5 MB.
+            image. JPG, PNG, or WebP. Maximum size: 5 MB.
           </p>
         </div>
 
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="rental-title"
+            className="mb-2 block font-semibold"
+          >
             Listing title
           </label>
 
           <input
+            id="rental-title"
             type="text"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
@@ -230,11 +264,15 @@ export default function EditRentalForm({
         </div>
 
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="property-type"
+            className="mb-2 block font-semibold"
+          >
             Property type
           </label>
 
           <select
+            id="property-type"
             value={propertyType}
             onChange={(event) =>
               setPropertyType(event.target.value)
@@ -251,11 +289,15 @@ export default function EditRentalForm({
         </div>
 
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="monthly-rent"
+            className="mb-2 block font-semibold"
+          >
             Monthly rent
           </label>
 
           <input
+            id="monthly-rent"
             type="number"
             min="0"
             value={price}
@@ -266,11 +308,15 @@ export default function EditRentalForm({
         </div>
 
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="rental-location"
+            className="mb-2 block font-semibold"
+          >
             Location
           </label>
 
           <input
+            id="rental-location"
             type="text"
             value={location}
             onChange={(event) => setLocation(event.target.value)}
@@ -280,11 +326,15 @@ export default function EditRentalForm({
 
         <div className="grid gap-5 md:grid-cols-2">
           <div>
-            <label className="mb-2 block font-semibold">
+            <label
+              htmlFor="bedrooms"
+              className="mb-2 block font-semibold"
+            >
               Bedrooms
             </label>
 
             <input
+              id="bedrooms"
               type="number"
               min="0"
               value={bedrooms}
@@ -296,11 +346,15 @@ export default function EditRentalForm({
           </div>
 
           <div>
-            <label className="mb-2 block font-semibold">
+            <label
+              htmlFor="bathrooms"
+              className="mb-2 block font-semibold"
+            >
               Bathrooms
             </label>
 
             <input
+              id="bathrooms"
               type="number"
               min="0"
               step="0.5"
@@ -314,11 +368,15 @@ export default function EditRentalForm({
         </div>
 
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="description"
+            className="mb-2 block font-semibold"
+          >
             Description
           </label>
 
           <textarea
+            id="description"
             value={description}
             onChange={(event) =>
               setDescription(event.target.value)
@@ -328,11 +386,15 @@ export default function EditRentalForm({
         </div>
 
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="phone"
+            className="mb-2 block font-semibold"
+          >
             Phone
           </label>
 
           <input
+            id="phone"
             type="tel"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
@@ -341,11 +403,15 @@ export default function EditRentalForm({
         </div>
 
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="whatsapp"
+            className="mb-2 block font-semibold"
+          >
             WhatsApp
           </label>
 
           <input
+            id="whatsapp"
             type="tel"
             value={whatsapp}
             onChange={(event) =>
@@ -356,11 +422,15 @@ export default function EditRentalForm({
         </div>
 
         <div>
-          <label className="mb-2 block font-semibold">
+          <label
+            htmlFor="email"
+            className="mb-2 block font-semibold"
+          >
             Email
           </label>
 
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -370,6 +440,7 @@ export default function EditRentalForm({
 
         {message && (
           <p
+            role="status"
             className={
               message.includes("successfully")
                 ? "font-semibold text-green-700"

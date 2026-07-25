@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 type Advertisement = {
@@ -47,11 +47,7 @@ export default function PublicAdvertisementPage() {
 
   const impressionRecorded = useRef(false);
 
-  useEffect(() => {
-    loadAdvertisement();
-  }, [advertisementId]);
-
-  async function loadAdvertisement() {
+  const loadAdvertisement = useCallback(async () => {
     setLoading(true);
     setMessage("");
 
@@ -122,7 +118,15 @@ export default function PublicAdvertisementPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [advertisementId]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void loadAdvertisement();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [loadAdvertisement]);
 
   async function recordClick() {
     if (!advertisement) {

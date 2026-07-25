@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -257,7 +257,7 @@ export default function MyBusinessesPage() {
         <div className="mx-auto max-w-3xl">
           <section className="rounded-3xl border border-amber-200 bg-white p-8 text-center shadow-sm sm:p-12">
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-amber-100 text-4xl">
-              🔒
+              ðŸ”’
             </div>
 
             <p className="mt-6 text-sm font-black uppercase tracking-[0.18em] text-[#087531]">
@@ -275,7 +275,7 @@ export default function MyBusinessesPage() {
 
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
-                href="/signin?redirect=/businesses/my-businesses"
+                href="/login?redirect=/businesses/my-businesses"
                 className="rounded-xl bg-[#087531] px-7 py-3 font-black text-white transition hover:bg-[#064d2b]"
               >
                 Sign In
@@ -372,7 +372,7 @@ export default function MyBusinessesPage() {
         {businesses.length === 0 ? (
           <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm sm:p-14">
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-50 text-4xl">
-              🏢
+              ðŸ¢
             </div>
 
             <h2 className="mt-6 text-3xl font-black text-slate-950">

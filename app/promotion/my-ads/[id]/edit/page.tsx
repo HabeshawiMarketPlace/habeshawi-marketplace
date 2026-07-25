@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   ChangeEvent,
   FormEvent,
+  useCallback,
   useEffect,
   useState,
 } from "react";
@@ -79,19 +80,7 @@ export default function EditAdvertisementPage() {
   const [messageType, setMessageType] =
     useState<"error" | "success" | "">("");
 
-  useEffect(() => {
-    loadAdvertisement();
-  }, [advertisementId]);
-
-  useEffect(() => {
-    return () => {
-      if (newImagePreview) {
-        URL.revokeObjectURL(newImagePreview);
-      }
-    };
-  }, [newImagePreview]);
-
-  async function loadAdvertisement() {
+  const loadAdvertisement = useCallback(async () => {
     setLoading(true);
     setMessage("");
     setMessageType("");
@@ -169,7 +158,25 @@ export default function EditAdvertisementPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [advertisementId]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void loadAdvertisement();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [loadAdvertisement]);
+
+  useEffect(() => {
+    return () => {
+      if (newImagePreview) {
+        URL.revokeObjectURL(newImagePreview);
+      }
+    };
+  }, [newImagePreview]);
 
   function handleImageChange(
     event: ChangeEvent<HTMLInputElement>

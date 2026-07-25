@@ -93,7 +93,11 @@ export default function PromotionAnalyticsPage() {
   }, []);
 
   useEffect(() => {
-    void loadAnalytics();
+    const timer = window.setTimeout(() => {
+      void loadAnalytics();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [loadAnalytics]);
 
   const totals = useMemo(() => {

@@ -84,9 +84,13 @@ export default function ProfilePage() {
     }
   }, [router]);
 
-  useEffect(() => {
+useEffect(() => {
+  const timer = window.setTimeout(() => {
     void loadProfile();
-  }, [loadProfile]);
+  }, 0);
+
+  return () => window.clearTimeout(timer);
+}, [loadProfile]);
 
   async function handleSave(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

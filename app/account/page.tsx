@@ -57,9 +57,13 @@ export default function AccountPage() {
     }
   }, [router]);
 
-  useEffect(() => {
+useEffect(() => {
+  const timer = window.setTimeout(() => {
     void loadAccount();
-  }, [loadAccount]);
+  }, 0);
+
+  return () => window.clearTimeout(timer);
+}, [loadAccount]);
 
   async function handleLogout() {
     setLoading(true);

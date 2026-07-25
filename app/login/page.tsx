@@ -32,25 +32,6 @@ export default function LoginPage() {
     router.refresh();
   }
 
-  async function handleSignUp() {
-    setLoading(true);
-    setMessage("");
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      setMessage(error.message);
-    } else {
-      setMessage(
-        "Account created. Check your email if confirmation is required."
-      );
-    }
-
-    setLoading(false);
-  }
 
   return (
     <main className="mx-auto min-h-screen max-w-md px-6 py-16">
@@ -111,7 +92,7 @@ export default function LoginPage() {
 
 <div className="mt-6 space-y-3 text-center">
   <p className="text-sm text-slate-600">
-    Don't have an account?{" "}
+    Don&apos;t have an account?{" "}
     <a
       href="/signup"
       className="font-semibold text-[#087531] hover:underline"

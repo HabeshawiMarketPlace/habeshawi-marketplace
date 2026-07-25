@@ -1,0 +1,899 @@
+Habeshawi Marketplace - Full QA Report
+Generated: 07/25/2026 00:00:37
+Project: C:\Users\ENDAL\habeshawi-marketplace
+
+========================================================================================
+1. PROJECT STRUCTURE
+========================================================================================
+[PASS] app exists.
+[PASS] components exists.
+[PASS] package.json exists.
+[PASS] next.config.ts exists.
+
+========================================================================================
+2. DUPLICATE FILE NAMES
+========================================================================================
+[REVIEW] Duplicate filename: page.tsx (65 files)
+    C:\Users\ENDAL\habeshawi-marketplace\app\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\account\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\account\profile\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\advertisements\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\advertisements\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\businesses\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\dashboard\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\edit\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\marketplace\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\businesses\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\businesses\edit\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\businesses\my-businesses\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\businesses\post\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\businesses\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\favorites\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\housing\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\housing\apartments\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\housing\commercial\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\housing\houses\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\housing\roommates\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\housing\rooms\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\housing\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\jobs\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\jobs\post\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\jobs\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\login\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\categories\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\dashboard\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\favorites\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\help\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\messages\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\messages\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\[id]\delete\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\[id]\edit\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\notifications\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\post\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\profile\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\saved\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\search\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\sellers\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\settings\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\[id]\report\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\my-listings\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\payment-success\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\post-ad\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\post-ad\edit\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\post-ad\rental\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\pricing\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\analytics\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\dashboard\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\[id]\edit\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\payment\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\post\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\pricing\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\success\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\services\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\signup\page.tsx
+[REVIEW] Duplicate filename: queries.ts (4 files)
+    C:\Users\ENDAL\habeshawi-marketplace\lib\businesses\queries.ts
+    C:\Users\ENDAL\habeshawi-marketplace\lib\housing\queries.ts
+    C:\Users\ENDAL\habeshawi-marketplace\lib\jobs\queries.ts
+    C:\Users\ENDAL\habeshawi-marketplace\lib\marketplace\queries.ts
+[REVIEW] Duplicate filename: actions.ts (3 files)
+    C:\Users\ENDAL\habeshawi-marketplace\lib\businesses\actions.ts
+    C:\Users\ENDAL\habeshawi-marketplace\lib\jobs\actions.ts
+    C:\Users\ENDAL\habeshawi-marketplace\lib\marketplace\actions.ts
+[REVIEW] Duplicate filename: route.ts (3 files)
+    C:\Users\ENDAL\habeshawi-marketplace\app\api\create-checkout-session\route.ts
+    C:\Users\ENDAL\habeshawi-marketplace\app\api\send-listing-status-email\route.ts
+    C:\Users\ENDAL\habeshawi-marketplace\app\api\stripe-webhook\route.ts
+[REVIEW] Duplicate filename: loading.tsx (2 files)
+    C:\Users\ENDAL\habeshawi-marketplace\app\jobs\loading.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\loading.tsx
+[REVIEW] Duplicate filename: error.tsx (2 files)
+    C:\Users\ENDAL\habeshawi-marketplace\app\jobs\error.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\error.tsx
+[REVIEW] Duplicate filename: listingcard.tsx (2 files)
+    C:\Users\ENDAL\habeshawi-marketplace\components\ListingCard.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\components\housing\ListingCard.tsx
+
+========================================================================================
+3. EXACT DUPLICATE FILE CONTENT
+========================================================================================
+[REVIEW] Files with identical content:
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\advertisements\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\admin\edit\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\businesses\edit\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\businesses\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\housing\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\jobs\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\messages\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\[id]\delete\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\[id]\edit\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\sellers\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\[id]\report\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\post-ad\edit\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\[id]\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\[id]\edit\page.tsx
+    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\[id]\page.tsx
+
+========================================================================================
+4. APP ROUTES AND COLLISIONS
+========================================================================================
+/                                             C:\Users\ENDAL\habeshawi-marketplace\app\page.tsx
+/account                                      C:\Users\ENDAL\habeshawi-marketplace\app\account\page.tsx
+/account/profile                              C:\Users\ENDAL\habeshawi-marketplace\app\account\profile\page.tsx
+/admin                                        C:\Users\ENDAL\habeshawi-marketplace\app\admin\page.tsx
+/admin/advertisements                         C:\Users\ENDAL\habeshawi-marketplace\app\admin\advertisements\page.tsx
+/admin/advertisements/[id]                    C:\Users\ENDAL\habeshawi-marketplace\app\admin\advertisements\[id]\page.tsx
+/admin/businesses                             C:\Users\ENDAL\habeshawi-marketplace\app\admin\businesses\page.tsx
+/admin/dashboard                              C:\Users\ENDAL\habeshawi-marketplace\app\admin\dashboard\page.tsx
+/admin/edit/[id]                              C:\Users\ENDAL\habeshawi-marketplace\app\admin\edit\[id]\page.tsx
+/admin/marketplace                            C:\Users\ENDAL\habeshawi-marketplace\app\admin\marketplace\page.tsx
+/businesses                                   C:\Users\ENDAL\habeshawi-marketplace\app\businesses\page.tsx
+/businesses/[id]                              C:\Users\ENDAL\habeshawi-marketplace\app\businesses\[id]\page.tsx
+/businesses/edit/[id]                         C:\Users\ENDAL\habeshawi-marketplace\app\businesses\edit\[id]\page.tsx
+/businesses/my-businesses                     C:\Users\ENDAL\habeshawi-marketplace\app\businesses\my-businesses\page.tsx
+/businesses/post                              C:\Users\ENDAL\habeshawi-marketplace\app\businesses\post\page.tsx
+/favorites                                    C:\Users\ENDAL\habeshawi-marketplace\app\favorites\page.tsx
+/housing                                      C:\Users\ENDAL\habeshawi-marketplace\app\housing\page.tsx
+/housing/[id]                                 C:\Users\ENDAL\habeshawi-marketplace\app\housing\[id]\page.tsx
+/housing/apartments                           C:\Users\ENDAL\habeshawi-marketplace\app\housing\apartments\page.tsx
+/housing/commercial                           C:\Users\ENDAL\habeshawi-marketplace\app\housing\commercial\page.tsx
+/housing/houses                               C:\Users\ENDAL\habeshawi-marketplace\app\housing\houses\page.tsx
+/housing/roommates                            C:\Users\ENDAL\habeshawi-marketplace\app\housing\roommates\page.tsx
+/housing/rooms                                C:\Users\ENDAL\habeshawi-marketplace\app\housing\rooms\page.tsx
+/jobs                                         C:\Users\ENDAL\habeshawi-marketplace\app\jobs\page.tsx
+/jobs/[id]                                    C:\Users\ENDAL\habeshawi-marketplace\app\jobs\[id]\page.tsx
+/jobs/post                                    C:\Users\ENDAL\habeshawi-marketplace\app\jobs\post\page.tsx
+/login                                        C:\Users\ENDAL\habeshawi-marketplace\app\login\page.tsx
+/marketplace                                  C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\page.tsx
+/marketplace/[id]                             C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\[id]\page.tsx
+/marketplace/[id]/report                      C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\[id]\report\page.tsx
+/marketplace/categories                       C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\categories\page.tsx
+/marketplace/dashboard                        C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\dashboard\page.tsx
+/marketplace/favorites                        C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\favorites\page.tsx
+/marketplace/help                             C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\help\page.tsx
+/marketplace/messages                         C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\messages\page.tsx
+/marketplace/messages/[id]                    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\messages\[id]\page.tsx
+/marketplace/my-listings                      C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\page.tsx
+/marketplace/my-listings/[id]/delete          C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\[id]\delete\page.tsx
+/marketplace/my-listings/[id]/edit            C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\[id]\edit\page.tsx
+/marketplace/notifications                    C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\notifications\page.tsx
+/marketplace/post                             C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\post\page.tsx
+/marketplace/profile                          C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\profile\page.tsx
+/marketplace/saved                            C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\saved\page.tsx
+/marketplace/search                           C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\search\page.tsx
+/marketplace/sellers/[id]                     C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\sellers\[id]\page.tsx
+/marketplace/settings                         C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\settings\page.tsx
+/my-listings                                  C:\Users\ENDAL\habeshawi-marketplace\app\my-listings\page.tsx
+/payment-success                              C:\Users\ENDAL\habeshawi-marketplace\app\payment-success\page.tsx
+/post-ad                                      C:\Users\ENDAL\habeshawi-marketplace\app\post-ad\page.tsx
+/post-ad/edit/[id]                            C:\Users\ENDAL\habeshawi-marketplace\app\post-ad\edit\[id]\page.tsx
+/post-ad/rental                               C:\Users\ENDAL\habeshawi-marketplace\app\post-ad\rental\page.tsx
+/pricing                                      C:\Users\ENDAL\habeshawi-marketplace\app\pricing\page.tsx
+/promotion                                    C:\Users\ENDAL\habeshawi-marketplace\app\promotion\page.tsx
+/promotion/[id]                               C:\Users\ENDAL\habeshawi-marketplace\app\promotion\[id]\page.tsx
+/promotion/analytics                          C:\Users\ENDAL\habeshawi-marketplace\app\promotion\analytics\page.tsx
+/promotion/dashboard                          C:\Users\ENDAL\habeshawi-marketplace\app\promotion\dashboard\page.tsx
+/promotion/my-ads                             C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\page.tsx
+/promotion/my-ads/[id]                        C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\[id]\page.tsx
+/promotion/my-ads/[id]/edit                   C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\[id]\edit\page.tsx
+/promotion/payment                            C:\Users\ENDAL\habeshawi-marketplace\app\promotion\payment\page.tsx
+/promotion/post                               C:\Users\ENDAL\habeshawi-marketplace\app\promotion\post\page.tsx
+/promotion/pricing                            C:\Users\ENDAL\habeshawi-marketplace\app\promotion\pricing\page.tsx
+/promotion/success                            C:\Users\ENDAL\habeshawi-marketplace\app\promotion\success\page.tsx
+/services                                     C:\Users\ENDAL\habeshawi-marketplace\app\services\page.tsx
+/signup                                       C:\Users\ENDAL\habeshawi-marketplace\app\signup\page.tsx
+[PASS] No exact or case-insensitive route collisions found.
+
+========================================================================================
+5. POTENTIAL OVERLAPPING ROUTES
+========================================================================================
+[REVIEW] Repeated route name '[id]':
+    /admin/advertisements/[id]
+    /admin/edit/[id]
+    /businesses/edit/[id]
+    /businesses/[id]
+    /housing/[id]
+    /jobs/[id]
+    /marketplace/messages/[id]
+    /marketplace/sellers/[id]
+    /marketplace/[id]
+    /post-ad/edit/[id]
+    /promotion/my-ads/[id]
+    /promotion/[id]
+[REVIEW] Repeated route name 'businesses':
+    /admin/businesses
+    /businesses
+[REVIEW] Repeated route name 'dashboard':
+    /admin/dashboard
+    /marketplace/dashboard
+    /promotion/dashboard
+[REVIEW] Repeated route name 'edit':
+    /marketplace/my-listings/[id]/edit
+    /promotion/my-ads/[id]/edit
+[REVIEW] Repeated route name 'favorites':
+    /favorites
+    /marketplace/favorites
+[REVIEW] Repeated route name 'marketplace':
+    /admin/marketplace
+    /marketplace
+[REVIEW] Repeated route name 'my-listings':
+    /marketplace/my-listings
+    /my-listings
+[REVIEW] Repeated route name 'post':
+    /businesses/post
+    /jobs/post
+    /marketplace/post
+    /promotion/post
+[REVIEW] Repeated route name 'pricing':
+    /pricing
+    /promotion/pricing
+[REVIEW] Repeated route name 'profile':
+    /account/profile
+    /marketplace/profile
+
+========================================================================================
+6. HEADER AND FOOTER RENDERING
+========================================================================================
+[INFO] Header render occurrences: 2
+    C:\Users\ENDAL\habeshawi-marketplace\app\page.tsx:16 <Header />
+    C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx:103 <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
+[INFO] Footer render occurrences: 2
+    C:\Users\ENDAL\habeshawi-marketplace\app\page.tsx:82 <Footer />
+    C:\Users\ENDAL\habeshawi-marketplace\components\Footer.tsx:5 <footer className="bg-[#064d2b] text-white">
+[REVIEW] Header is rendered in multiple files. Verify this is intentional.
+[REVIEW] Footer is rendered in multiple files. Verify this is intentional.
+
+========================================================================================
+7. LEGACY OR BROKEN SIGN-IN ROUTES
+========================================================================================
+[FAIL] /signin reference: C:\Users\ENDAL\habeshawi-marketplace\app\businesses\my-businesses\page.tsx:278
+    href="/signin?redirect=/businesses/my-businesses"
+[FAIL] /signin reference: C:\Users\ENDAL\habeshawi-marketplace\app\businesses\post\page.tsx:312
+    href="/signin?redirect=/businesses/post"
+
+========================================================================================
+8. INTERNAL LINK VALIDATION
+========================================================================================
+[REVIEW] Possible broken link '/about' in C:\Users\ENDAL\habeshawi-marketplace\components\Footer.tsx
+[REVIEW] Possible broken link '/account/listings' in C:\Users\ENDAL\habeshawi-marketplace\app\account\page.tsx
+[REVIEW] Possible broken link '/contact' in C:\Users\ENDAL\habeshawi-marketplace\components\Footer.tsx
+[REVIEW] Possible broken link '/forgot-password' in C:\Users\ENDAL\habeshawi-marketplace\app\login\page.tsx
+[REVIEW] Possible broken link '/messages' in C:\Users\ENDAL\habeshawi-marketplace\app\account\page.tsx
+[REVIEW] Possible broken link '/signin?redirect=/businesses/my-businesses' in C:\Users\ENDAL\habeshawi-marketplace\app\businesses\my-businesses\page.tsx
+[REVIEW] Possible broken link '/signin?redirect=/businesses/post' in C:\Users\ENDAL\habeshawi-marketplace\app\businesses\post\page.tsx
+
+========================================================================================
+9. DUPLICATE STATIC LINKS INSIDE THE SAME FILE
+========================================================================================
+[REVIEW] Repeated link '/account/profile' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\account\page.tsx
+[REVIEW] Repeated link '/account' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\account\profile\page.tsx
+[REVIEW] Repeated link '/admin/advertisements' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\admin\dashboard\page.tsx
+[REVIEW] Repeated link '/admin/advertisements' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\admin\edit\[id]\page.tsx
+[REVIEW] Repeated link '/businesses/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\businesses\my-businesses\page.tsx
+[REVIEW] Repeated link '/post-ad' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\businesses\post\page.tsx
+[REVIEW] Repeated link '/post-ad' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\businesses\[id]\page.tsx
+[REVIEW] Repeated link '/jobs/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\jobs\page.tsx
+[REVIEW] Repeated link '/jobs' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\jobs\post\page.tsx
+[REVIEW] Repeated link '/jobs' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\jobs\[id]\page.tsx
+[REVIEW] Repeated link '/marketplace' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\favorites\page.tsx
+[REVIEW] Repeated link '/marketplace/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\page.tsx
+[REVIEW] Repeated link '/marketplace/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\[id]\delete\page.tsx
+[REVIEW] Repeated link '/marketplace/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\my-listings\[id]\edit\page.tsx
+[REVIEW] Repeated link '/marketplace' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\post\page.tsx
+[REVIEW] Repeated link '/marketplace' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\profile\page.tsx
+[REVIEW] Repeated link '/marketplace' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\settings\page.tsx
+[REVIEW] Repeated link '/marketplace' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\[id]\page.tsx
+[REVIEW] Repeated link '/marketplace' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\marketplace\[id]\report\page.tsx
+[REVIEW] Repeated link '/promotion/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\page.tsx
+[REVIEW] Repeated link '/promotion/pricing' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\page.tsx
+[REVIEW] Repeated link '/promotion/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\analytics\page.tsx
+[REVIEW] Repeated link '/promotion/post' appears 4 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\dashboard\page.tsx
+[REVIEW] Repeated link '/promotion/my-ads' appears 6 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\dashboard\page.tsx
+[REVIEW] Repeated link '/promotion/analytics' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\dashboard\page.tsx
+[REVIEW] Repeated link '/promotion/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\page.tsx
+[REVIEW] Repeated link '/promotion/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\[id]\page.tsx
+[REVIEW] Repeated link '/promotion/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\my-ads\[id]\edit\page.tsx
+[REVIEW] Repeated link '/promotion/my-ads' appears 3 times in C:\Users\ENDAL\habeshawi-marketplace\app\promotion\payment\page.tsx
+[REVIEW] Repeated link '/marketplace' appears 4 times in C:\Users\ENDAL\habeshawi-marketplace\components\Footer.tsx
+[REVIEW] Repeated link '/post-ad' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Footer.tsx
+[REVIEW] Repeated link '/housing' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/marketplace' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/jobs' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/businesses' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/services' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/favorites' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/post-ad' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/admin' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/login' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Header.tsx
+[REVIEW] Repeated link '/marketplace' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Hero.tsx
+[REVIEW] Repeated link '/jobs' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Hero.tsx
+[REVIEW] Repeated link '/businesses' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\Hero.tsx
+[REVIEW] Repeated link '/jobs/post' appears 2 times in C:\Users\ENDAL\habeshawi-marketplace\components\LatestJobs.tsx
+[REVIEW] Repeated link '/marketplace' appears 3 times in C:\Users\ENDAL\habeshawi-marketplace\components\marketplace\FeaturedMarketplace.tsx
+
+========================================================================================
+10. COMPONENT IMPORT VALIDATION
+========================================================================================
+[PASS] All checked @/components imports resolve to files.
+
+========================================================================================
+11. DEBUGGING AND UNFINISHED CODE
+========================================================================================
+[PASS] No debugger occurrences found.
+[PASS] No TODO occurrences found.
+[PASS] No FIXME occurrences found.
+[PASS] No placeholder alert occurrences found.
+[REVIEW] console.log occurrences: 3
+    C:\Users\ENDAL\habeshawi-marketplace\app\api\stripe-webhook\route.ts:182 console.log(
+    C:\Users\ENDAL\habeshawi-marketplace\app\api\stripe-webhook\route.ts:226 console.log(
+    C:\Users\ENDAL\habeshawi-marketplace\app\api\stripe-webhook\route.ts:238 console.log(
+
+========================================================================================
+12. ENVIRONMENT VARIABLE REFERENCES
+========================================================================================
+    ADMIN_NOTIFICATION_EMAIL
+    NEXT_PUBLIC_SITE_URL
+    NEXT_PUBLIC_SUPABASE_ANON_KEY
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+    NEXT_PUBLIC_SUPABASE_URL
+    RESEND_API_KEY
+    RESEND_FROM_EMAIL
+    STRIPE_SECRET_KEY
+    STRIPE_WEBHOOK_SECRET
+    SUPABASE_SERVICE_ROLE_KEY
+[PASS] ADMIN_NOTIFICATION_EMAIL is defined in a local environment file.
+[PASS] NEXT_PUBLIC_SITE_URL is defined in a local environment file.
+[REVIEW] NEXT_PUBLIC_SUPABASE_ANON_KEY was not found in local environment files. It may be set in Vercel.
+[PASS] NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY is defined in a local environment file.
+[PASS] NEXT_PUBLIC_SUPABASE_URL is defined in a local environment file.
+[PASS] RESEND_API_KEY is defined in a local environment file.
+[REVIEW] RESEND_FROM_EMAIL was not found in local environment files. It may be set in Vercel.
+[PASS] STRIPE_SECRET_KEY is defined in a local environment file.
+[PASS] STRIPE_WEBHOOK_SECRET is defined in a local environment file.
+[PASS] SUPABASE_SERVICE_ROLE_KEY is defined in a local environment file.
+
+========================================================================================
+13. PACKAGE SCRIPTS
+========================================================================================
+[PASS] npm script 'dev' exists.
+[PASS] npm script 'build' exists.
+[PASS] npm script 'lint' exists.
+[PASS] npm script 'start' exists.
+
+========================================================================================
+14. LINT RESULTS
+========================================================================================
+ 
+ >   h a b e s h a w i - m a r k e t p l a c e @ 0 . 1 . 0   l i n t  
+ >   e s l i n t  
+  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a c c o u n t \ p a g e . t s x  
+     6 1 : 1 0     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a c c o u n t \ p a g e . t s x : 6 1 : 1 0  
+     5 9   |  
+     6 0   |       u s e E f f e c t ( ( )   = >   {  
+ >   6 1   |           v o i d   l o a d A c c o u n t ( ) ;  
+           |                     ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     6 2   |       } ,   [ l o a d A c c o u n t ] ) ;  
+     6 3   |  
+     6 4   |       a s y n c   f u n c t i o n   h a n d l e L o g o u t ( )   {     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a c c o u n t \ p r o f i l e \ p a g e . t s x  
+     8 8 : 1 0     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a c c o u n t \ p r o f i l e \ p a g e . t s x : 8 8 : 1 0  
+     8 6   |  
+     8 7   |       u s e E f f e c t ( ( )   = >   {  
+ >   8 8   |           v o i d   l o a d P r o f i l e ( ) ;  
+           |                     ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     8 9   |       } ,   [ l o a d P r o f i l e ] ) ;  
+     9 0   |  
+     9 1   |       a s y n c   f u n c t i o n   h a n d l e S a v e ( e v e n t :   F o r m E v e n t < H T M L F o r m E l e m e n t > )   {     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a d m i n \ a d v e r t i s e m e n t s \ [ i d ] \ p a g e . t s x  
+     6 1 : 5     e r r o r         E r r o r :   C a n n o t   a c c e s s   v a r i a b l e   b e f o r e   i t   i s   d e c l a r e d  
+  
+ ` l o a d A d v e r t i s e m e n t `   i s   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d ,   w h i c h   p r e v e n t s   t h e   e a r l i e r   a c c e s s   f r o m   u p d a t i n g   w h e n   t h i s   v a l u e   c h a n g e s   o v e r   t i m e .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a d m i n \ a d v e r t i s e m e n t s \ [ i d ] \ p a g e . t s x : 6 1 : 5  
+     5 9   |  
+     6 0   |       u s e E f f e c t ( ( )   = >   {  
+ >   6 1   |           l o a d A d v e r t i s e m e n t ( ) ;  
+           |           ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   ` l o a d A d v e r t i s e m e n t `   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d  
+     6 2   |       } ,   [ a d v e r t i s e m e n t I d ] ) ;  
+     6 3   |  
+     6 4   |       a s y n c   f u n c t i o n   l o a d A d v e r t i s e m e n t ( )   {  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a d m i n \ a d v e r t i s e m e n t s \ [ i d ] \ p a g e . t s x : 6 4 : 3  
+       6 2   |       } ,   [ a d v e r t i s e m e n t I d ] ) ;  
+       6 3   |  
+ >     6 4   |       a s y n c   f u n c t i o n   l o a d A d v e r t i s e m e n t ( )   {  
+             |       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >     6 5   |           s e t L o a d i n g ( t r u e ) ;  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >     6 6   |           s e t M e s s a g e ( " " ) ;  
+             “Ç ª  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >     9 7   |           }  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >     9 8   |       }  
+             |   ^ ^ ^ ^   ` l o a d A d v e r t i s e m e n t `   i s   d e c l a r e d   h e r e  
+       9 9   |  
+     1 0 0   |       a s y n c   f u n c t i o n   u p d a t e A d v e r t i s e m e n t (  
+     1 0 1   |           a c t i o n :   E x c l u d e < A c t i o n T y p e ,   " "   |   " d e l e t e " > ,     r e a c t - h o o k s / i m m u t a b i l i t y  
+     6 2 : 6     w a r n i n g     R e a c t   H o o k   u s e E f f e c t   h a s   a   m i s s i n g   d e p e n d e n c y :   ' l o a d A d v e r t i s e m e n t ' .   E i t h e r   i n c l u d e   i t   o r   r e m o v e   t h e   d e p e n d e n c y   a r r a y                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         r e a c t - h o o k s / e x h a u s t i v e - d e p s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a d m i n \ d a s h b o a r d \ p a g e . t s x  
+     1 0 1 : 1 0     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a d m i n \ d a s h b o a r d \ p a g e . t s x : 1 0 1 : 1 0  
+       9 9   |  
+     1 0 0   |       u s e E f f e c t ( ( )   = >   {  
+ >   1 0 1   |           v o i d   l o a d D a s h b o a r d C o u n t s ( ) ;  
+             |                     ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     1 0 2   |       } ,   [ l o a d D a s h b o a r d C o u n t s ] ) ;  
+     1 0 3   |  
+     1 0 4   |       c o n s t   d a s h b o a r d C a r d s   =   [     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a d m i n \ m a r k e t p l a c e \ p a g e . t s x  
+     3 0 5 : 2 3     w a r n i n g     U s i n g   ` < i m g > `   c o u l d   r e s u l t   i n   s l o w e r   L C P   a n d   h i g h e r   b a n d w i d t h .   C o n s i d e r   u s i n g   ` < I m a g e   / > `   f r o m   ` n e x t / i m a g e `   o r   a   c u s t o m   i m a g e   l o a d e r   t o   a u t o m a t i c a l l y   o p t i m i z e   i m a g e s .   T h i s   m a y   i n c u r   a d d i t i o n a l   u s a g e   o r   c o s t   f r o m   y o u r   p r o v i d e r .   S e e :   h t t p s : / / n e x t j s . o r g / d o c s / m e s s a g e s / n o - i m g - e l e m e n t     @ n e x t / n e x t / n o - i m g - e l e m e n t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ a p i \ s t r i p e - w e b h o o k \ r o u t e . t s  
+     5 : 8     w a r n i n g     ' R e a c t '   i s   d e f i n e d   b u t   n e v e r   u s e d     @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ b u s i n e s s e s \ [ i d ] \ p a g e . t s x  
+     3 0 : 9     w a r n i n g     ' i n i t i a l s '   i s   a s s i g n e d   a   v a l u e   b u t   n e v e r   u s e d     @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ l o g i n \ p a g e . t s x  
+       3 5 : 1 8     w a r n i n g     ' h a n d l e S i g n U p '   i s   d e f i n e d   b u t   n e v e r   u s e d                                                   @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+     1 1 4 : 8       e r r o r         ` ' `   c a n   b e   e s c a p e d   w i t h   ` & a p o s ; ` ,   ` & l s q u o ; ` ,   ` & # 3 9 ; ` ,   ` & r s q u o ; `     r e a c t / n o - u n e s c a p e d - e n t i t i e s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ m a r k e t p l a c e \ m y - l i s t i n g s \ p a g e . t s x  
+     1 1 4 : 1 0     e r r o r         E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ m a r k e t p l a c e \ m y - l i s t i n g s \ p a g e . t s x : 1 1 4 : 1 0  
+     1 1 2   |  
+     1 1 3   |       u s e E f f e c t ( ( )   = >   {  
+ >   1 1 4   |           v o i d   l o a d L i s t i n g s ( ) ;  
+             |                     ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     1 1 5   |       } ,   [ l o a d L i s t i n g s ] ) ;  
+     1 1 6   |  
+     1 1 7   |       a s y n c   f u n c t i o n   d e l e t e L i s t i n g ( l i s t i n g :   M a r k e t p l a c e L i s t i n g )   {     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+     2 4 3 : 2 3     w a r n i n g     U s i n g   ` < i m g > `   c o u l d   r e s u l t   i n   s l o w e r   L C P   a n d   h i g h e r   b a n d w i d t h .   C o n s i d e r   u s i n g   ` < I m a g e   / > `   f r o m   ` n e x t / i m a g e `   o r   a   c u s t o m   i m a g e   l o a d e r   t o   a u t o m a t i c a l l y   o p t i m i z e   i m a g e s .   T h i s   m a y   i n c u r   a d d i t i o n a l   u s a g e   o r   c o s t   f r o m   y o u r   p r o v i d e r .   S e e :   h t t p s : / / n e x t j s . o r g / d o c s / m e s s a g e s / n o - i m g - e l e m e n t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @ n e x t / n e x t / n o - i m g - e l e m e n t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ m y - l i s t i n g s \ p a g e . t s x  
+     3 9 : 5     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ m y - l i s t i n g s \ p a g e . t s x : 3 9 : 5  
+     3 7   |           }  
+     3 8   |  
+ >   3 9   |           s e t L i s t i n g s ( s a v e d L i s t i n g s ) ;  
+           |           ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     4 0   |           s e t I s L o a d i n g ( f a l s e ) ;  
+     4 1   |       } ,   [ ] ) ;  
+     4 2   |     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p a y m e n t - s u c c e s s \ p a g e . t s x  
+     1 7 : 9     e r r o r     D o   n o t   u s e   a n   ` < a > `   e l e m e n t   t o   n a v i g a t e   t o   ` / ` .   U s e   ` < L i n k   / > `   f r o m   ` n e x t / l i n k `   i n s t e a d .   S e e :   h t t p s : / / n e x t j s . o r g / d o c s / m e s s a g e s / n o - h t m l - l i n k - f o r - p a g e s     @ n e x t / n e x t / n o - h t m l - l i n k - f o r - p a g e s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ [ i d ] \ p a g e . t s x  
+     5 1 : 5     e r r o r         E r r o r :   C a n n o t   a c c e s s   v a r i a b l e   b e f o r e   i t   i s   d e c l a r e d  
+  
+ ` l o a d A d v e r t i s e m e n t `   i s   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d ,   w h i c h   p r e v e n t s   t h e   e a r l i e r   a c c e s s   f r o m   u p d a t i n g   w h e n   t h i s   v a l u e   c h a n g e s   o v e r   t i m e .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ [ i d ] \ p a g e . t s x : 5 1 : 5  
+     4 9   |  
+     5 0   |       u s e E f f e c t ( ( )   = >   {  
+ >   5 1   |           l o a d A d v e r t i s e m e n t ( ) ;  
+           |           ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   ` l o a d A d v e r t i s e m e n t `   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d  
+     5 2   |       } ,   [ a d v e r t i s e m e n t I d ] ) ;  
+     5 3   |  
+     5 4   |       a s y n c   f u n c t i o n   l o a d A d v e r t i s e m e n t ( )   {  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ [ i d ] \ p a g e . t s x : 5 4 : 3  
+       5 2   |       } ,   [ a d v e r t i s e m e n t I d ] ) ;  
+       5 3   |  
+ >     5 4   |       a s y n c   f u n c t i o n   l o a d A d v e r t i s e m e n t ( )   {  
+             |       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >     5 5   |           s e t L o a d i n g ( t r u e ) ;  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >     5 6   |           s e t M e s s a g e ( " " ) ;  
+             “Ç ª  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   1 2 4   |           }  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   1 2 5   |       }  
+             |   ^ ^ ^ ^   ` l o a d A d v e r t i s e m e n t `   i s   d e c l a r e d   h e r e  
+     1 2 6   |  
+     1 2 7   |       a s y n c   f u n c t i o n   r e c o r d C l i c k ( )   {  
+     1 2 8   |           i f   ( ! a d v e r t i s e m e n t )   {     r e a c t - h o o k s / i m m u t a b i l i t y  
+     5 2 : 6     w a r n i n g     R e a c t   H o o k   u s e E f f e c t   h a s   a   m i s s i n g   d e p e n d e n c y :   ' l o a d A d v e r t i s e m e n t ' .   E i t h e r   i n c l u d e   i t   o r   r e m o v e   t h e   d e p e n d e n c y   a r r a y                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       r e a c t - h o o k s / e x h a u s t i v e - d e p s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ a n a l y t i c s \ p a g e . t s x  
+     9 6 : 1 0     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ a n a l y t i c s \ p a g e . t s x : 9 6 : 1 0  
+     9 4   |  
+     9 5   |       u s e E f f e c t ( ( )   = >   {  
+ >   9 6   |           v o i d   l o a d A n a l y t i c s ( ) ;  
+           |                     ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     9 7   |       } ,   [ l o a d A n a l y t i c s ] ) ;  
+     9 8   |  
+     9 9   |       c o n s t   t o t a l s   =   u s e M e m o ( ( )   = >   {     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ [ i d ] \ e d i t \ p a g e . t s x  
+     8 3 : 5     e r r o r         E r r o r :   C a n n o t   a c c e s s   v a r i a b l e   b e f o r e   i t   i s   d e c l a r e d  
+  
+ ` l o a d A d v e r t i s e m e n t `   i s   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d ,   w h i c h   p r e v e n t s   t h e   e a r l i e r   a c c e s s   f r o m   u p d a t i n g   w h e n   t h i s   v a l u e   c h a n g e s   o v e r   t i m e .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ [ i d ] \ e d i t \ p a g e . t s x : 8 3 : 5  
+     8 1   |  
+     8 2   |       u s e E f f e c t ( ( )   = >   {  
+ >   8 3   |           l o a d A d v e r t i s e m e n t ( ) ;  
+           |           ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   ` l o a d A d v e r t i s e m e n t `   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d  
+     8 4   |       } ,   [ a d v e r t i s e m e n t I d ] ) ;  
+     8 5   |  
+     8 6   |       u s e E f f e c t ( ( )   = >   {  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ [ i d ] \ e d i t \ p a g e . t s x : 9 4 : 3  
+       9 2   |       } ,   [ n e w I m a g e P r e v i e w ] ) ;  
+       9 3   |  
+ >     9 4   |       a s y n c   f u n c t i o n   l o a d A d v e r t i s e m e n t ( )   {  
+             |       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >     9 5   |           s e t L o a d i n g ( t r u e ) ;  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >     9 6   |           s e t M e s s a g e ( " " ) ;  
+             “Ç ª  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   1 7 1   |           }  
+             |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   1 7 2   |       }  
+             |   ^ ^ ^ ^   ` l o a d A d v e r t i s e m e n t `   i s   d e c l a r e d   h e r e  
+     1 7 3   |  
+     1 7 4   |       f u n c t i o n   h a n d l e I m a g e C h a n g e (  
+     1 7 5   |           e v e n t :   C h a n g e E v e n t < H T M L I n p u t E l e m e n t >     r e a c t - h o o k s / i m m u t a b i l i t y  
+     8 4 : 6     w a r n i n g     R e a c t   H o o k   u s e E f f e c t   h a s   a   m i s s i n g   d e p e n d e n c y :   ' l o a d A d v e r t i s e m e n t ' .   E i t h e r   i n c l u d e   i t   o r   r e m o v e   t h e   d e p e n d e n c y   a r r a y                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         r e a c t - h o o k s / e x h a u s t i v e - d e p s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ [ i d ] \ p a g e . t s x  
+     3 9 : 5     e r r o r         E r r o r :   C a n n o t   a c c e s s   v a r i a b l e   b e f o r e   i t   i s   d e c l a r e d  
+  
+ ` l o a d A d v e r t i s e m e n t `   i s   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d ,   w h i c h   p r e v e n t s   t h e   e a r l i e r   a c c e s s   f r o m   u p d a t i n g   w h e n   t h i s   v a l u e   c h a n g e s   o v e r   t i m e .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ [ i d ] \ p a g e . t s x : 3 9 : 5  
+     3 7   |  
+     3 8   |       u s e E f f e c t ( ( )   = >   {  
+ >   3 9   |           l o a d A d v e r t i s e m e n t ( ) ;  
+           |           ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   ` l o a d A d v e r t i s e m e n t `   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d  
+     4 0   |       } ,   [ ] ) ;  
+     4 1   |  
+     4 2   |       a s y n c   f u n c t i o n   l o a d A d v e r t i s e m e n t ( )   {  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ [ i d ] \ p a g e . t s x : 4 2 : 3  
+     4 0   |       } ,   [ ] ) ;  
+     4 1   |  
+ >   4 2   |       a s y n c   f u n c t i o n   l o a d A d v e r t i s e m e n t ( )   {  
+           |       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   4 3   |           c o n s t   {  
+           |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   4 4   |               d a t a :   {   u s e r   } ,  
+           “Ç ª  
+           |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   6 0   |           s e t L o a d i n g ( f a l s e ) ;  
+           |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   6 1   |       }  
+           |   ^ ^ ^ ^   ` l o a d A d v e r t i s e m e n t `   i s   d e c l a r e d   h e r e  
+     6 2   |  
+     6 3   |       i f   ( l o a d i n g )   {  
+     6 4   |           r e t u r n   (     r e a c t - h o o k s / i m m u t a b i l i t y  
+     4 0 : 6     w a r n i n g     R e a c t   H o o k   u s e E f f e c t   h a s   a   m i s s i n g   d e p e n d e n c y :   ' l o a d A d v e r t i s e m e n t ' .   E i t h e r   i n c l u d e   i t   o r   r e m o v e   t h e   d e p e n d e n c y   a r r a y                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   r e a c t - h o o k s / e x h a u s t i v e - d e p s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ p a g e . t s x  
+       2 6 : 5       e r r o r         E r r o r :   C a n n o t   a c c e s s   v a r i a b l e   b e f o r e   i t   i s   d e c l a r e d  
+  
+ ` l o a d A d s `   i s   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d ,   w h i c h   p r e v e n t s   t h e   e a r l i e r   a c c e s s   f r o m   u p d a t i n g   w h e n   t h i s   v a l u e   c h a n g e s   o v e r   t i m e .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ p a g e . t s x : 2 6 : 5  
+     2 4   |  
+     2 5   |       u s e E f f e c t ( ( )   = >   {  
+ >   2 6   |           l o a d A d s ( ) ;  
+           |           ^ ^ ^ ^ ^ ^ ^   ` l o a d A d s `   a c c e s s e d   b e f o r e   i t   i s   d e c l a r e d  
+     2 7   |       } ,   [ ] ) ;  
+     2 8   |  
+     2 9   |       a s y n c   f u n c t i o n   l o a d A d s ( )   {  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ m y - a d s \ p a g e . t s x : 2 9 : 3  
+     2 7   |       } ,   [ ] ) ;  
+     2 8   |  
+ >   2 9   |       a s y n c   f u n c t i o n   l o a d A d s ( )   {  
+           |       ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   3 0   |           s e t L o a d i n g ( t r u e ) ;  
+           |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   3 1   |  
+           “Ç ª  
+           |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   4 8   |           s e t L o a d i n g ( f a l s e ) ;  
+           |   ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  
+ >   4 9   |       }  
+           |   ^ ^ ^ ^   ` l o a d A d s `   i s   d e c l a r e d   h e r e  
+     5 0   |  
+     5 1   |       f u n c t i o n   b a d g e C o l o r ( s t a t u s :   s t r i n g )   {  
+     5 2   |           s w i t c h   ( s t a t u s )   {     r e a c t - h o o k s / i m m u t a b i l i t y  
+     1 4 6 : 1 9     w a r n i n g     U s i n g   ` < i m g > `   c o u l d   r e s u l t   i n   s l o w e r   L C P   a n d   h i g h e r   b a n d w i d t h .   C o n s i d e r   u s i n g   ` < I m a g e   / > `   f r o m   ` n e x t / i m a g e `   o r   a   c u s t o m   i m a g e   l o a d e r   t o   a u t o m a t i c a l l y   o p t i m i z e   i m a g e s .   T h i s   m a y   i n c u r   a d d i t i o n a l   u s a g e   o r   c o s t   f r o m   y o u r   p r o v i d e r .   S e e :   h t t p s : / / n e x t j s . o r g / d o c s / m e s s a g e s / n o - i m g - e l e m e n t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @ n e x t / n e x t / n o - i m g - e l e m e n t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ p o s t \ p a g e . t s x  
+     1 0 6 : 7     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ a p p \ p r o m o t i o n \ p o s t \ p a g e . t s x : 1 0 6 : 7  
+     1 0 4   |               p a c k a g e F r o m U r l   = = =   " p l a t i n u m "  
+     1 0 5   |           )   {  
+ >   1 0 6   |               s e t S e l e c t e d P a c k a g e ( p a c k a g e F r o m U r l ) ;  
+             |               ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     1 0 7   |           }  
+     1 0 8   |       } ,   [ ] ) ;  
+     1 0 9   |     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ R e c e n t l y A d d e d . t s x  
+     3 4 : 2 6     e r r o r     U n e x p e c t e d   a n y .   S p e c i f y   a   d i f f e r e n t   t y p e     @ t y p e s c r i p t - e s l i n t / n o - e x p l i c i t - a n y  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ a d m i n \ J o b T a b l e . t s x  
+     6 4 : 1 0     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ a d m i n \ J o b T a b l e . t s x : 6 4 : 1 0  
+     6 2   |  
+     6 3   |       u s e E f f e c t ( ( )   = >   {  
+ >   6 4   |           v o i d   l o a d J o b s ( ) ;  
+           |                     ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     6 5   |       } ,   [ l o a d J o b s ] ) ;  
+     6 6   |  
+     6 7   |       c o n s t   f i l t e r e d J o b s   =   u s e M e m o ( ( )   = >   {     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ b u s i n e s s e s \ B u s i n e s s I m a g e U p l o a d . t s x  
+     2 0 7 : 1 3     w a r n i n g     U s i n g   ` < i m g > `   c o u l d   r e s u l t   i n   s l o w e r   L C P   a n d   h i g h e r   b a n d w i d t h .   C o n s i d e r   u s i n g   ` < I m a g e   / > `   f r o m   ` n e x t / i m a g e `   o r   a   c u s t o m   i m a g e   l o a d e r   t o   a u t o m a t i c a l l y   o p t i m i z e   i m a g e s .   T h i s   m a y   i n c u r   a d d i t i o n a l   u s a g e   o r   c o s t   f r o m   y o u r   p r o v i d e r .   S e e :   h t t p s : / / n e x t j s . o r g / d o c s / m e s s a g e s / n o - i m g - e l e m e n t     @ n e x t / n e x t / n o - i m g - e l e m e n t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ h o u s i n g \ E d i t R e n t a l F o r m . t s x  
+     6 6 : 7     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ h o u s i n g \ E d i t R e n t a l F o r m . t s x : 6 6 : 7  
+     6 4   |       u s e E f f e c t ( ( )   = >   {  
+     6 5   |           i f   ( ! i m a g e F i l e )   {  
+ >   6 6   |               s e t P r e v i e w U r l ( r e n t a l . i m a g e _ u r l ) ;  
+           |               ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     6 7   |               r e t u r n ;  
+     6 8   |           }  
+     6 9   |     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ h o u s i n g \ F a v o r i t e B u t t o n . t s x  
+     2 3 : 7     e r r o r     E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ h o u s i n g \ F a v o r i t e B u t t o n . t s x : 2 3 : 7  
+     2 1   |               ) ;  
+     2 2   |  
+ >   2 3   |               s e t I s F a v o r i t e ( s a v e d F a v o r i t e s . i n c l u d e s ( r e n t a l I d ) ) ;  
+           |               ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     2 4   |           }   c a t c h   {  
+     2 5   |               s e t I s F a v o r i t e ( f a l s e ) ;  
+     2 6   |           }   f i n a l l y   {     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ h o u s i n g \ I m a g e G a l l e r y . t s x  
+     2 2 : 5       e r r o r         E r r o r :   C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   c a n   t r i g g e r   c a s c a d i n g   r e n d e r s  
+  
+ E f f e c t s   a r e   i n t e n d e d   t o   s y n c h r o n i z e   s t a t e   b e t w e e n   R e a c t   a n d   e x t e r n a l   s y s t e m s   s u c h   a s   m a n u a l l y   u p d a t i n g   t h e   D O M ,   s t a t e   m a n a g e m e n t   l i b r a r i e s ,   o r   o t h e r   p l a t f o r m   A P I s .   I n   g e n e r a l ,   t h e   b o d y   o f   a n   e f f e c t   s h o u l d   d o   o n e   o r   b o t h   o f   t h e   f o l l o w i n g :  
+ *   U p d a t e   e x t e r n a l   s y s t e m s   w i t h   t h e   l a t e s t   s t a t e   f r o m   R e a c t .  
+ *   S u b s c r i b e   f o r   u p d a t e s   f r o m   s o m e   e x t e r n a l   s y s t e m ,   c a l l i n g   s e t S t a t e   i n   a   c a l l b a c k   f u n c t i o n   w h e n   e x t e r n a l   s t a t e   c h a n g e s .  
+  
+ C a l l i n g   s e t S t a t e   s y n c h r o n o u s l y   w i t h i n   a n   e f f e c t   b o d y   c a u s e s   c a s c a d i n g   r e n d e r s   t h a t   c a n   h u r t   p e r f o r m a n c e ,   a n d   i s   n o t   r e c o m m e n d e d .   ( h t t p s : / / r e a c t . d e v / l e a r n / y o u - m i g h t - n o t - n e e d - a n - e f f e c t ) .  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ h o u s i n g \ I m a g e G a l l e r y . t s x : 2 2 : 5  
+     2 0   |  
+     2 1   |       u s e E f f e c t ( ( )   = >   {  
+ >   2 2   |           s e t S e l e c t e d I n d e x ( 0 ) ;  
+           |           ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^   A v o i d   c a l l i n g   s e t S t a t e ( )   d i r e c t l y   w i t h i n   a n   e f f e c t  
+     2 3   |       } ,   [ i m a g e s ] ) ;  
+     2 4   |  
+     2 5   |       i f   ( v a l i d I m a g e s . l e n g t h   = = =   0 )   {     r e a c t - h o o k s / s e t - s t a t e - i n - e f f e c t  
+     2 8 : 9       w a r n i n g     U s i n g   ` < i m g > `   c o u l d   r e s u l t   i n   s l o w e r   L C P   a n d   h i g h e r   b a n d w i d t h .   C o n s i d e r   u s i n g   ` < I m a g e   / > `   f r o m   ` n e x t / i m a g e `   o r   a   c u s t o m   i m a g e   l o a d e r   t o   a u t o m a t i c a l l y   o p t i m i z e   i m a g e s .   T h i s   m a y   i n c u r   a d d i t i o n a l   u s a g e   o r   c o s t   f r o m   y o u r   p r o v i d e r .   S e e :   h t t p s : / / n e x t j s . o r g / d o c s / m e s s a g e s / n o - i m g - e l e m e n t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @ n e x t / n e x t / n o - i m g - e l e m e n t  
+     4 2 : 7       w a r n i n g     U s i n g   ` < i m g > `   c o u l d   r e s u l t   i n   s l o w e r   L C P   a n d   h i g h e r   b a n d w i d t h .   C o n s i d e r   u s i n g   ` < I m a g e   / > `   f r o m   ` n e x t / i m a g e `   o r   a   c u s t o m   i m a g e   l o a d e r   t o   a u t o m a t i c a l l y   o p t i m i z e   i m a g e s .   T h i s   m a y   i n c u r   a d d i t i o n a l   u s a g e   o r   c o s t   f r o m   y o u r   p r o v i d e r .   S e e :   h t t p s : / / n e x t j s . o r g / d o c s / m e s s a g e s / n o - i m g - e l e m e n t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @ n e x t / n e x t / n o - i m g - e l e m e n t  
+     6 2 : 1 5     w a r n i n g     U s i n g   ` < i m g > `   c o u l d   r e s u l t   i n   s l o w e r   L C P   a n d   h i g h e r   b a n d w i d t h .   C o n s i d e r   u s i n g   ` < I m a g e   / > `   f r o m   ` n e x t / i m a g e `   o r   a   c u s t o m   i m a g e   l o a d e r   t o   a u t o m a t i c a l l y   o p t i m i z e   i m a g e s .   T h i s   m a y   i n c u r   a d d i t i o n a l   u s a g e   o r   c o s t   f r o m   y o u r   p r o v i d e r .   S e e :   h t t p s : / / n e x t j s . o r g / d o c s / m e s s a g e s / n o - i m g - e l e m e n t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @ n e x t / n e x t / n o - i m g - e l e m e n t  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ c o m p o n e n t s \ u i \ B u t t o n . t s x  
+       9 8 : 1 1     w a r n i n g     ' _ h r e f '   i s   a s s i g n e d   a   v a l u e   b u t   n e v e r   u s e d               @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+       9 9 : 1 5     w a r n i n g     ' _ c h i l d r e n '   i s   a s s i g n e d   a   v a l u e   b u t   n e v e r   u s e d       @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+     1 0 0 : 1 4     w a r n i n g     ' _ v a r i a n t '   i s   a s s i g n e d   a   v a l u e   b u t   n e v e r   u s e d         @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+     1 0 1 : 1 1     w a r n i n g     ' _ s i z e '   i s   a s s i g n e d   a   v a l u e   b u t   n e v e r   u s e d               @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+     1 0 2 : 1 6     w a r n i n g     ' _ f u l l W i d t h '   i s   a s s i g n e d   a   v a l u e   b u t   n e v e r   u s e d     @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+     1 0 3 : 1 6     w a r n i n g     ' _ c l a s s N a m e '   i s   a s s i g n e d   a   v a l u e   b u t   n e v e r   u s e d     @ t y p e s c r i p t - e s l i n t / n o - u n u s e d - v a r s  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ l i b \ b u s i n e s s e s \ q u e r i e s . t s  
+     4 : 2 7     e r r o r     U n e x p e c t e d   a n y .   S p e c i f y   a   d i f f e r e n t   t y p e     @ t y p e s c r i p t - e s l i n t / n o - e x p l i c i t - a n y  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ l i b \ h o u s i n g \ q u e r i e s . t s  
+     4 4 : 2 5     e r r o r     U n e x p e c t e d   a n y .   S p e c i f y   a   d i f f e r e n t   t y p e     @ t y p e s c r i p t - e s l i n t / n o - e x p l i c i t - a n y  
+     4 6 : 1 8     e r r o r     U n e x p e c t e d   a n y .   S p e c i f y   a   d i f f e r e n t   t y p e     @ t y p e s c r i p t - e s l i n t / n o - e x p l i c i t - a n y  
+  
+ C : \ U s e r s \ E N D A L \ h a b e s h a w i - m a r k e t p l a c e \ l i b \ m a r k e t p l a c e \ q u e r i e s . t s  
+     2 9 : 2 6     e r r o r     U n e x p e c t e d   a n y .   S p e c i f y   a   d i f f e r e n t   t y p e     @ t y p e s c r i p t - e s l i n t / n o - e x p l i c i t - a n y  
+  
+ “£ û   4 3   p r o b l e m s   ( 2 3   e r r o r s ,   2 0   w a r n i n g s )  
+  
+ [FAIL] Lint returned exit code 1.
+
+========================================================================================
+15. PRODUCTION BUILD RESULTS
+========================================================================================
+ 
+ >   h a b e s h a w i - m a r k e t p l a c e @ 0 . 1 . 0   b u i l d  
+ >   n e x t   b u i l d  
+  
+ “û “%  N e x t . j s   1 6 . 2 . 1 0   ( T u r b o p a c k )  
+ -   E n v i r o n m e n t s :   . e n v . l o c a l  
+  
+     C r e a t i n g   a n   o p t i m i z e d   p r o d u c t i o n   b u i l d   . . .  
+ “£ ô   C o m p i l e d   s u c c e s s f u l l y   i n   6 . 3 s  
+     R u n n i n g   T y p e S c r i p t   . . .  
+     F i n i s h e d   T y p e S c r i p t   i n   1 1 . 1 s   . . .  
+     C o l l e c t i n g   p a g e   d a t a   u s i n g   1 5   w o r k e r s   . . .  
+     G e n e r a t i n g   s t a t i c   p a g e s   u s i n g   1 5   w o r k e r s   ( 0 / 5 2 )   . . .  
+     G e n e r a t i n g   s t a t i c   p a g e s   u s i n g   1 5   w o r k e r s   ( 1 3 / 5 2 )    
+     G e n e r a t i n g   s t a t i c   p a g e s   u s i n g   1 5   w o r k e r s   ( 2 6 / 5 2 )    
+     G e n e r a t i n g   s t a t i c   p a g e s   u s i n g   1 5   w o r k e r s   ( 3 9 / 5 2 )    
+ “£ ô   G e n e r a t i n g   s t a t i c   p a g e s   u s i n g   1 5   w o r k e r s   ( 5 2 / 5 2 )   i n   1 4 9 2 m s  
+     F i n a l i z i n g   p a g e   o p t i m i z a t i o n   . . .  
+  
+ R o u t e   ( a p p )  
+ “ö î   “ù ï   /  
+ “ö £   “ù ï   / _ n o t - f o u n d  
+ “ö £   “ù ï   / a c c o u n t  
+ “ö £   “ù ï   / a c c o u n t / p r o f i l e  
+ “ö £   “ù ï   / a d m i n  
+ “ö £   “ù ï   / a d m i n / a d v e r t i s e m e n t s  
+ “ö £   ^%Æ   / a d m i n / a d v e r t i s e m e n t s / [ i d ]  
+ “ö £   ^%Æ   / a d m i n / b u s i n e s s e s  
+ “ö £   “ù ï   / a d m i n / d a s h b o a r d  
+ “ö £   ^%Æ   / a d m i n / e d i t / [ i d ]  
+ “ö £   ^%Æ   / a d m i n / m a r k e t p l a c e  
+ “ö £   ^%Æ   / a p i / c r e a t e - c h e c k o u t - s e s s i o n  
+ “ö £   ^%Æ   / a p i / s e n d - l i s t i n g - s t a t u s - e m a i l  
+ “ö £   ^%Æ   / a p i / s t r i p e - w e b h o o k  
+ “ö £   ^%Æ   / b u s i n e s s e s  
+ “ö £   “ù Å   / b u s i n e s s e s / [ i d ]  
+ “ö é   “ö £   / b u s i n e s s e s / h a b e s h a - r e s t a u r a n t  
+ “ö é   “ö £   / b u s i n e s s e s / a d d i s - m a r k e t  
+ “ö é   “ö £   / b u s i n e s s e s / b l u e - n i l e - t a x  
+ “ö é   “ö ö   [ + 3   m o r e   p a t h s ]  
+ “ö £   ^%Æ   / b u s i n e s s e s / e d i t / [ i d ]  
+ “ö £   “ù ï   / b u s i n e s s e s / m y - b u s i n e s s e s  
+ “ö £   “ù ï   / b u s i n e s s e s / p o s t  
+ “ö £   “ù ï   / f a v o r i t e s  
+ “ö £   ^%Æ   / h o u s i n g  
+ “ö £   ^%Æ   / h o u s i n g / [ i d ]  
+ “ö £   ^%Æ   / h o u s i n g / a p a r t m e n t s  
+ “ö £   ^%Æ   / h o u s i n g / c o m m e r c i a l  
+ “ö £   ^%Æ   / h o u s i n g / h o u s e s  
+ “ö £   ^%Æ   / h o u s i n g / r o o m m a t e s  
+ “ö £   ^%Æ   / h o u s i n g / r o o m s  
+ “ö £   ^%Æ   / j o b s  
+ “ö £   ^%Æ   / j o b s / [ i d ]  
+ “ö £   “ù ï   / j o b s / p o s t  
+ “ö £   “ù ï   / l o g i n  
+ “ö £   ^%Æ   / m a r k e t p l a c e  
+ “ö £   ^%Æ   / m a r k e t p l a c e / [ i d ]  
+ “ö £   ^%Æ   / m a r k e t p l a c e / [ i d ] / r e p o r t  
+ “ö £   “ù ï   / m a r k e t p l a c e / c a t e g o r i e s  
+ “ö £   “ù ï   / m a r k e t p l a c e / d a s h b o a r d  
+ “ö £   “ù ï   / m a r k e t p l a c e / f a v o r i t e s  
+ “ö £   “ù ï   / m a r k e t p l a c e / h e l p  
+ “ö £   “ù ï   / m a r k e t p l a c e / m e s s a g e s  
+ “ö £   ^%Æ   / m a r k e t p l a c e / m e s s a g e s / [ i d ]  
+ “ö £   “ù ï   / m a r k e t p l a c e / m y - l i s t i n g s  
+ “ö £   ^%Æ   / m a r k e t p l a c e / m y - l i s t i n g s / [ i d ] / d e l e t e  
+ “ö £   ^%Æ   / m a r k e t p l a c e / m y - l i s t i n g s / [ i d ] / e d i t  
+ “ö £   “ù ï   / m a r k e t p l a c e / n o t i f i c a t i o n s  
+ “ö £   “ù ï   / m a r k e t p l a c e / p o s t  
+ “ö £   “ù ï   / m a r k e t p l a c e / p r o f i l e  
+ “ö £   “ù ï   / m a r k e t p l a c e / s a v e d  
+ “ö £   ^%Æ   / m a r k e t p l a c e / s e a r c h  
+ “ö £   ^%Æ   / m a r k e t p l a c e / s e l l e r s / [ i d ]  
+ “ö £   “ù ï   / m a r k e t p l a c e / s e t t i n g s  
+ “ö £   “ù ï   / m y - l i s t i n g s  
+ “ö £   “ù ï   / p a y m e n t - s u c c e s s  
+ “ö £   “ù ï   / p o s t - a d  
+ “ö £   ^%Æ   / p o s t - a d / e d i t / [ i d ]  
+ “ö £   “ù ï   / p o s t - a d / r e n t a l  
+ “ö £   “ù ï   / p r i c i n g  
+ “ö £   “ù ï   / p r o m o t i o n  
+ “ö £   ^%Æ   / p r o m o t i o n / [ i d ]  
+ “ö £   “ù ï   / p r o m o t i o n / a n a l y t i c s  
+ “ö £   “ù ï   / p r o m o t i o n / d a s h b o a r d  
+ “ö £   “ù ï   / p r o m o t i o n / m y - a d s  
+ “ö £   ^%Æ   / p r o m o t i o n / m y - a d s / [ i d ]  
+ “ö £   ^%Æ   / p r o m o t i o n / m y - a d s / [ i d ] / e d i t  
+ “ö £   “ù ï   / p r o m o t i o n / p a y m e n t  
+ “ö £   “ù ï   / p r o m o t i o n / p o s t  
+ “ö £   “ù ï   / p r o m o t i o n / p r i c i n g  
+ “ö £   “ù ï   / p r o m o t i o n / s u c c e s s  
+ “ö £   “ù ï   / s e r v i c e s  
+ “ö ö   “ù ï   / s i g n u p  
+  
+  
+ “ù ï     ( S t a t i c )       p r e r e n d e r e d   a s   s t a t i c   c o n t e n t  
+ “ù Å     ( S S G )             p r e r e n d e r e d   a s   s t a t i c   H T M L   ( u s e s   g e n e r a t e S t a t i c P a r a m s )  
+ ^%Æ     ( D y n a m i c )     s e r v e r - r e n d e r e d   o n   d e m a n d  
+  
+ [PASS] Production build completed successfully.
+
+========================================================================================
+FINAL SUMMARY
+========================================================================================
+[DONE] QA scan complete.
+[INFO] Full report saved to: C:\Users\ENDAL\habeshawi-marketplace\full-qa-report.txt

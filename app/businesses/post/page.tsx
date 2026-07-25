@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
@@ -291,7 +291,7 @@ export default function PostBusinessPage() {
         <div className="mx-auto max-w-3xl">
           <section className="rounded-3xl border border-amber-200 bg-white p-8 text-center shadow-sm sm:p-12">
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-amber-100 text-4xl">
-              🔒
+              ðŸ”’
             </div>
 
             <p className="mt-6 text-sm font-black uppercase tracking-[0.18em] text-[#087531]">
@@ -309,7 +309,7 @@ export default function PostBusinessPage() {
 
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
-                href="/signin?redirect=/businesses/post"
+                href="/login?redirect=/businesses/post"
                 className="rounded-xl bg-[#087531] px-7 py-3 font-black text-white transition hover:bg-[#064d2b]"
               >
                 Sign In
@@ -335,7 +335,7 @@ export default function PostBusinessPage() {
           href="/post-ad"
           className="inline-flex items-center gap-2 font-bold text-[#064d2b] hover:underline"
         >
-          ← Back to Post an Ad
+          â† Back to Post an Ad
         </Link>
 
         <section className="mt-6 overflow-hidden rounded-3xl bg-[#064d2b] px-6 py-10 text-white shadow-lg sm:px-10">
@@ -401,7 +401,7 @@ export default function PostBusinessPage() {
                   }
                   required
                   maxLength={150}
-                  placeholder="Example: Gedam Sefer Ethiopian Cuisine Café"
+                  placeholder="Example: Gedam Sefer Ethiopian Cuisine CafÃ©"
                   className={inputClasses}
                 />
               </FormField>
@@ -650,7 +650,7 @@ export default function PostBusinessPage() {
 
           <FormSection
             title="Business Hours"
-            description="Examples: 9:00 AM – 8:00 PM, Open 24 Hours, or Closed."
+            description="Examples: 9:00 AM â€“ 8:00 PM, Open 24 Hours, or Closed."
           >
             <div className="grid gap-5 md:grid-cols-2">
               <HoursField
@@ -845,7 +845,7 @@ function HoursField({
         type="text"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="9:00 AM – 8:00 PM"
+        placeholder="9:00 AM â€“ 8:00 PM"
         className={inputClasses}
       />
     </FormField>

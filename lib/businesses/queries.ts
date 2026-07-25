@@ -1,7 +1,9 @@
 import { supabase } from "@/lib/supabase";
 import type { BusinessDetails } from "./sample-data";
 
-function mapBusiness(row: any): BusinessDetails {
+function mapBusiness(
+  row: Record<string, unknown>,
+): BusinessDetails {
   return {
     id: row.id,
     name: row.name,

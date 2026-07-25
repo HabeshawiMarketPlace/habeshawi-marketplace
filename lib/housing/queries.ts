@@ -41,9 +41,11 @@ const rentalSelect = `
   )
 `;
 
-function mapRental(row: any): RentalListing {
+function mapRental(
+  row: Record<string, unknown>,
+): RentalListing {
   const images: RentalImage[] = [...(row.rental_images ?? [])]
-    .map((image: any) => ({
+    .map((image: Record<string, unknown>) => ({
       imageUrl: String(image.image_url ?? ""),
       displayOrder: Number(image.display_order ?? 0),
     }))

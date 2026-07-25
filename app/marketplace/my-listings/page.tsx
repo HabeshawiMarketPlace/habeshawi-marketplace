@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -57,7 +58,21 @@ function formatDate(dateValue: string) {
     year: "numeric",
   }).format(date);
 }
+function normalizeImageUrl(imageUrl: string | null) {
+  if (!imageUrl) {
+    return "/default-marketplace.png";
+  }
 
+  if (
+    imageUrl.startsWith("/") ||
+    imageUrl.startsWith("https://") ||
+    imageUrl.startsWith("http://")
+  ) {
+    return imageUrl;
+  }
+
+  return "/default-marketplace.png";
+}
 export default function MyListingsPage() {
   const router = useRouter();
 
@@ -110,9 +125,13 @@ export default function MyListingsPage() {
     setIsLoading(false);
   }, [router]);
 
-  useEffect(() => {
+useEffect(() => {
+  const timer = window.setTimeout(() => {
     void loadListings();
-  }, [loadListings]);
+  }, 0);
+
+  return () => window.clearTimeout(timer);
+}, [loadListings]);
 
   async function deleteListing(listing: MarketplaceListing) {
     const confirmed = window.confirm(
@@ -229,6 +248,7 @@ export default function MyListingsPage() {
         ) : (
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             {listings.map((listing) => {
+              const imageUrl = normalizeImageUrl(listing.image_url);
               const displayLocation =
                 listing.location?.trim() ||
                 `${listing.city}, ${listing.state}`;
@@ -240,11 +260,14 @@ export default function MyListingsPage() {
                 >
                   <div className="aspect-[16/9] overflow-hidden bg-slate-100">
                     {listing.image_url ? (
-                      <img
-                        src={listing.image_url}
-                        alt={listing.title}
-                        className="h-full w-full object-cover"
-                      />
+                     <Image
+  src={imageUrl}
+  alt={listing.title}
+  width={800}
+  height={450}
+  className="h-full w-full object-cover"
+  unoptimized
+/>
                     ) : (
                       <div className="flex h-full items-center justify-center text-5xl">
                         📦

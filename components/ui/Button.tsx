@@ -94,16 +94,8 @@ export default function Button(props: ButtonProps) {
     );
   }
 
-  const {
-    href: _href,
-    children: _children,
-    variant: _variant,
-    size: _size,
-    fullWidth: _fullWidth,
-    className: _className,
-    type = "button",
-    ...buttonProps
-  } = props;
+  const { type = "button", ...buttonProps } =
+  props as NativeButtonProps;
 
   return (
     <button

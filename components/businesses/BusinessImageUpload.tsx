@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
@@ -200,20 +201,27 @@ export default function BusinessImageUpload({
           <div
             className={
               imageType === "logo"
-                ? "flex min-h-64 items-center justify-center bg-white p-6"
+                ? "relative min-h-64 w-full bg-white p-6"
                 : "relative aspect-[16/9] w-full bg-slate-100"
             }
           >
-            <img
+            <Image
               src={value}
               alt={`${label} preview`}
+              fill
+              unoptimized
+              loader={({ src }) => src}
+              sizes={
+                imageType === "logo"
+                  ? "(max-width: 768px) 100vw, 640px"
+                  : "(max-width: 768px) 100vw, 900px"
+              }
               className={
                 imageType === "logo"
-                  ? "max-h-52 max-w-full rounded-xl object-contain"
-                  : "h-full w-full object-cover"
+                  ? "rounded-xl object-contain p-6"
+                  : "object-cover"
               }
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
+              onError={() => {
                 setErrorMessage(
                   "The image preview could not be displayed. Upload another image.",
                 );

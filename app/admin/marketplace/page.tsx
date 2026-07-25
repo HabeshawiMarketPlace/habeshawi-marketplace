@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import {
   deleteMarketplaceListing,
@@ -69,7 +70,7 @@ function getStatusClasses(status: MarketplaceStatus) {
 
 function normalizeImageUrl(imageUrl: string | null) {
   if (!imageUrl) {
-    return "/edefault-marketplace.png";
+    return "/default-marketplace.png";
   }
 
   if (
@@ -302,11 +303,14 @@ export default async function AdminMarketplacePage({
                 >
                   <div className="grid gap-6 p-6 lg:grid-cols-[220px_1fr_auto]">
                     <div>
-                      <img
-                        src={imageUrl}
-                        alt={listing.title}
-                        className="h-52 w-full rounded-2xl bg-slate-100 object-cover lg:h-44"
-                      />
+<Image
+  src={imageUrl}
+  alt={listing.title}
+  width={800}
+  height={450}
+  className="h-full w-full object-cover"
+  unoptimized
+/>
                     </div>
 
                     <div>

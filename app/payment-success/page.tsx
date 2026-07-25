@@ -1,3 +1,7 @@
+"use client";
+
+import Link from "next/link";
+
 export default function PaymentSuccessPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center p-8 text-center">
@@ -14,12 +18,12 @@ export default function PaymentSuccessPage() {
           Your listing has been received and is awaiting review by our team.
         </p>
 
-        <a
+        <Link
           href="/"
           className="mt-8 inline-block rounded-lg bg-[#087531] px-6 py-3 font-semibold text-white hover:bg-[#064d2b]"
         >
           Return to Home
-        </a>
+        </Link>
       </div>
     </main>
   );

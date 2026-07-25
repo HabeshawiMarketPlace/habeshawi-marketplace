@@ -31,7 +31,7 @@ export default async function RecentlyAdded() {
 
   const rental = rentals[0];
   const marketplaceListing = marketplaceListings[0];
-  const job = jobs[0] as any;
+  const job = jobs[0];
   const business = businesses[0];
 
   const recentItems: RecentItem[] = [];

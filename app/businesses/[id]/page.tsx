@@ -27,12 +27,6 @@ export default async function BusinessDetailsPage({
   }
 
   const similarBusinesses = await getSimilarBusinesses(business);
-  const initials = business.name
-    .split(" ")
-    .slice(0, 2)
-    .map((word) => word.charAt(0))
-    .join("")
-    .toUpperCase();
   const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     business.address,
   )}`;
