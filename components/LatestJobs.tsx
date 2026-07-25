@@ -27,10 +27,7 @@ export default async function LatestJobs() {
           ))}
         </div>
       ) : (
-        <Card
-          padding="lg"
-          className="border-dashed bg-slate-50 text-center"
-        >
+        <Card padding="lg" className="border-dashed bg-slate-50 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100 text-3xl">
             <span aria-hidden="true">💼</span>
           </div>
@@ -51,37 +48,39 @@ export default async function LatestJobs() {
         </Card>
       )}
 
-      <Card
-        padding="lg"
-        className="mt-12 border-0 bg-[#064d2b] text-white shadow-lg"
-      >
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-black uppercase tracking-wider text-yellow-300">
+      <div className="mt-12 overflow-hidden rounded-3xl bg-gradient-to-r from-[#facc15] via-[#fde047] to-[#facc15] p-7 shadow-lg md:p-10">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#064d2b]">
               Employers
             </p>
 
-            <h3 className="mt-2 text-2xl font-black">
+            <h3 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl">
               Are You Hiring?
             </h3>
 
-            <p className="mt-2 max-w-2xl text-green-50">
-              Post your opportunity and connect with qualified job seekers
-              across the DMV Habeshawi community.
+            <p className="mt-4 text-lg font-bold leading-8 text-slate-800">
+              Post your job and connect with qualified job seekers across the
+              DMV Habeshawi community.
+            </p>
+
+            <p className="mt-2 max-w-2xl leading-7 text-slate-700">
+              Reach motivated candidates throughout Washington, DC, Maryland,
+              and Virginia. Posting is free, fast, and easy.
             </p>
           </div>
 
           <Button
             href="/jobs/post"
-            variant="secondary"
+            variant="primary"
             size="md"
-            className="shrink-0"
+            className="shrink-0 bg-[#064d2b] px-7 py-4 text-white hover:bg-[#043d22]"
           >
             Post a Job
             <span aria-hidden="true">→</span>
           </Button>
         </div>
-      </Card>
+      </div>
     </Section>
   );
 }
