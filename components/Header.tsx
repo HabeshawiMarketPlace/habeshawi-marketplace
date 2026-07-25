@@ -10,8 +10,8 @@ export default function Header() {
   const [language, setLanguage] = useState<"en" | "am">("en");
   const [user, setUser] = useState<User | null>(null);
   const [favoriteCount, setFavoriteCount] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Authentication
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
@@ -26,7 +26,6 @@ export default function Header() {
     };
   }, []);
 
-  // Favorites counter
   useEffect(() => {
     function updateFavorites() {
       try {
@@ -54,11 +53,15 @@ export default function Header() {
   async function handleLogout() {
     await supabase.auth.signOut();
     setUser(null);
+    setMobileMenuOpen(false);
+  }
+
+  function closeMobileMenu() {
+    setMobileMenuOpen(false);
   }
 
   return (
     <>
-      {/* Compact top contact bar */}
       <div className="bg-[#064d2b] px-4 py-1 text-xs text-white sm:px-6 sm:text-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
           <div className="flex items-center gap-3 sm:gap-5">
@@ -69,7 +72,7 @@ export default function Header() {
             </span>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="hidden items-center gap-1 sm:flex">
             <button
               type="button"
               onClick={() => setLanguage("en")}
@@ -97,13 +100,12 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Compact main navigation */}
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
         <div className="mx-auto flex h-[82px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-          {/* Logo */}
           <Link
             href="/"
-            className="flex h-[72px] w-[250px] shrink-0 items-center overflow-hidden"
+            className="flex h-[72px] w-[210px] shrink-0 items-center overflow-hidden sm:w-[250px]"
+            onClick={closeMobileMenu}
           >
             <Image
               src="/logo/Habeshawi -logo.png"
@@ -111,11 +113,10 @@ export default function Header() {
               width={580}
               height={220}
               priority
-              className="h-[88px] w-auto object-contain"
+              className="h-[76px] w-auto object-contain sm:h-[88px]"
             />
           </Link>
 
-          {/* Desktop navigation */}
           <nav className="hidden items-center gap-5 text-sm font-semibold lg:flex xl:gap-6 xl:text-base">
             <Link
               href="/housing"
@@ -167,7 +168,6 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Signed-in user actions */}
           {user ? (
             <div className="hidden items-center gap-2 xl:flex">
               <Link
@@ -186,61 +186,150 @@ export default function Header() {
               </button>
             </div>
           ) : null}
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            aria-expanded={mobileMenuOpen}
+            aria-label="Open mobile menu"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-2xl text-slate-800 shadow-sm transition hover:bg-slate-50 lg:hidden"
+          >
+            {mobileMenuOpen ? "✕" : "☰"}
+          </button>
         </div>
 
-        {/* Mobile navigation */}
-        <div className="border-t px-4 py-2 lg:hidden">
-          <div className="flex gap-2 overflow-x-auto whitespace-nowrap text-sm font-semibold">
+        <div className="border-t border-slate-200 bg-white px-2 py-2 lg:hidden">
+          <div className="grid grid-cols-5 gap-1 text-center text-[10px] font-bold sm:gap-2 sm:text-sm">
             <Link
               href="/housing"
-              className="rounded-full bg-green-50 px-4 py-2 text-[#087531]"
+              onClick={closeMobileMenu}
+              className="rounded-xl bg-green-50 px-1 py-3 text-[#087531]"
             >
-              🏠 Rentals
+              <span className="block text-base sm:text-lg">🏠</span>
+              Rentals
             </Link>
 
             <Link
               href="/marketplace"
-              className="rounded-full bg-slate-100 px-4 py-2"
+              onClick={closeMobileMenu}
+              className="rounded-xl bg-slate-100 px-1 py-3"
             >
-              🛒 Marketplace
+              <span className="block text-base sm:text-lg">🛒</span>
+              Market
             </Link>
 
             <Link
               href="/jobs"
-              className="rounded-full bg-slate-100 px-4 py-2"
+              onClick={closeMobileMenu}
+              className="rounded-xl bg-slate-100 px-1 py-3"
             >
-              💼 Jobs
-            </Link>
-
-            <Link
-              href="/businesses"
-              className="rounded-full bg-slate-100 px-4 py-2"
-            >
-              🏪 Businesses
-            </Link>
-
-            <Link
-              href="/services"
-              className="rounded-full bg-slate-100 px-4 py-2"
-            >
-              🤝 Services
-            </Link>
-
-            <Link
-              href="/favorites"
-              className="rounded-full bg-slate-100 px-4 py-2"
-            >
-              ❤️ Favorites ({favoriteCount})
+              <span className="block text-base sm:text-lg">💼</span>
+              Jobs
             </Link>
 
             <Link
               href="/post-ad"
-              className="rounded-full bg-[#087531] px-4 py-2 text-white"
+              onClick={closeMobileMenu}
+              className="rounded-xl bg-[#087531] px-1 py-3 text-white"
             >
-              📢 Post an Ad
+              <span className="block text-base sm:text-lg">📢</span>
+              Post Ad
             </Link>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              className="rounded-xl bg-yellow-400 px-1 py-3 text-slate-950"
+            >
+              <span className="block text-base sm:text-lg">☰</span>
+              More
+            </button>
           </div>
         </div>
+
+        {mobileMenuOpen ? (
+          <div className="border-t border-slate-200 bg-white px-4 py-4 shadow-lg lg:hidden">
+            <div className="mx-auto grid max-w-7xl gap-2">
+              <Link
+                href="/businesses"
+                onClick={closeMobileMenu}
+                className="rounded-xl bg-slate-50 px-4 py-3 font-semibold transition hover:bg-slate-100"
+              >
+                🏪 Businesses
+              </Link>
+
+              <Link
+                href="/services"
+                onClick={closeMobileMenu}
+                className="rounded-xl bg-slate-50 px-4 py-3 font-semibold transition hover:bg-slate-100"
+              >
+                🤝 Services
+              </Link>
+
+              <Link
+                href="/favorites"
+                onClick={closeMobileMenu}
+                className="rounded-xl bg-slate-50 px-4 py-3 font-semibold transition hover:bg-slate-100"
+              >
+                ❤️ Favorites ({favoriteCount})
+              </Link>
+
+              {user ? (
+                <>
+                  <Link
+                    href="/admin"
+                    onClick={closeMobileMenu}
+                    className="rounded-xl border border-[#087531] px-4 py-3 font-bold text-[#087531]"
+                  >
+                    Admin
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="rounded-xl border border-red-600 px-4 py-3 text-left font-bold text-red-600"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/signin"
+                  onClick={closeMobileMenu}
+                  className="rounded-xl border border-slate-300 px-4 py-3 font-bold text-slate-800"
+                >
+                  👤 Sign In
+                </Link>
+              )}
+
+              <div className="mt-2 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setLanguage("en")}
+                  className={`rounded-xl px-4 py-3 font-bold ${
+                    language === "en"
+                      ? "bg-yellow-400 text-black"
+                      : "bg-slate-100 text-slate-800"
+                  }`}
+                >
+                  English
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setLanguage("am")}
+                  className={`rounded-xl px-4 py-3 font-bold ${
+                    language === "am"
+                      ? "bg-yellow-400 text-black"
+                      : "bg-slate-100 text-slate-800"
+                  }`}
+                >
+                  አማርኛ
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </header>
     </>
   );
