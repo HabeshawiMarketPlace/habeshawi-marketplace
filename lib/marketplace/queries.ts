@@ -17,75 +17,166 @@ export type MarketplaceListing = {
   createdAt: string;
 };
 
+export type MarketplaceFilters = {
+  search?: string;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  featured?: boolean;
+  limit?: number;
+};
+
 function mapListing(row: any): MarketplaceListing {
   return {
-    id: row.id,
-    title: row.title,
-    category: row.category,
-    description: row.description,
-    price: Number(row.price),
-    condition: row.condition ?? null,
-    city: row.city,
-    state: row.state,
-    sellerName: row.seller_name,
-    sellerEmail: row.seller_email,
-    sellerPhone: row.seller_phone,
-    imageUrl: row.image_url ?? null,
-    featured: row.featured ?? false,
-    createdAt: row.created_at,
+    id: String(row.id),
+    title: String(row.title ?? "Untitled listing"),
+    category: String(row.category ?? "Other"),
+    description: String(row.description ?? ""),
+    price: Number(row.price ?? 0),
+    condition: row.condition ? String(row.condition) : null,
+    city: String(row.city ?? ""),
+    state: String(row.state ?? ""),
+    sellerName: String(row.seller_name ?? ""),
+    sellerEmail: String(row.seller_email ?? ""),
+    sellerPhone: String(row.seller_phone ?? ""),
+    imageUrl: row.image_url ? String(row.image_url) : null,
+    featured: Boolean(row.featured),
+    createdAt: String(row.created_at ?? new Date(0).toISOString()),
   };
 }
 
-export async function getMarketplaceListings(): Promise<
-  MarketplaceListing[]
-> {
-  const { data, error } = await supabase
+function isValidNumber(value: number | undefined): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+export async function getMarketplaceListings(
+  filters: MarketplaceFilters = {},
+): Promise<MarketplaceListing[]> {
+  let query = supabase
     .from("marketplace_listings")
     .select("*")
-    .eq("status", "approved")
+    .ilike("status", "approved")
     .order("featured", { ascending: false })
     .order("created_at", { ascending: false });
 
-  if (error || !data) {
+  const search = filters.search?.trim();
+  const category = filters.category?.trim();
+
+  if (search) {
+    const safeSearch = search.replaceAll(",", " ");
+    query = query.or(
+      `title.ilike.%${safeSearch}%,description.ilike.%${safeSearch}%,city.ilike.%${safeSearch}%,state.ilike.%${safeSearch}%`,
+    );
+  }
+
+  if (category && category.toLowerCase() !== "all") {
+    query = query.ilike("category", category);
+  }
+
+  if (isValidNumber(filters.minPrice)) {
+    query = query.gte("price", filters.minPrice);
+  }
+
+  if (isValidNumber(filters.maxPrice)) {
+    query = query.lte("price", filters.maxPrice);
+  }
+
+  if (typeof filters.featured === "boolean") {
+    query = query.eq("featured", filters.featured);
+  }
+
+  if (
+    typeof filters.limit === "number" &&
+    Number.isFinite(filters.limit) &&
+    filters.limit > 0
+  ) {
+    query = query.limit(Math.floor(filters.limit));
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
     console.error("Unable to load marketplace listings:", error);
+    throw new Error(error.message);
+  }
+
+  return (data ?? []).map(mapListing);
+}
+
+export async function getFeaturedMarketplaceListings(
+  limit = 8,
+): Promise<MarketplaceListing[]> {
+  return getMarketplaceListings({
+    featured: true,
+    limit,
+  });
+}
+
+export async function getRecentMarketplaceListings(
+  limit = 12,
+): Promise<MarketplaceListing[]> {
+  const safeLimit =
+    Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 12;
+
+  const { data, error } = await supabase
+    .from("marketplace_listings")
+    .select("*")
+    .ilike("status", "approved")
+    .order("created_at", { ascending: false })
+    .limit(safeLimit);
+
+  if (error) {
+    console.error("Unable to load recent marketplace listings:", error);
     return [];
   }
 
-  return data.map(mapListing);
+  return (data ?? []).map(mapListing);
 }
 
 export async function getMarketplaceListingById(
   id: string,
 ): Promise<MarketplaceListing | null> {
-  const { data, error } = await supabase
-    .from("marketplace_listings")
-    .select("*")
-    .eq("id", id)
-    .eq("status", "approved")
-    .maybeSingle();
+  const cleanId = id.trim();
 
-  if (error || !data) {
+  if (!cleanId) {
     return null;
   }
 
-  return mapListing(data);
+  const { data, error } = await supabase
+    .from("marketplace_listings")
+    .select("*")
+    .eq("id", cleanId)
+    .ilike("status", "approved")
+    .maybeSingle();
+
+  if (error) {
+    console.error(`Unable to load marketplace listing ${cleanId}:`, error);
+    return null;
+  }
+
+  return data ? mapListing(data) : null;
 }
 
 export async function getSimilarMarketplaceListings(
   listing: MarketplaceListing,
   limit = 4,
 ): Promise<MarketplaceListing[]> {
+  const safeLimit =
+    Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 4;
+
   const { data, error } = await supabase
     .from("marketplace_listings")
     .select("*")
-    .eq("status", "approved")
-    .eq("category", listing.category)
+    .ilike("status", "approved")
+    .ilike("category", listing.category)
     .neq("id", listing.id)
-    .limit(limit);
+    .order("created_at", { ascending: false })
+    .limit(safeLimit);
 
-  if (error || !data) {
+  if (error) {
+    console.error("Unable to load similar marketplace listings:", error);
     return [];
   }
 
-  return data.map(mapListing);
+  return (data ?? []).map(mapListing);
 }

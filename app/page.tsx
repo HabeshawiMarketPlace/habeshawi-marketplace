@@ -19,10 +19,7 @@ export default function Home() {
 
       <Categories />
 
-      <section
-        id="rentals"
-        className="border-t border-slate-200 bg-white"
-      >
+      <section id="rentals" className="border-t border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="mb-8">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-green-700">
@@ -50,10 +47,7 @@ export default function Home() {
         <MarketplaceListings />
       </section>
 
-      <section
-        id="jobs"
-        className="border-t border-slate-200 bg-white"
-      >
+      <section id="jobs" className="border-t border-slate-200 bg-white">
         <LatestJobs />
       </section>
 

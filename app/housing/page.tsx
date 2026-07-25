@@ -1,6 +1,6 @@
-import SearchFilters from "@/components/housing/SearchFilters";
 import ListingCard from "@/components/housing/ListingCard";
-import { supabase } from "@/lib/supabase";
+import SearchFilters from "@/components/housing/SearchFilters";
+import { getRentals, type RentalFilters, type RentalListing } from "@/lib/housing/queries";
 
 export const dynamic = "force-dynamic";
 
@@ -14,60 +14,37 @@ type HousingPageProps = {
   }>;
 };
 
-export default async function HousingPage({
-  searchParams,
-}: HousingPageProps) {
-  const filters = await searchParams;
-
-  const location = filters.location?.trim() ?? "";
-  const propertyType = filters.type?.trim() ?? "";
-  const minPrice = Number(filters.minPrice);
-  const maxPrice = Number(filters.maxPrice);
-  const bedrooms = Number(filters.bedrooms);
-
-  let query = supabase
-    .from("rentals")
-    .select(`
-      *,
-      rental_images (
-        image_url,
-        display_order
-      )
-    `)
-    .eq("payment_status", "paid")
-    .eq("status", "approved")
-    .order("created_at", { ascending: false });
-
-  if (location) {
-    query = query.ilike("location", `%${location}%`);
+function parsePositiveNumber(value?: string): number | undefined {
+  if (!value?.trim()) {
+    return undefined;
   }
 
-  if (propertyType) {
-    query = query.eq("property_type", propertyType);
-  }
+  const parsedValue = Number(value);
 
-  if (!Number.isNaN(minPrice) && minPrice > 0) {
-    query = query.gte("price", minPrice);
-  }
+  return Number.isFinite(parsedValue) && parsedValue > 0
+    ? parsedValue
+    : undefined;
+}
 
-  if (!Number.isNaN(maxPrice) && maxPrice > 0) {
-    query = query.lte("price", maxPrice);
-  }
+export default async function HousingPage({ searchParams }: HousingPageProps) {
+  const params = await searchParams;
 
-  if (!Number.isNaN(bedrooms) && bedrooms > 0) {
-    query = query.gte("bedrooms", bedrooms);
-  }
+  const filters: RentalFilters = {
+    location: params.location?.trim() || undefined,
+    propertyType: params.type?.trim() || undefined,
+    minPrice: parsePositiveNumber(params.minPrice),
+    maxPrice: parsePositiveNumber(params.maxPrice),
+    bedrooms: parsePositiveNumber(params.bedrooms),
+  };
 
-  const { data: rentals, error } = await query;
+  let rentals: RentalListing[] = [];
+  let errorMessage = "";
 
-  if (error) {
-    return (
-      <main className="mx-auto max-w-7xl px-6 py-10">
-        <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-red-700">
-          Unable to load listings: {error.message}
-        </div>
-      </main>
-    );
+  try {
+    rentals = await getRentals(filters);
+  } catch (error) {
+    errorMessage =
+      error instanceof Error ? error.message : "An unexpected error occurred.";
   }
 
   return (
@@ -78,11 +55,11 @@ export default async function HousingPage({
         </p>
 
         <h1 className="mt-1 text-3xl font-black text-[#064d2b] sm:text-4xl">
-          Housing Listings
+          Rental Listings
         </h1>
 
         <p className="mt-2 text-slate-600">
-          Browse approved rooms, apartments, houses and other rentals.
+          Browse approved rooms, apartments, houses, basements, and roommate listings.
         </p>
       </div>
 
@@ -90,57 +67,51 @@ export default async function HousingPage({
         <SearchFilters />
       </div>
 
-      <div className="mt-8 flex items-center justify-between">
-        <p className="font-semibold text-slate-700">
-          {rentals?.length ?? 0}{" "}
-          {rentals?.length === 1 ? "rental found" : "rentals found"}
-        </p>
-      </div>
-
-      {!rentals || rentals.length === 0 ? (
-        <div className="mt-8 rounded-2xl border border-dashed bg-white p-10 text-center">
-          <h2 className="text-xl font-bold text-slate-800">
-            No matching rentals found
-          </h2>
-
-          <p className="mt-2 text-slate-600">
-            Try changing the location, price or bedroom filters.
-          </p>
+      {errorMessage ? (
+        <div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-5 text-red-700">
+          Unable to load listings: {errorMessage}
         </div>
       ) : (
-        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {rentals.map((rental) => {
-            const sortedImages = [...(rental.rental_images ?? [])].sort(
-              (a, b) =>
-                Number(a.display_order ?? 0) -
-                Number(b.display_order ?? 0),
-            );
+        <>
+          <div className="mt-8 flex items-center justify-between">
+            <p className="font-semibold text-slate-700">
+              {rentals.length} {rentals.length === 1 ? "rental found" : "rentals found"}
+            </p>
+          </div>
 
-            const image =
-              sortedImages[0]?.image_url ||
-              rental.image_url ||
-              "/housing/apartments/apartment1.jpg";
+          {rentals.length === 0 ? (
+            <div className="mt-8 rounded-2xl border border-dashed bg-white p-10 text-center">
+              <h2 className="text-xl font-bold text-slate-800">
+                No matching rentals found
+              </h2>
 
-            return (
-              <ListingCard
-                key={rental.id}
-                id={rental.id}
-                href={`/housing/${rental.id}`}
-                image={image}
-                title={rental.title}
-                location={rental.location ?? "Location not provided"}
-                price={Number(rental.price ?? 0)}
-                bedrooms={rental.bedrooms}
-                bathrooms={rental.bathrooms}
-                description={rental.description ?? ""}
-                propertyType={rental.property_type}
-                createdAt={rental.created_at}
-                phone={rental.phone}
-                whatsapp={rental.whatsapp}
-              />
-            );
-          })}
-        </div>
+              <p className="mt-2 text-slate-600">
+                Try changing the location, price, property type, or bedroom filters.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {rentals.map((rental) => (
+                <ListingCard
+                  key={rental.id}
+                  id={rental.id}
+                  href={`/housing/${rental.id}`}
+                  image={rental.imageUrl}
+                  title={rental.title}
+                  location={rental.location}
+                  price={rental.price}
+                  bedrooms={rental.bedrooms}
+                  bathrooms={rental.bathrooms}
+                  description={rental.description}
+                  propertyType={rental.propertyType}
+                  createdAt={rental.createdAt}
+                  phone={rental.phone}
+                  whatsapp={rental.whatsapp}
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </main>
   );

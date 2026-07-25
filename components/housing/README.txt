@@ -1,20 +1,27 @@
-JOBS MILESTONE 3
+HABESHAWI RENTAL CATEGORY UPDATE
 
-Adds:
-- Free Post a Job form
-- Supabase insert with status = pending
-- Success confirmation page
-- No login and no Stripe
+1. Copy all folders and files into:
+   C:\Users\ENDAL\habeshawi-marketplace
 
-INSTALL
-1. Copy the app folder into your project root and replace the empty app/jobs/post/page.tsx file.
-2. Open Supabase Dashboard > SQL Editor.
-3. Open supabase/jobs-table.sql from this package.
-4. Paste the SQL and click Run.
-5. Restart your app:
+2. Allow Windows to replace the four existing page.tsx files.
+
+3. This adds:
+   components/housing/RentalCategoryPage.tsx
+   app/housing/commercial/page.tsx
+
+4. Delete the old duplicate component:
+   components/housing/RentalCard.tsx
+
+5. Run:
    npm run dev
-6. Open:
-   http://localhost:3000/jobs/post
 
-A submitted job will appear in Supabase Table Editor with status "pending".
-It will not appear publicly until we build the approved-job query in Milestone 4.
+6. Test:
+   http://localhost:3000/housing/rooms
+   http://localhost:3000/housing/apartments
+   http://localhost:3000/housing/houses
+   http://localhost:3000/housing/roommates
+   http://localhost:3000/housing/commercial
+
+IMPORTANT:
+Commercial listings must use exactly this property_type value in Supabase:
+Commercial
