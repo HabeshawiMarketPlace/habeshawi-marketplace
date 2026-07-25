@@ -20,18 +20,25 @@ const quickCategories = [
     href: "/marketplace",
   },
   {
-    title: "Promotions",
-    amharic: "ማስታወቂያ",
-    icon: "📢",
-    description: "Businesses, events, sales and services",
-    href: "/businesses",
-  },
-  {
     title: "Jobs",
     amharic: "ስራ",
     icon: "💼",
-    description: "Find jobs or connect with employees",
+    description: "Find jobs or connect with employers",
     href: "/jobs",
+  },
+  {
+    title: "Businesses",
+    amharic: "ንግዶች",
+    icon: "🏢",
+    description: "Restaurants, shops and community businesses",
+    href: "/businesses",
+  },
+  {
+    title: "Services",
+    amharic: "አገልግሎቶች",
+    icon: "🛠️",
+    description: "Tax, legal, immigration, real estate and more",
+    href: "/services",
   },
 ];
 
@@ -63,6 +70,10 @@ export default function Hero() {
         router.push(`/businesses?search=${search}`);
         return;
 
+      case "services":
+        router.push(`/services?search=${search}`);
+        return;
+
       default:
         router.push(`/search?search=${search}`);
     }
@@ -85,11 +96,11 @@ export default function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-sm">
               <span aria-hidden="true">🌍</span>
-              Ethiopian & Eritrean Community Marketplace
+              Habeshawi Community Marketplace
             </div>
 
             <h1 className="mt-3 max-w-4xl text-2xl font-black leading-[1.08] sm:text-3xl lg:text-[44px]">
-              Everything the Habesha Community Needs
+              Everything the Habeshawi Community Needs
             </h1>
 
             <p className="mt-4 text-2xl font-black text-yellow-300 sm:text-3xl">
@@ -97,12 +108,12 @@ export default function Hero() {
             </p>
 
             <p className="mt-5 max-w-3xl text-lg leading-8 text-white/85 sm:text-xl">
-              Buy, sell, rent, find jobs and promote your business in one
-              trusted community marketplace.
+              Buy, sell, rent, find jobs and discover local businesses and
+              services in one trusted community marketplace.
             </p>
 
             <p className="mt-2 max-w-3xl font-semibold text-white/70">
-              ይግዙ • ይሽጡ • ይከራዩ • ስራ ያግኙ • ንግድዎን ያስተዋውቁ
+              ይግዙ • ይሽጡ • ይከራዩ • ስራ ያግኙ • ንግድና አገልግሎት ያግኙ
             </p>
 
             <form
@@ -118,10 +129,7 @@ export default function Hero() {
                     🔎
                   </span>
 
-                  <label
-                    className="sr-only"
-                    htmlFor="marketplace-search"
-                  >
+                  <label className="sr-only" htmlFor="marketplace-search">
                     Search Habeshawi Marketplace
                   </label>
 
@@ -148,8 +156,9 @@ export default function Hero() {
                   <option value="all">All Categories</option>
                   <option value="rentals">Rentals</option>
                   <option value="marketplace">Marketplace</option>
-                  <option value="businesses">Promotions</option>
                   <option value="jobs">Jobs</option>
+                  <option value="businesses">Businesses</option>
+                  <option value="services">Services</option>
                 </select>
 
                 <button
@@ -220,13 +229,13 @@ export default function Hero() {
             </h2>
 
             <p className="mt-3 leading-7 text-white/80">
-              Reach Ethiopian and Eritrean customers, renters, employers and
-              community members across the DMV area.
+              Reach customers, renters, employers and community members across
+              the DMV area.
             </p>
 
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <Link
-                href="/post-ad"
+                href="/post-ad/rental"
                 className="flex items-center justify-center gap-2 rounded-xl bg-yellow-400 px-4 py-3 font-black text-[#053b24] transition hover:bg-yellow-300"
               >
                 <span aria-hidden="true">🏠</span>
@@ -234,7 +243,7 @@ export default function Hero() {
               </Link>
 
               <Link
-                href="/marketplace"
+                href="/marketplace/post"
                 className="flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-3 font-bold transition hover:bg-white/20"
               >
                 <span aria-hidden="true">🛍️</span>
@@ -242,7 +251,7 @@ export default function Hero() {
               </Link>
 
               <Link
-                href="/jobs"
+                href="/jobs/post"
                 className="flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-3 font-bold transition hover:bg-white/20"
               >
                 <span aria-hidden="true">💼</span>
@@ -250,11 +259,11 @@ export default function Hero() {
               </Link>
 
               <Link
-                href="/businesses"
+                href="/businesses/post"
                 className="flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-3 font-bold transition hover:bg-white/20"
               >
-                <span aria-hidden="true">📢</span>
-                Promote Business
+                <span aria-hidden="true">🏢</span>
+                Add Business
               </Link>
             </div>
 
@@ -264,7 +273,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {quickCategories.map((item) => (
             <Link
               key={item.title}
