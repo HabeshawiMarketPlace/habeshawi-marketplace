@@ -118,45 +118,27 @@ export default function Header() {
           </Link>
 
           <nav className="hidden items-center gap-5 text-sm font-semibold lg:flex xl:gap-6 xl:text-base">
-            <Link
-              href="/housing"
-              className="whitespace-nowrap transition hover:text-[#087531]"
-            >
+            <Link href="/housing" className="whitespace-nowrap transition hover:text-[#087531]">
               🏠 Rentals
             </Link>
 
-            <Link
-              href="/marketplace"
-              className="whitespace-nowrap transition hover:text-[#087531]"
-            >
+            <Link href="/marketplace" className="whitespace-nowrap transition hover:text-[#087531]">
               🛒 Marketplace
             </Link>
 
-            <Link
-              href="/jobs"
-              className="whitespace-nowrap transition hover:text-[#087531]"
-            >
+            <Link href="/jobs" className="whitespace-nowrap transition hover:text-[#087531]">
               💼 Jobs
             </Link>
 
-            <Link
-              href="/businesses"
-              className="whitespace-nowrap transition hover:text-[#087531]"
-            >
+            <Link href="/businesses" className="whitespace-nowrap transition hover:text-[#087531]">
               🏪 Businesses
             </Link>
 
-            <Link
-              href="/services"
-              className="whitespace-nowrap transition hover:text-[#087531]"
-            >
+            <Link href="/services" className="whitespace-nowrap transition hover:text-[#087531]">
               🤝 Services
             </Link>
 
-            <Link
-              href="/favorites"
-              className="whitespace-nowrap transition hover:text-[#087531]"
-            >
+            <Link href="/favorites" className="whitespace-nowrap transition hover:text-[#087531]">
               ❤️ Favorites ({favoriteCount})
             </Link>
 
@@ -185,7 +167,14 @@ export default function Header() {
                 Logout
               </button>
             </div>
-          ) : null}
+          ) : (
+            <Link
+              href="/login"
+              className="hidden rounded-lg border border-[#087531] px-4 py-2 text-sm font-bold text-[#087531] transition hover:bg-green-50 xl:inline-flex"
+            >
+              👤 Sign In
+            </Link>
+          )}
 
           <button
             type="button"
@@ -203,27 +192,27 @@ export default function Header() {
             <Link
               href="/housing"
               onClick={closeMobileMenu}
-              className="rounded-xl bg-green-50 px-1 py-3 text-[#087531]"
+              className="rounded-xl bg-green-50 px-2 py-3 text-[#087531]"
             >
-              <span className="block text-base sm:text-lg">🏠</span>
+              <span className="block text-lg">🏠</span>
               Rentals
             </Link>
 
             <Link
               href="/marketplace"
               onClick={closeMobileMenu}
-              className="rounded-xl bg-slate-100 px-1 py-3"
+              className="rounded-xl bg-slate-100 px-2 py-3"
             >
-              <span className="block text-base sm:text-lg">🛒</span>
-              Market
+              <span className="block text-lg">🛒</span>
+              Marketplace
             </Link>
 
             <Link
               href="/jobs"
               onClick={closeMobileMenu}
-              className="rounded-xl bg-slate-100 px-1 py-3"
+              className="rounded-xl bg-slate-100 px-2 py-3"
             >
-              <span className="block text-base sm:text-lg">💼</span>
+              <span className="block text-lg">💼</span>
               Jobs
             </Link>
 
@@ -241,7 +230,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen((open) => !open)}
               className="rounded-xl bg-yellow-400 px-1 py-3 text-slate-950"
             >
-              <span className="block text-base sm:text-lg">☰</span>
+              <span className="block text-lg">☰</span>
               More
             </button>
           </div>
@@ -294,7 +283,7 @@ export default function Header() {
                 </>
               ) : (
                 <Link
-                  href="/signin"
+                  href="/login"
                   onClick={closeMobileMenu}
                   className="rounded-xl border border-slate-300 px-4 py-3 font-bold text-slate-800"
                 >
