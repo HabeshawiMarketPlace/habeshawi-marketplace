@@ -87,6 +87,7 @@ export default async function RentalCategoryPage({
                     bathrooms={rental.bathrooms}
                     description={rental.description}
                     propertyType={rental.propertyType}
+                    commercialType={rental.commercialType ?? null}
                     createdAt={rental.createdAt}
                     phone={rental.phone}
                     whatsapp={rental.whatsapp}

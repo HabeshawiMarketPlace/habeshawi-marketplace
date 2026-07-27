@@ -14,6 +14,7 @@ type Rental = {
   bathrooms: number | null;
   description: string | null;
   property_type: string | null;
+  commercial_type: string | null;
   created_at: string;
   phone: string | null;
   whatsapp: string | null;
@@ -156,6 +157,7 @@ export default function FavoritesPage() {
                 bathrooms={rental.bathrooms}
                 description={rental.description ?? ""}
                 propertyType={rental.property_type}
+                commercialType={rental.commercial_type ?? null}
                 createdAt={rental.created_at}
                 phone={rental.phone}
                 whatsapp={rental.whatsapp}

@@ -14,6 +14,7 @@ export type RentalListing = {
   bedrooms: number | null;
   bathrooms: number | null;
   propertyType: string | null;
+  commercialType: string | null;
   phone: string | null;
   whatsapp: string | null;
   email: string | null;
@@ -26,9 +27,12 @@ export type RentalListing = {
 export type RentalFilters = {
   location?: string;
   propertyType?: string;
+  commercialType?: string;
   minPrice?: number;
   maxPrice?: number;
   bedrooms?: number;
+  bathrooms?: number;
+  sortBy?: "newest" | "price_low" | "price_high";
 };
 
 const FALLBACK_IMAGE = "/housing/apartments/apartment1.jpg";
@@ -56,13 +60,18 @@ function mapRental(row: Record<string, unknown>): RentalListing {
       };
     })
     .filter((image) => Boolean(image.imageUrl))
-    .sort((first, second) => first.displayOrder - second.displayOrder);
+    .sort(
+      (first, second) =>
+        first.displayOrder - second.displayOrder,
+    );
 
   return {
     id: String(row.id),
     title: String(row.title ?? "Untitled rental"),
     description: String(row.description ?? ""),
-    location: String(row.location ?? "Location not provided"),
+    location: String(
+      row.location ?? "Location not provided",
+    ),
     price: Number(row.price ?? 0),
 
     bedrooms:
@@ -76,9 +85,16 @@ function mapRental(row: Record<string, unknown>): RentalListing {
         : Number(row.bathrooms),
 
     propertyType:
-      row.property_type === null || row.property_type === undefined
+      row.property_type === null ||
+      row.property_type === undefined
         ? null
         : String(row.property_type),
+
+    commercialType:
+      row.commercial_type === null ||
+      row.commercial_type === undefined
+        ? null
+        : String(row.commercial_type),
 
     phone:
       row.phone === null || row.phone === undefined
@@ -97,12 +113,15 @@ function mapRental(row: Record<string, unknown>): RentalListing {
 
     imageUrl:
       images[0]?.imageUrl ||
-      (row.image_url ? String(row.image_url) : FALLBACK_IMAGE),
+      (row.image_url
+        ? String(row.image_url)
+        : FALLBACK_IMAGE),
 
     images,
 
     availableDate:
-      row.available_date === null || row.available_date === undefined
+      row.available_date === null ||
+      row.available_date === undefined
         ? null
         : String(row.available_date),
 
@@ -129,11 +148,11 @@ export async function getRentals(
     .from("rentals")
     .select(rentalSelect)
     .ilike("payment_status", "paid")
-    .ilike("status", "approved")
-    .order("created_at", { ascending: false });
+    .ilike("status", "approved");
 
   const location = filters.location?.trim();
   const propertyType = filters.propertyType?.trim();
+  const commercialType = filters.commercialType?.trim();
 
   if (location) {
     query = query.ilike("location", `%${location}%`);
@@ -141,6 +160,16 @@ export async function getRentals(
 
   if (propertyType) {
     query = query.ilike("property_type", propertyType);
+  }
+
+  if (
+    propertyType === "commercial" &&
+    commercialType
+  ) {
+    query = query.ilike(
+      "commercial_type",
+      commercialType,
+    );
   }
 
   if (isPositiveNumber(filters.minPrice)) {
@@ -153,6 +182,20 @@ export async function getRentals(
 
   if (isPositiveNumber(filters.bedrooms)) {
     query = query.gte("bedrooms", filters.bedrooms);
+  }
+
+  if (isPositiveNumber(filters.bathrooms)) {
+    query = query.gte("bathrooms", filters.bathrooms);
+  }
+
+  if (filters.sortBy === "price_low") {
+    query = query.order("price", { ascending: true });
+  } else if (filters.sortBy === "price_high") {
+    query = query.order("price", { ascending: false });
+  } else {
+    query = query.order("created_at", {
+      ascending: false,
+    });
   }
 
   const { data, error } = await query;
@@ -184,7 +227,10 @@ export async function getLatestRentals(
     .limit(safeLimit);
 
   if (error) {
-    console.error("Unable to load latest rentals:", error);
+    console.error(
+      "Unable to load latest rentals:",
+      error,
+    );
     return [];
   }
 
@@ -244,6 +290,16 @@ export async function getSimilarRentals(
     query = query.ilike(
       "property_type",
       rental.propertyType,
+    );
+  }
+
+  if (
+    rental.propertyType === "commercial" &&
+    rental.commercialType
+  ) {
+    query = query.ilike(
+      "commercial_type",
+      rental.commercialType,
     );
   }
 

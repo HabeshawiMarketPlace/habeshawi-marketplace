@@ -11,6 +11,7 @@ type ListingCardProps = {
   bathrooms: number | null;
   description: string;
   propertyType: string | null;
+  commercialType?: string | null;
   createdAt: string;
 };
 
@@ -23,6 +24,7 @@ export default function ListingCard({
   bedrooms,
   bathrooms,
   description,
+  commercialType = null,
   propertyType,
   createdAt,
 }: ListingCardProps) {

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
@@ -9,6 +8,7 @@ import { getLatestRentals } from "@/lib/housing/queries";
 import { getMarketplaceListings } from "@/lib/marketplace/queries";
 import { getApprovedJobs } from "@/lib/jobs/queries";
 import { getBusinesses } from "@/lib/businesses/queries";
+import { getApprovedServices } from "@/lib/services/queries";
 
 type RecentItem = {
   id: string;
@@ -16,129 +16,138 @@ type RecentItem = {
   category: string;
   location: string;
   price: string;
-  image: string;
+  image: string | null;
+  fallbackIcon: string;
   href: string;
+  createdAt: string;
 };
 
-export default async function RecentlyAdded() {
-  const [rentals, marketplaceListings, jobs, businesses] =
-    await Promise.all([
-      getLatestRentals(1),
-      getMarketplaceListings(),
-      getApprovedJobs(),
-      getBusinesses(),
-    ]);
+function validDateValue(value: string | undefined): number {
+  const timestamp = new Date(value ?? "").getTime();
+  return Number.isNaN(timestamp) ? 0 : timestamp;
+}
 
-  const rental = rentals[0];
-  const marketplaceListing = marketplaceListings[0];
-  const job = jobs[0];
-  const business = businesses[0];
+export default async function RecentlyAdded() {
+  const [
+    rentals,
+    marketplaceListings,
+    jobs,
+    businesses,
+    services,
+  ] = await Promise.all([
+    getLatestRentals(3),
+    getMarketplaceListings({ limit: 3 }),
+    getApprovedJobs({ limit: 3 }),
+    getBusinesses(),
+    getApprovedServices(3),
+  ]);
 
   const recentItems: RecentItem[] = [];
 
-  if (rental) {
+  for (const rental of rentals) {
     recentItems.push({
       id: `rental-${rental.id}`,
       title: rental.title,
       category: rental.propertyType || "Rental",
       location: rental.location,
-      price: `$${rental.price.toLocaleString()}/month`,
-      image: rental.imageUrl || "/housing/default-rental.jpg",
+      price: `$${rental.price.toLocaleString("en-US")}/month`,
+      image: rental.imageUrl || null,
+      fallbackIcon: "🏠",
       href: `/housing/${rental.id}`,
+      createdAt: rental.createdAt,
     });
   }
 
-  if (marketplaceListing) {
-    const marketplaceLocation =
-      [marketplaceListing.city, marketplaceListing.state]
-        .filter(Boolean)
-        .join(", ") || "Location not provided";
+  for (const listing of marketplaceListings) {
+    const location =
+      [listing.city, listing.state].filter(Boolean).join(", ") ||
+      "Location not provided";
 
     recentItems.push({
-      id: `marketplace-${marketplaceListing.id}`,
-      title: marketplaceListing.title,
-      category: marketplaceListing.category || "Marketplace",
-      location: marketplaceLocation,
-      price: `$${Number(
-        marketplaceListing.price ?? 0,
-      ).toLocaleString()}`,
-      image:
-        marketplaceListing.imageUrl ||
-        "/marketplace/default-marketplace.jpg",
-      href: `/marketplace/${marketplaceListing.id}`,
+      id: `marketplace-${listing.id}`,
+      title: listing.title,
+      category: listing.category || "Marketplace",
+      location,
+      price: `$${Number(listing.price ?? 0).toLocaleString("en-US")}`,
+      image: listing.imageUrl || null,
+      fallbackIcon: "🛍️",
+      href: `/marketplace/${listing.id}`,
+      createdAt: listing.createdAt,
     });
   }
 
-  if (job) {
-    const jobLocation = job.location || "Location not provided";
-
+  for (const job of jobs) {
     recentItems.push({
       id: `job-${job.id}`,
       title: job.title || "Job Opportunity",
-      category:
-        job.employmentType ||
-        "Job",
-      location: jobLocation,
+      category: job.employmentType || "Job",
+      location: job.location || "Location not provided",
       price: "View Position",
-      image: "/jobs/default-job.jpg",
+      image: null,
+      fallbackIcon: "💼",
       href: `/jobs/${job.id}`,
+      createdAt: job.createdAt,
     });
   }
 
+  for (const service of services) {
+    const location =
+      [service.city, service.state].filter(Boolean).join(", ") ||
+      "DMV Area";
+
+    recentItems.push({
+      id: `service-${service.id}`,
+      title: service.serviceName,
+      category: service.category || "Service",
+      location,
+      price: service.price || "View Service",
+      image: service.imageUrl,
+      fallbackIcon: "🤝",
+      href: "/services",
+      createdAt: service.createdAt,
+    });
+  }
+
+  const business = businesses[0];
+
   if (business) {
     const businessLocation =
-      [business.city, business.state]
-        .filter(Boolean)
-        .join(", ") || "Location not provided";
+      [business.city, business.state].filter(Boolean).join(", ") ||
+      "Location not provided";
 
     recentItems.push({
       id: `business-${business.id}`,
       title: business.name,
       category: business.category || "Business",
       location: businessLocation,
-      price: business.featured
-        ? "Featured Business"
-        : "View Business",
-      image:
-        business.coverImageUrl ||
-        business.logoImageUrl ||
-        "/business/default-business.jpg",
+      price: business.featured ? "Featured Business" : "View Business",
+      image: business.coverImageUrl || business.logoImageUrl || null,
+      fallbackIcon: "🏢",
       href: `/businesses/${business.id}`,
+      createdAt: new Date(0).toISOString(),
     });
   }
 
-  recentItems.push({
-    id: "services-default",
-    title: "Community Services",
-    category: "Services",
-    location: "DMV Area",
-    price: "Browse Services",
-    image: "/services/default-service.jpg",
-    href: "/services",
-  });
-
-  recentItems.push({
-    id: "promotion-default",
-    title: "Promote Your Business",
-    category: "Promotion",
-    location: "Habeshawi Marketplace",
-    price: "View Promotion Options",
-    image: "/promotion/default-promotion.jpg",
-    href: "/promotion",
-  });
+  const newestItems = recentItems
+    .sort(
+      (first, second) =>
+        validDateValue(second.createdAt) -
+        validDateValue(first.createdAt),
+    )
+    .slice(0, 6);
 
   return (
     <Section tone="soft">
       <SectionHeader
         eyebrow="Fresh Listings"
         title="Recently Added"
-        description="Discover the newest rentals, marketplace listings, jobs, businesses, services, and promotions."
+        description="Discover the newest approved rentals, marketplace listings, jobs, businesses, and community services."
         amharic="አዲስ የተጨመሩ ዝርዝሮች"
         actionHref="/marketplace"
         actionLabel="Browse Listings"
       />
 
-      {recentItems.length === 0 ? (
+      {newestItems.length === 0 ? (
         <Card
           padding="lg"
           className="border-dashed bg-white text-center"
@@ -152,40 +161,37 @@ export default async function RecentlyAdded() {
           </h3>
 
           <p className="mx-auto mt-3 max-w-xl text-slate-600">
-            New rentals, products, jobs, businesses, services, and
-            promotions will appear here after approval.
+            Newly approved posts will appear here automatically.
           </p>
 
-          <div className="mt-6">
-            <Link
-              href="/post-ad"
-              className="inline-flex rounded-xl bg-[#087531] px-5 py-3 font-bold text-white transition hover:bg-[#064d2b]"
-            >
-              Post an Ad
-            </Link>
-          </div>
+          <Link
+            href="/post-ad"
+            className="mt-6 inline-flex rounded-xl bg-[#087531] px-5 py-3 font-bold text-white transition hover:bg-[#064d2b]"
+          >
+            Post an Ad
+          </Link>
         </Card>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {recentItems.map((item) => (
+          {newestItems.map((item) => (
             <Link
               key={item.id}
               href={item.href}
               className="group block h-full"
             >
-              <Card
-                hover
-                padding="none"
-                className="h-full overflow-hidden"
-              >
-                <div className="relative h-52 overflow-hidden bg-slate-100">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition duration-300 group-hover:scale-105"
-                  />
+              <Card hover padding="none" className="h-full overflow-hidden">
+                <div className="relative flex h-52 items-center justify-center overflow-hidden bg-slate-100">
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <span className="text-6xl" aria-hidden="true">
+                      {item.fallbackIcon}
+                    </span>
+                  )}
 
                   <span className="absolute left-3 top-3 rounded-full bg-[#087531] px-3 py-1 text-xs font-black capitalize text-white shadow">
                     {item.category}
@@ -223,7 +229,3 @@ export default async function RecentlyAdded() {
     </Section>
   );
 }
-
-
-
-

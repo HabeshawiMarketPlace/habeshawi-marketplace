@@ -9,6 +9,7 @@ type Rental = {
   id: string;
   title: string;
   property_type: string | null;
+  commercial_type: string | null;
   price: number;
   location: string;
   bedrooms: number | null;

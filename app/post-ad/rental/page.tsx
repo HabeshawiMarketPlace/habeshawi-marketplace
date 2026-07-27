@@ -25,6 +25,7 @@ function withTimeout<T>(
 export default function PostRentalPage() {
   const router = useRouter();
 
+  const [propertyType, setPropertyType] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [checkingUser, setCheckingUser] = useState(true);
   const [editLink, setEditLink] = useState("");
@@ -182,6 +183,10 @@ export default function PostRentalPage() {
       const propertyType = String(
         formData.get("property_type") ?? "",
       ).trim();
+      const commercialType = String(
+        formData.get("commercial_type") ?? "",
+      ).trim();
+
       const priceValue = String(formData.get("price") ?? "").trim();
       const location = String(
         formData.get("location") ?? "",
@@ -201,6 +206,10 @@ export default function PostRentalPage() {
         throw new Error(
           "Please complete all required rental information.",
         );
+      }
+
+      if (propertyType === "commercial" && !commercialType) {
+        throw new Error("Please select a commercial property type.");
       }
 
       const price = Number(priceValue);
@@ -251,6 +260,10 @@ export default function PostRentalPage() {
               user_id: user.id,
               title,
               property_type: propertyType,
+              commercial_type:
+                propertyType === "commercial"
+                  ? commercialType
+                  : null,
               price,
               location,
               bedrooms: bedroomsText
@@ -430,27 +443,42 @@ export default function PostRentalPage() {
           <select
             name="property_type"
             required
-            defaultValue=""
+            value={propertyType}
+            onChange={(event) => setPropertyType(event.target.value)}
             className="rounded-lg border border-slate-300 px-4 py-3"
           >
             <option value="" disabled>
               Select property type
             </option>
-
             <option value="room">Room</option>
             <option value="apartment">Apartment</option>
             <option value="house">House</option>
             <option value="roommate">Roommate</option>
-            <option value="retail">Retail Storefront</option>
-            <option value="restaurant">Restaurant</option>
-            <option value="office">Office</option>
-            <option value="warehouse">Warehouse</option>
-            <option value="salon">Salon / Barbershop</option>
-            <option value="mixed-use">Mixed-Use</option>
-            <option value="commercial-other">
-              Other Commercial
-            </option>
+            <option value="commercial">Commercial</option>
           </select>
+
+          {propertyType === "commercial" ? (
+            <select
+              name="commercial_type"
+              required
+              defaultValue=""
+              className="rounded-lg border border-slate-300 px-4 py-3"
+            >
+              <option value="" disabled>
+                Select commercial type
+              </option>
+              <option value="restaurant">Restaurant</option>
+              <option value="retail_storefront">
+                Retail Storefront
+              </option>
+              <option value="convenience_store">
+                Convenience Store
+              </option>
+              <option value="office">Office</option>
+              <option value="salon">Salon</option>
+              <option value="warehouse">Warehouse</option>
+            </select>
+          ) : null}
 
           <input
             type="number"

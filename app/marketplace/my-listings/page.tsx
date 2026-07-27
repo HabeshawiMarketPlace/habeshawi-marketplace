@@ -322,27 +322,34 @@ useEffect(() => {
                       </div>
                     )}
 
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      {listing.status === "approved" && (
-                        <Link
-                          href={`/marketplace/${listing.id}`}
-                          className="rounded-xl bg-[#087531] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#064d2b]"
-                        >
-                          View Listing
-                        </Link>
-                      )}
+                  <div className="mt-6 flex flex-wrap gap-3">
+  {listing.status === "approved" && (
+    <Link
+      href={`/marketplace/${listing.id}`}
+      className="rounded-xl bg-[#087531] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#064d2b]"
+    >
+      View Listing
+    </Link>
+  )}
 
-                      <button
-                        type="button"
-                        onClick={() => deleteListing(listing)}
-                        disabled={deletingId === listing.id}
-                        className="rounded-xl border border-red-300 px-5 py-3 text-sm font-bold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
-                      >
-                        {deletingId === listing.id
-                          ? "Deleting..."
-                          : "Delete Listing"}
-                      </button>
-                    </div>
+  <Link
+    href={`/marketplace/edit/${listing.id}`}
+    className="rounded-xl border border-[#087531] bg-white px-5 py-3 text-sm font-bold text-[#087531] transition hover:bg-green-50"
+  >
+    ✏️ Edit Listing
+  </Link>
+
+  <button
+    type="button"
+    onClick={() => deleteListing(listing)}
+    disabled={deletingId === listing.id}
+    className="rounded-xl border border-red-300 px-5 py-3 text-sm font-bold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+  >
+    {deletingId === listing.id
+      ? "Deleting..."
+      : "Delete Listing"}
+  </button>
+</div>
                   </div>
                 </article>
               );

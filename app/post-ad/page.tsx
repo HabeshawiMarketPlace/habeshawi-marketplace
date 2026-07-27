@@ -41,10 +41,20 @@ const postingOptions: PostingOption[] = [
     title: "Add a Business",
     description:
       "Create a profile for your restaurant, store, professional service, or organization.",
-    details: "Restaurants • Stores • Professionals • Community Services",
+    details: "Restaurants • Stores • Professionals • Community Organizations",
     href: "/businesses/post",
     buttonText: "Add Business",
     icon: "🏢",
+  },
+  {
+    title: "Post a Service",
+    description:
+      "Advertise your professional service, trade, skill, or community service.",
+    details:
+      "Tax • Immigration • Cleaning • Legal • Real Estate • IT • Transportation",
+    href: "/services/post",
+    buttonText: "Post Service",
+    icon: "🛠️",
   },
   {
     title: "Create a Promotion",
@@ -71,8 +81,8 @@ export default function PostAdPage() {
           </h1>
 
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-            Choose the type of listing you would like to create. Each
-            option has a form designed specifically for that listing.
+            Choose the type of listing you would like to create. Each option
+            has a form designed specifically for that listing.
           </p>
         </div>
 
@@ -122,33 +132,41 @@ export default function PostAdPage() {
             <div>
               <h3 className="font-bold">Rentals</h3>
               <p className="mt-1">
-Use this for rooms, apartments, houses, roommates, commercial
-properties, office space, retail space, restaurants, and other
-commercial listings.
+                Use this for rooms, apartments, houses, roommates, commercial
+                properties, office space, retail space, restaurants, and other
+                commercial listings.
               </p>
             </div>
 
             <div>
               <h3 className="font-bold">Marketplace</h3>
               <p className="mt-1">
-                Use this for cars, phones, electronics, furniture,
-                clothing, equipment, and other items.
+                Use this for cars, phones, electronics, furniture, clothing,
+                equipment, and other items.
               </p>
             </div>
 
             <div>
               <h3 className="font-bold">Jobs</h3>
               <p className="mt-1">
-                Use this when an employer or business wants to advertise
-                an available position.
+                Use this when an employer or business wants to advertise an
+                available position.
               </p>
             </div>
 
             <div>
               <h3 className="font-bold">Businesses</h3>
               <p className="mt-1">
-                Use this to create a directory profile for a restaurant,
-                store, or professional service.
+                Use this to create a directory profile for a restaurant, store,
+                company, or community organization.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-bold">Services</h3>
+              <p className="mt-1">
+                Use this to advertise professional services, skilled trades,
+                home services, consulting, transportation, tutoring, and more.
               </p>
             </div>
 

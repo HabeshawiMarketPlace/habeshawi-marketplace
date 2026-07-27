@@ -3,6 +3,15 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+const commercialTypes = [
+  { value: "restaurant", label: "Restaurant" },
+  { value: "retail_storefront", label: "Retail Storefront" },
+  { value: "convenience_store", label: "Convenience Store" },
+  { value: "office", label: "Office" },
+  { value: "salon", label: "Salon" },
+  { value: "warehouse", label: "Warehouse" },
+];
+
 export default function SearchFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -13,6 +22,10 @@ export default function SearchFilters() {
 
   const [propertyType, setPropertyType] = useState(
     searchParams.get("type") ?? "",
+  );
+
+  const [commercialType, setCommercialType] = useState(
+    searchParams.get("commercialType") ?? "",
   );
 
   const [minPrice, setMinPrice] = useState(
@@ -35,6 +48,14 @@ export default function SearchFilters() {
     searchParams.get("sort") ?? "newest",
   );
 
+  function handlePropertyTypeChange(value: string) {
+    setPropertyType(value);
+
+    if (value !== "commercial") {
+      setCommercialType("");
+    }
+  }
+
   function handleSearch() {
     const params = new URLSearchParams();
 
@@ -44,6 +65,10 @@ export default function SearchFilters() {
 
     if (propertyType) {
       params.set("type", propertyType);
+    }
+
+    if (propertyType === "commercial" && commercialType) {
+      params.set("commercialType", commercialType);
     }
 
     if (minPrice) {
@@ -74,6 +99,7 @@ export default function SearchFilters() {
   function handleReset() {
     setLocation("");
     setPropertyType("");
+    setCommercialType("");
     setMinPrice("");
     setMaxPrice("");
     setBedrooms("");
@@ -85,7 +111,7 @@ export default function SearchFilters() {
 
   return (
     <div className="rounded-2xl bg-white p-6 shadow">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <input
           type="text"
           placeholder="City or neighborhood"
@@ -101,17 +127,36 @@ export default function SearchFilters() {
 
         <select
           value={propertyType}
-          onChange={(event) => setPropertyType(event.target.value)}
+          onChange={(event) =>
+            handlePropertyTypeChange(event.target.value)
+          }
           className="rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-[#087531]"
         >
           <option value="">Property Type</option>
           <option value="room">Room</option>
           <option value="apartment">Apartment</option>
           <option value="house">House</option>
-          <option value="basement">Basement</option>
           <option value="roommate">Roommate</option>
           <option value="commercial">Commercial</option>
         </select>
+
+        {propertyType === "commercial" ? (
+          <select
+            value={commercialType}
+            onChange={(event) =>
+              setCommercialType(event.target.value)
+            }
+            className="rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-[#087531]"
+          >
+            <option value="">Commercial Type</option>
+
+            {commercialTypes.map((type) => (
+              <option key={type.value} value={type.value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+        ) : null}
 
         <input
           type="number"
@@ -163,24 +208,24 @@ export default function SearchFilters() {
           <option value="price_low">Price: Low to High</option>
           <option value="price_high">Price: High to Low</option>
         </select>
+      </div>
 
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={handleSearch}
-            className="flex-1 rounded-lg bg-[#087531] px-4 py-3 font-semibold text-white transition hover:bg-[#064d2b]"
-          >
-            Search
-          </button>
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
+        <button
+          type="button"
+          onClick={handleReset}
+          className="rounded-lg border border-slate-300 px-6 py-3 font-semibold transition hover:bg-slate-100"
+        >
+          Reset
+        </button>
 
-          <button
-            type="button"
-            onClick={handleReset}
-            className="rounded-lg border border-slate-300 px-4 py-3 transition hover:bg-slate-100"
-          >
-            Reset
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleSearch}
+          className="rounded-lg bg-[#087531] px-8 py-3 font-semibold text-white transition hover:bg-[#064d2b]"
+        >
+          Search
+        </button>
       </div>
     </div>
   );

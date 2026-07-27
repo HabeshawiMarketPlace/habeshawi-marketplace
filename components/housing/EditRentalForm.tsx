@@ -9,6 +9,7 @@ type Rental = {
   id: string;
   title: string;
   property_type: string | null;
+  commercial_type: string | null;
   price: number | null;
   location: string | null;
   bedrooms: number | null;
@@ -18,11 +19,25 @@ type Rental = {
   whatsapp: string | null;
   email: string | null;
   image_url: string | null;
+  status?: string | null;
 };
 
 type EditRentalFormProps = {
   rental: Rental;
 };
+
+const commercialTypes = [
+  { value: "restaurant", label: "Restaurant" },
+  { value: "retail_storefront", label: "Retail Storefront" },
+  { value: "convenience_store", label: "Convenience Store" },
+  { value: "office", label: "Office" },
+  { value: "salon", label: "Salon" },
+  { value: "warehouse", label: "Warehouse" },
+];
+
+function normalizePropertyType(value: string | null) {
+  return value?.trim().toLowerCase() ?? "";
+}
 
 export default function EditRentalForm({
   rental,
@@ -30,9 +45,16 @@ export default function EditRentalForm({
   const router = useRouter();
   const temporaryImageUrlRef = useRef<string | null>(null);
 
+  const initialPropertyType = normalizePropertyType(
+    rental.property_type,
+  );
+
   const [title, setTitle] = useState(rental.title ?? "");
   const [propertyType, setPropertyType] = useState(
-    rental.property_type ?? "",
+    initialPropertyType,
+  );
+  const [commercialType, setCommercialType] = useState(
+    rental.commercial_type ?? "",
   );
   const [price, setPrice] = useState(
     rental.price?.toString() ?? "",
@@ -57,7 +79,10 @@ export default function EditRentalForm({
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(
+    null,
+  );
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     rental.image_url,
   );
@@ -65,19 +90,32 @@ export default function EditRentalForm({
   useEffect(() => {
     return () => {
       if (temporaryImageUrlRef.current) {
-        URL.revokeObjectURL(temporaryImageUrlRef.current);
+        URL.revokeObjectURL(
+          temporaryImageUrlRef.current,
+        );
       }
     };
   }, []);
 
+  function handlePropertyTypeChange(value: string) {
+    setPropertyType(value);
+
+    if (value !== "commercial") {
+      setCommercialType("");
+    }
+  }
+
   function handleImageChange(file: File | null) {
     if (temporaryImageUrlRef.current) {
-      URL.revokeObjectURL(temporaryImageUrlRef.current);
+      URL.revokeObjectURL(
+        temporaryImageUrlRef.current,
+      );
       temporaryImageUrlRef.current = null;
     }
 
     setImageFile(file);
     setMessage("");
+    setIsSuccess(false);
 
     if (!file) {
       setPreviewUrl(rental.image_url);
@@ -89,13 +127,46 @@ export default function EditRentalForm({
     setPreviewUrl(temporaryUrl);
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
 
     setLoading(true);
     setMessage("");
+    setIsSuccess(false);
 
-    let imageUrl: string | null = rental.image_url ?? null;
+    if (!title.trim()) {
+      setMessage("Please enter a listing title.");
+      setLoading(false);
+      return;
+    }
+
+    if (!propertyType) {
+      setMessage("Please select a property type.");
+      setLoading(false);
+      return;
+    }
+
+    if (
+      propertyType === "commercial" &&
+      !commercialType
+    ) {
+      setMessage("Please select a commercial type.");
+      setLoading(false);
+      return;
+    }
+
+    const numericPrice = Number(price);
+
+    if (!Number.isFinite(numericPrice) || numericPrice < 0) {
+      setMessage("Please enter a valid monthly rent.");
+      setLoading(false);
+      return;
+    }
+
+    let imageUrl: string | null =
+      rental.image_url ?? null;
 
     if (imageFile) {
       if (imageFile.size > 5 * 1024 * 1024) {
@@ -111,22 +182,28 @@ export default function EditRentalForm({
       ];
 
       if (!allowedTypes.includes(imageFile.type)) {
-        setMessage("Please select a JPG, PNG, or WebP image.");
+        setMessage(
+          "Please select a JPG, PNG, or WebP image.",
+        );
         setLoading(false);
         return;
       }
 
       const fileExtension =
-        imageFile.name.split(".").pop()?.toLowerCase() ?? "jpg";
+        imageFile.name
+          .split(".")
+          .pop()
+          ?.toLowerCase() ?? "jpg";
 
       const filePath = `${rental.id}/${Date.now()}.${fileExtension}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("housing-images")
-        .upload(filePath, imageFile, {
-          cacheControl: "3600",
-          upsert: false,
-        });
+      const { error: uploadError } =
+        await supabase.storage
+          .from("housing-images")
+          .upload(filePath, imageFile, {
+            cacheControl: "3600",
+            upsert: false,
+          });
 
       if (uploadError) {
         setMessage(
@@ -136,9 +213,10 @@ export default function EditRentalForm({
         return;
       }
 
-      const { data: publicUrlData } = supabase.storage
-        .from("housing-images")
-        .getPublicUrl(filePath);
+      const { data: publicUrlData } =
+        supabase.storage
+          .from("housing-images")
+          .getPublicUrl(filePath);
 
       imageUrl = publicUrlData.publicUrl;
 
@@ -151,44 +229,70 @@ export default function EditRentalForm({
       }
     }
 
+    const isCommercial = propertyType === "commercial";
+
     const { error } = await supabase
       .from("rentals")
       .update({
         title: title.trim(),
-        property_type: propertyType || null,
-        price: price ? Number(price) : null,
+        property_type: propertyType,
+        commercial_type: isCommercial
+          ? commercialType
+          : null,
+        price: numericPrice,
         location: location.trim() || null,
-        bedrooms: bedrooms ? Number(bedrooms) : null,
-        bathrooms: bathrooms ? Number(bathrooms) : null,
+        bedrooms:
+          !isCommercial && bedrooms
+            ? Number(bedrooms)
+            : null,
+        bathrooms:
+          !isCommercial && bathrooms
+            ? Number(bathrooms)
+            : null,
         description: description.trim() || null,
         phone: phone.trim() || null,
         whatsapp: whatsapp.trim() || null,
         email: email.trim() || null,
         image_url: imageUrl,
+        status: "pending",
       })
       .eq("id", rental.id);
 
     if (error) {
-      setMessage(`Unable to update listing: ${error.message}`);
+      setMessage(
+        `Unable to update listing: ${error.message}`,
+      );
       setLoading(false);
       return;
     }
 
-    setMessage("Listing updated successfully.");
+    setIsSuccess(true);
+    setMessage(
+      "Your listing has been updated and is awaiting admin approval.",
+    );
     setLoading(false);
 
-    router.push("/admin");
-    router.refresh();
+    window.setTimeout(() => {
+      router.push("/housing/my-listings");
+      router.refresh();
+    }, 1200);
   }
 
   const inputClass =
     "w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-[#087531]";
 
+  const isCommercial = propertyType === "commercial";
+
   return (
     <>
+      <div className="mt-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-yellow-900">
+        After you save changes, this listing will return
+        to Pending status for administrator review.
+      </div>
+
       <div className="mt-6">
         <h2 className="mb-3 text-xl font-bold text-[#064d2b]">
-          Submitted Rental Photo
+          Rental Photo
         </h2>
 
         <div className="overflow-hidden rounded-xl border bg-slate-100">
@@ -215,12 +319,15 @@ export default function EditRentalForm({
             rel="noopener noreferrer"
             className="mt-3 inline-block font-semibold text-[#087531] hover:underline"
           >
-            Open full-size submitted image
+            Open full-size image
           </a>
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-6 space-y-5"
+      >
         <div>
           <label
             htmlFor="replacement-image"
@@ -234,14 +341,16 @@ export default function EditRentalForm({
             type="file"
             accept="image/png,image/jpeg,image/webp"
             onChange={(event) =>
-              handleImageChange(event.target.files?.[0] ?? null)
+              handleImageChange(
+                event.target.files?.[0] ?? null,
+              )
             }
             className="block w-full rounded-lg border border-gray-300 p-3"
           />
 
           <p className="mt-1 text-sm text-gray-500">
-            Leave this empty to keep the renter&apos;s submitted
-            image. JPG, PNG, or WebP. Maximum size: 5 MB.
+            Leave empty to keep the current image. JPG,
+            PNG, or WebP. Maximum size: 5 MB.
           </p>
         </div>
 
@@ -250,14 +359,16 @@ export default function EditRentalForm({
             htmlFor="rental-title"
             className="mb-2 block font-semibold"
           >
-            Listing title
+            Listing Title
           </label>
 
           <input
             id="rental-title"
             type="text"
             value={title}
-            onChange={(event) => setTitle(event.target.value)}
+            onChange={(event) =>
+              setTitle(event.target.value)
+            }
             className={inputClass}
             required
           />
@@ -268,40 +379,90 @@ export default function EditRentalForm({
             htmlFor="property-type"
             className="mb-2 block font-semibold"
           >
-            Property type
+            Property Type
           </label>
 
           <select
             id="property-type"
             value={propertyType}
             onChange={(event) =>
-              setPropertyType(event.target.value)
+              handlePropertyTypeChange(
+                event.target.value,
+              )
             }
             className={inputClass}
+            required
           >
-            <option value="">Select property type</option>
-            <option value="Apartment">Apartment</option>
-            <option value="House">House</option>
-            <option value="Room">Room</option>
-            <option value="Roommate">Roommate</option>
-            <option value="Basement">Basement</option>
+            <option value="">
+              Select property type
+            </option>
+            <option value="room">Room</option>
+            <option value="apartment">
+              Apartment
+            </option>
+            <option value="house">House</option>
+            <option value="roommate">
+              Roommate
+            </option>
+            <option value="commercial">
+              Commercial
+            </option>
           </select>
         </div>
+
+        {isCommercial && (
+          <div>
+            <label
+              htmlFor="commercial-type"
+              className="mb-2 block font-semibold"
+            >
+              Commercial Type
+            </label>
+
+            <select
+              id="commercial-type"
+              value={commercialType}
+              onChange={(event) =>
+                setCommercialType(
+                  event.target.value,
+                )
+              }
+              className={inputClass}
+              required
+            >
+              <option value="">
+                Select commercial type
+              </option>
+
+              {commercialTypes.map((type) => (
+                <option
+                  key={type.value}
+                  value={type.value}
+                >
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div>
           <label
             htmlFor="monthly-rent"
             className="mb-2 block font-semibold"
           >
-            Monthly rent
+            Monthly Rent
           </label>
 
           <input
             id="monthly-rent"
             type="number"
             min="0"
+            step="0.01"
             value={price}
-            onChange={(event) => setPrice(event.target.value)}
+            onChange={(event) =>
+              setPrice(event.target.value)
+            }
             className={inputClass}
             required
           />
@@ -319,53 +480,57 @@ export default function EditRentalForm({
             id="rental-location"
             type="text"
             value={location}
-            onChange={(event) => setLocation(event.target.value)}
+            onChange={(event) =>
+              setLocation(event.target.value)
+            }
             className={inputClass}
           />
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2">
-          <div>
-            <label
-              htmlFor="bedrooms"
-              className="mb-2 block font-semibold"
-            >
-              Bedrooms
-            </label>
+        {!isCommercial && (
+          <div className="grid gap-5 md:grid-cols-2">
+            <div>
+              <label
+                htmlFor="bedrooms"
+                className="mb-2 block font-semibold"
+              >
+                Bedrooms
+              </label>
 
-            <input
-              id="bedrooms"
-              type="number"
-              min="0"
-              value={bedrooms}
-              onChange={(event) =>
-                setBedrooms(event.target.value)
-              }
-              className={inputClass}
-            />
+              <input
+                id="bedrooms"
+                type="number"
+                min="0"
+                value={bedrooms}
+                onChange={(event) =>
+                  setBedrooms(event.target.value)
+                }
+                className={inputClass}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="bathrooms"
+                className="mb-2 block font-semibold"
+              >
+                Bathrooms
+              </label>
+
+              <input
+                id="bathrooms"
+                type="number"
+                min="0"
+                step="0.5"
+                value={bathrooms}
+                onChange={(event) =>
+                  setBathrooms(event.target.value)
+                }
+                className={inputClass}
+              />
+            </div>
           </div>
-
-          <div>
-            <label
-              htmlFor="bathrooms"
-              className="mb-2 block font-semibold"
-            >
-              Bathrooms
-            </label>
-
-            <input
-              id="bathrooms"
-              type="number"
-              min="0"
-              step="0.5"
-              value={bathrooms}
-              onChange={(event) =>
-                setBathrooms(event.target.value)
-              }
-              className={inputClass}
-            />
-          </div>
-        </div>
+        )}
 
         <div>
           <label
@@ -397,7 +562,9 @@ export default function EditRentalForm({
             id="phone"
             type="tel"
             value={phone}
-            onChange={(event) => setPhone(event.target.value)}
+            onChange={(event) =>
+              setPhone(event.target.value)
+            }
             className={inputClass}
           />
         </div>
@@ -433,7 +600,9 @@ export default function EditRentalForm({
             id="email"
             type="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) =>
+              setEmail(event.target.value)
+            }
             className={inputClass}
           />
         </div>
@@ -442,9 +611,9 @@ export default function EditRentalForm({
           <p
             role="status"
             className={
-              message.includes("successfully")
-                ? "font-semibold text-green-700"
-                : "font-semibold text-red-600"
+              isSuccess
+                ? "rounded-lg border border-green-200 bg-green-50 p-4 font-semibold text-green-700"
+                : "rounded-lg border border-red-200 bg-red-50 p-4 font-semibold text-red-700"
             }
           >
             {message}
@@ -456,7 +625,9 @@ export default function EditRentalForm({
           disabled={loading}
           className="rounded-lg bg-[#087531] px-6 py-3 font-semibold text-white hover:bg-[#064d2b] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Updating..." : "Update Listing"}
+          {loading
+            ? "Updating..."
+            : "Update Listing"}
         </button>
       </form>
     </>

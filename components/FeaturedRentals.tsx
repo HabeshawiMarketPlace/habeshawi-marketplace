@@ -96,6 +96,7 @@ export default async function FeaturedListings() {
                 bathrooms={rental.bathrooms}
                 description={rental.description ?? ""}
                 propertyType={rental.property_type}
+                commercialType={rental.commercial_type ?? null}
                 createdAt={rental.created_at}
                 phone={rental.phone}
                 whatsapp={rental.whatsapp}

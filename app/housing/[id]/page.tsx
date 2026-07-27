@@ -150,6 +150,7 @@ export default async function HousingDetailsPage({ params }: HousingDetailsPageP
                   bathrooms={similarRental.bathrooms}
                   description={similarRental.description}
                   propertyType={similarRental.propertyType}
+                  commercialType={similarRental.commercialType ?? null}
                   createdAt={similarRental.createdAt}
                   phone={similarRental.phone}
                   whatsapp={similarRental.whatsapp}

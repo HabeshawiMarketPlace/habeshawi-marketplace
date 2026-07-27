@@ -284,7 +284,7 @@ export default function AdminAdvertisementReviewPage() {
         throw new Error(error.message);
       }
 
-      router.push("/admin/advertisements");
+      router.push("/admin?section=promotions");
       router.refresh();
     } catch (error) {
       const errorMessage =
