@@ -64,12 +64,86 @@ type ActivityItem = {
   href: string;
 };
 
+type QuickAction = {
+  title: string;
+  description: string;
+  icon: string;
+  href: string;
+  className: string;
+};
+
 const emptyCounts: DashboardCounts = {
   total: 0,
   pending: 0,
   approved: 0,
   rejected: 0,
 };
+
+const quickActions: QuickAction[] = [
+  {
+    title: "Post Rental",
+    description: "List a room, apartment, house, or commercial property.",
+    icon: "🏠",
+    href: "/post-ad/rental",
+    className: "bg-green-50 hover:bg-green-100",
+  },
+  {
+    title: "Sell an Item",
+    description: "Post an item for sale in the marketplace.",
+    icon: "🛒",
+    href: "/marketplace/post",
+    className: "bg-blue-50 hover:bg-blue-100",
+  },
+  {
+    title: "Post a Job",
+    description: "Share a new employment opportunity.",
+    icon: "💼",
+    href: "/jobs/post",
+    className: "bg-amber-50 hover:bg-amber-100",
+  },
+  {
+    title: "Add Business",
+    description: "Create or manage your business profile.",
+    icon: "🏢",
+    href: "/businesses/post",
+    className: "bg-purple-50 hover:bg-purple-100",
+  },
+  {
+    title: "Post Service",
+    description: "Advertise a professional or community service.",
+    icon: "🛠️",
+    href: "/services/post",
+    className: "bg-orange-50 hover:bg-orange-100",
+  },
+  {
+    title: "Create Promotion",
+    description: "Promote your business, event, or special offer.",
+    icon: "📢",
+    href: "/promotion/post",
+    className: "bg-pink-50 hover:bg-pink-100",
+  },
+  {
+    title: "Favorites",
+    description: "Open listings you have saved.",
+    icon: "❤️",
+    href: "/favorites",
+    className: "bg-red-50 hover:bg-red-100",
+  },
+  {
+    title: "Edit Profile",
+    description: "Update your name, phone number, and profile.",
+    icon: "👤",
+    href: "/account/profile",
+    className: "bg-slate-50 hover:bg-slate-100",
+  },
+  {
+    title: "Account Settings",
+    description: "Manage password and account preferences.",
+    icon: "⚙️",
+    href: "/account/settings",
+    className: "bg-gray-50 hover:bg-gray-100",
+  },
+];
 
 function normalizeStatus(value: string | null | undefined) {
   return (value ?? "pending").trim().toLowerCase();
@@ -198,26 +272,31 @@ export default function AccountPage() {
         promotionsResult,
       ] = await Promise.all([
         rentalsQuery,
+
         supabase
           .from("marketplace_listings")
           .select("id,title,status,featured,created_at")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
+
         supabase
           .from("jobs")
           .select("id,title,status,created_at")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
+
         supabase
           .from("businesses")
           .select("id,name,status,featured,created_at")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
+
         supabase
           .from("services")
           .select("id,service_name,status,created_at")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
+
         supabase
           .from("advertisements")
           .select(
@@ -237,7 +316,9 @@ export default function AccountPage() {
       }
 
       if (marketplaceResult.error) {
-        problems.push(`Marketplace: ${marketplaceResult.error.message}`);
+        problems.push(
+          `Marketplace: ${marketplaceResult.error.message}`,
+        );
         setMarketplace([]);
       } else {
         setMarketplace(
@@ -253,10 +334,14 @@ export default function AccountPage() {
       }
 
       if (businessesResult.error) {
-        problems.push(`Businesses: ${businessesResult.error.message}`);
+        problems.push(
+          `Businesses: ${businessesResult.error.message}`,
+        );
         setBusinesses([]);
       } else {
-        setBusinesses((businessesResult.data ?? []) as BusinessRow[]);
+        setBusinesses(
+          (businessesResult.data ?? []) as BusinessRow[],
+        );
       }
 
       if (servicesResult.error) {
@@ -267,7 +352,9 @@ export default function AccountPage() {
       }
 
       if (promotionsResult.error) {
-        problems.push(`Promotions: ${promotionsResult.error.message}`);
+        problems.push(
+          `Promotions: ${promotionsResult.error.message}`,
+        );
         setPromotions([]);
       } else {
         setPromotions(
@@ -296,12 +383,13 @@ export default function AccountPage() {
 
   async function handleLogout() {
     setLoading(true);
+
     await supabase.auth.signOut();
+
     router.push("/");
     router.refresh();
   }
-
-  const stats = useMemo(
+    const stats = useMemo(
     () => ({
       rentals: getCounts(rentals),
       marketplace: getCounts(
@@ -350,8 +438,9 @@ export default function AccountPage() {
         title: item.title || "Untitled rental",
         status: normalizeStatus(item.status),
         createdAt: item.created_at || "",
-        href:"/housing/my-listings",
+        href: "/housing/my-listings",
       })),
+
       ...marketplace.map((item) => ({
         id: `marketplace-${item.id}`,
         section: "Marketplace",
@@ -360,6 +449,7 @@ export default function AccountPage() {
         createdAt: item.created_at || "",
         href: "/marketplace/my-listings",
       })),
+
       ...jobs.map((item) => ({
         id: `job-${item.id}`,
         section: "Job",
@@ -368,6 +458,7 @@ export default function AccountPage() {
         createdAt: item.created_at || "",
         href: "/jobs/my-listings",
       })),
+
       ...businesses.map((item) => ({
         id: `business-${item.id}`,
         section: "Business",
@@ -376,6 +467,7 @@ export default function AccountPage() {
         createdAt: item.created_at || "",
         href: "/businesses/my-businesses",
       })),
+
       ...services.map((item) => ({
         id: `service-${item.id}`,
         section: "Service",
@@ -384,6 +476,7 @@ export default function AccountPage() {
         createdAt: item.created_at || "",
         href: "/services/my-listings",
       })),
+
       ...promotions.map((item) => ({
         id: `promotion-${item.id}`,
         section: "Promotion",
@@ -409,8 +502,8 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f7f8f5] px-4">
-        <div className="rounded-2xl bg-white p-8 font-bold text-[#064d2b] shadow">
+      <main className="flex min-h-screen items-center justify-center bg-[#f7f8f5]">
+        <div className="rounded-2xl bg-white p-8 shadow">
           Loading your dashboard...
         </div>
       </main>
@@ -426,8 +519,7 @@ export default function AccountPage() {
     {
       title: "My Rentals",
       icon: "🏠",
-      description:
-        "Manage rooms, apartments, houses, roommates, and commercial rentals.",
+      description: "Manage your rental listings.",
       href: "/housing/my-listings",
       postHref: "/post-ad/rental",
       postLabel: "Post Rental",
@@ -436,28 +528,25 @@ export default function AccountPage() {
     {
       title: "My Marketplace",
       icon: "🛒",
-      description:
-        "Manage items you are selling in the community marketplace.",
+      description: "Manage your marketplace items.",
       href: "/marketplace/my-listings",
       postHref: "/marketplace/post",
-      postLabel: "Sell an Item",
+      postLabel: "Sell Item",
       counts: stats.marketplace,
     },
     {
       title: "My Jobs",
       icon: "💼",
-      description:
-        "Manage job opportunities you have posted for the community.",
+      description: "Manage your job postings.",
       href: "/jobs/my-listings",
       postHref: "/jobs/post",
-      postLabel: "Post a Job",
+      postLabel: "Post Job",
       counts: stats.jobs,
     },
     {
       title: "My Businesses",
       icon: "🏢",
-      description:
-        "Manage your business directory profiles and featured status.",
+      description: "Manage your business listings.",
       href: "/businesses/my-businesses",
       postHref: "/businesses/post",
       postLabel: "Add Business",
@@ -466,8 +555,7 @@ export default function AccountPage() {
     {
       title: "My Services",
       icon: "🛠️",
-      description:
-        "Manage professional and community services you have submitted.",
+      description: "Manage your services.",
       href: "/services/my-listings",
       postHref: "/services/post",
       postLabel: "Post Service",
@@ -476,8 +564,7 @@ export default function AccountPage() {
     {
       title: "My Promotions",
       icon: "📢",
-      description:
-        "Manage advertisement packages, payment status, and promotions.",
+      description: "Manage your promotions.",
       href: "/promotion/dashboard",
       postHref: "/promotion/post",
       postLabel: "Create Promotion",
@@ -485,8 +572,7 @@ export default function AccountPage() {
     },
   ];
 
-  return (
-    <main className="min-h-screen bg-[#f7f8f5] px-4 py-8 sm:px-6">
+  return (    <main className="min-h-screen bg-[#f7f8f5] px-4 py-8 sm:px-6">
       <div className="mx-auto max-w-[1450px]">
         <header className="rounded-3xl bg-[#064d2b] p-6 text-white shadow-lg sm:p-8">
           <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
@@ -500,7 +586,8 @@ export default function AccountPage() {
               </h1>
 
               <p className="mt-3 text-green-100">
-                Manage everything you have posted from one dashboard.
+                Manage your listings, profile, favorites, and account tools
+                from one place.
               </p>
 
               <div className="mt-4 flex flex-wrap gap-2 text-sm">
@@ -511,6 +598,12 @@ export default function AccountPage() {
                 <span className="rounded-full bg-white/10 px-3 py-1 font-bold capitalize">
                   {profile?.role || "user"} account
                 </span>
+
+                {profile?.phone ? (
+                  <span className="rounded-full bg-white/10 px-3 py-1 font-bold">
+                    {profile.phone}
+                  </span>
+                ) : null}
               </div>
             </div>
 
@@ -518,7 +611,7 @@ export default function AccountPage() {
               {profile?.role === "admin" ? (
                 <Link
                   href="/admin"
-                  className="rounded-xl bg-yellow-400 px-5 py-3 font-black text-black hover:bg-yellow-300"
+                  className="rounded-xl bg-yellow-400 px-5 py-3 font-black text-black transition hover:bg-yellow-300"
                 >
                   Admin Dashboard
                 </Link>
@@ -526,7 +619,7 @@ export default function AccountPage() {
 
               <Link
                 href="/account/profile"
-                className="rounded-xl border border-white/40 px-5 py-3 font-black hover:bg-white/10"
+                className="rounded-xl border border-white/40 px-5 py-3 font-black transition hover:bg-white/10"
               >
                 Edit Profile
               </Link>
@@ -534,7 +627,7 @@ export default function AccountPage() {
               <button
                 type="button"
                 onClick={() => void loadAccount()}
-                className="rounded-xl border border-white/40 px-5 py-3 font-black hover:bg-white/10"
+                className="rounded-xl border border-white/40 px-5 py-3 font-black transition hover:bg-white/10"
               >
                 Refresh
               </button>
@@ -544,7 +637,10 @@ export default function AccountPage() {
 
         {errorMessage ? (
           <div className="mt-6 rounded-2xl border border-red-300 bg-red-50 p-5 text-red-800">
-            <p className="font-black">Unable to load your dashboard.</p>
+            <p className="font-black">
+              Unable to load your dashboard.
+            </p>
+
             <p className="mt-2 break-words">{errorMessage}</p>
           </div>
         ) : null}
@@ -558,39 +654,142 @@ export default function AccountPage() {
         <section className="mt-8">
           <div>
             <h2 className="text-3xl font-black text-[#064d2b]">
-              My Overview
+              Quick Actions
             </h2>
+
             <p className="mt-2 text-slate-600">
-              Live totals from all of your Habeshawi Marketplace content.
+              Jump directly to the most common account tasks.
             </p>
           </div>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            <SummaryCard
-              title="All Content"
-              value={overall.total}
-              description="Everything you posted"
-            />
-            <SummaryCard
-              title="Pending"
-              value={overall.pending}
-              description="Waiting for approval"
-            />
-            <SummaryCard
-              title="Approved"
-              value={overall.approved}
-              description="Visible or active"
-            />
-            <SummaryCard
-              title="Rejected"
-              value={overall.rejected}
-              description="Needs attention"
-            />
-            <SummaryCard
-              title="Featured"
-              value={overall.featured}
-              description="Promoted listings"
-            />
+            {quickActions.map((action) => (
+              <Link
+                key={action.title}
+                href={action.href}
+                className={`group rounded-2xl border border-slate-200 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${action.className}`}
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-3xl shadow-sm">
+                  {action.icon}
+                </div>
+
+                <h3 className="mt-4 text-lg font-black text-slate-900 group-hover:text-[#087531]">
+                  {action.title}
+                </h3>
+
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {action.description}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10 grid gap-6 lg:grid-cols-[1fr_2fr]">
+          <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div className="flex items-center gap-4">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-green-100 text-3xl font-black text-[#064d2b]">
+                {profile?.avatar_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={profile.avatar_url}
+                    alt={displayName}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  displayName.charAt(0).toUpperCase()
+                )}
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-sm font-black uppercase tracking-wider text-[#087531]">
+                  My Profile
+                </p>
+
+                <h2 className="mt-1 truncate text-2xl font-black text-slate-900">
+                  {displayName}
+                </h2>
+
+                <p className="mt-1 truncate text-sm text-slate-600">
+                  {email}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-3">
+              <ProfileRow
+                label="Phone"
+                value={profile?.phone || "Not added"}
+              />
+
+              <ProfileRow
+                label="Role"
+                value={profile?.role || "User"}
+              />
+
+              <ProfileRow
+                label="Email"
+                value={email || "Not available"}
+              />
+            </div>
+
+            <div className="mt-6 grid gap-3">
+              <Link
+                href="/account/profile"
+                className="rounded-xl bg-[#087531] px-5 py-3 text-center font-black text-white transition hover:bg-[#064d2b]"
+              >
+                Edit Profile
+              </Link>
+
+              <Link
+                href="/account/settings"
+                className="rounded-xl border border-[#087531] px-5 py-3 text-center font-black text-[#087531] transition hover:bg-green-50"
+              >
+                Account Settings
+              </Link>
+            </div>
+          </article>
+
+          <div>
+            <h2 className="text-3xl font-black text-[#064d2b]">
+              My Overview
+            </h2>
+
+            <p className="mt-2 text-slate-600">
+              Live totals from all your Habeshawi Marketplace content.
+            </p>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+              <SummaryCard
+                title="All Content"
+                value={overall.total}
+                description="Everything you posted"
+              />
+
+              <SummaryCard
+                title="Pending"
+                value={overall.pending}
+                description="Waiting for approval"
+              />
+
+              <SummaryCard
+                title="Approved"
+                value={overall.approved}
+                description="Visible or active"
+              />
+
+              <SummaryCard
+                title="Rejected"
+                value={overall.rejected}
+                description="Needs attention"
+              />
+
+              <SummaryCard
+                title="Featured"
+                value={overall.featured}
+                description="Promoted listings"
+              />
+            </div>
           </div>
         </section>
 
@@ -600,6 +799,7 @@ export default function AccountPage() {
               <h2 className="text-3xl font-black text-[#064d2b]">
                 Manage My Content
               </h2>
+
               <p className="mt-2 text-slate-600">
                 Open a section to view, edit, or delete your posts.
               </p>
@@ -607,7 +807,7 @@ export default function AccountPage() {
 
             <Link
               href="/post-ad"
-              className="inline-flex w-fit rounded-xl bg-[#087531] px-6 py-3 font-black text-white hover:bg-[#064d2b]"
+              className="inline-flex w-fit rounded-xl bg-[#087531] px-6 py-3 font-black text-white transition hover:bg-[#064d2b]"
             >
               + Post an Ad
             </Link>
@@ -620,10 +820,7 @@ export default function AccountPage() {
                 className="flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <span
-                    aria-hidden="true"
-                    className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-50 text-3xl"
-                  >
+                  <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-50 text-3xl">
                     {section.icon}
                   </span>
 
@@ -646,10 +843,12 @@ export default function AccountPage() {
                     label="Total"
                     value={section.counts.total}
                   />
+
                   <MiniCount
                     label="Approved"
                     value={section.counts.approved}
                   />
+
                   <MiniCount
                     label="Rejected"
                     value={section.counts.rejected}
@@ -659,14 +858,14 @@ export default function AccountPage() {
                 <div className="mt-auto flex flex-wrap gap-3 pt-6">
                   <Link
                     href={section.href}
-                    className="rounded-xl bg-[#087531] px-5 py-3 font-black text-white hover:bg-[#064d2b]"
+                    className="rounded-xl bg-[#087531] px-5 py-3 font-black text-white transition hover:bg-[#064d2b]"
                   >
                     Manage
                   </Link>
 
                   <Link
                     href={section.postHref}
-                    className="rounded-xl border border-[#087531] px-5 py-3 font-black text-[#087531] hover:bg-green-50"
+                    className="rounded-xl border border-[#087531] px-5 py-3 font-black text-[#087531] transition hover:bg-green-50"
                   >
                     {section.postLabel}
                   </Link>
@@ -678,15 +877,14 @@ export default function AccountPage() {
 
         <section className="mt-10 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <h2 className="text-2xl font-black text-[#064d2b]">
-                  Recent Activity
-                </h2>
-                <p className="mt-1 text-slate-600">
-                  Your newest submissions across the platform.
-                </p>
-              </div>
+            <div>
+              <h2 className="text-2xl font-black text-[#064d2b]">
+                Recent Activity
+              </h2>
+
+              <p className="mt-1 text-slate-600">
+                Your newest submissions across the platform.
+              </p>
             </div>
 
             <div className="mt-6 divide-y">
@@ -700,6 +898,7 @@ export default function AccountPage() {
                     <p className="font-black text-slate-900">
                       {item.title}
                     </p>
+
                     <p className="mt-1 text-sm text-slate-500">
                       {item.section} • {formatDate(item.createdAt)}
                     </p>
@@ -717,50 +916,98 @@ export default function AccountPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <h2 className="text-2xl font-black text-[#064d2b]">
-              Account Tools
-            </h2>
+          <div className="space-y-6">
+            <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+              <h2 className="text-2xl font-black text-[#064d2b]">
+                Account Tools
+              </h2>
 
-            <div className="mt-6 grid gap-3">
-              <ToolLink
-                href="/favorites"
-                title="Favorites"
-                description="Open your saved listings."
-              />
-              <ToolLink
-                href="/account/profile"
-                title="Profile Settings"
-                description="Update your name and phone number."
-              />
-              <ToolLink
-                href="/post-ad"
-                title="Post an Ad"
-                description="Choose a category and create a new post."
-              />
+              <div className="mt-6 grid gap-3">
+                <ToolLink
+                  href="/favorites"
+                  title="Favorites"
+                  description="Open your saved rental and marketplace listings."
+                />
 
-              <div className="rounded-2xl border border-dashed border-amber-300 bg-amber-50 p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-black text-amber-950">Messages</p>
-                  <span className="rounded-full bg-amber-200 px-3 py-1 text-xs font-black text-amber-900">
-                    Coming Soon
-                  </span>
-                </div>
-                <p className="mt-2 text-sm leading-6 text-amber-900">
-                  Private messaging between members will be added later.
-                </p>
+                <ToolLink
+                  href="/account/profile"
+                  title="Profile Settings"
+                  description="Update your name, phone number, and profile details."
+                />
+
+                <ToolLink
+                  href="/account/settings"
+                  title="Account Settings"
+                  description="Manage password and account preferences."
+                />
+
+                <ToolLink
+                  href="/post-ad"
+                  title="Post an Ad"
+                  description="Choose a category and create a new listing."
+                />
               </div>
-            </div>
+            </article>
+
+            <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-2xl font-black text-[#064d2b]">
+                  Messages
+                </h2>
+
+                <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-black text-amber-800">
+                  Coming Soon
+                </span>
+              </div>
+
+              <p className="mt-3 leading-6 text-slate-600">
+                Private messaging between buyers, sellers, landlords, and
+                service providers will be added later.
+              </p>
+            </article>
+
+            <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-2xl font-black text-[#064d2b]">
+                  Payments
+                </h2>
+
+                <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-black text-blue-800">
+                  Dashboard
+                </span>
+              </div>
+
+              <p className="mt-3 leading-6 text-slate-600">
+                Review promotion payment status and manage your active
+                advertising campaigns.
+              </p>
+
+              <Link
+                href="/promotion/dashboard"
+                className="mt-5 inline-flex rounded-xl border border-[#087531] px-5 py-3 font-black text-[#087531] transition hover:bg-green-50"
+              >
+                View Promotions
+              </Link>
+            </article>
           </div>
         </section>
 
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="mt-10 rounded-xl bg-red-700 px-6 py-3 font-black text-white hover:bg-red-800"
-        >
-          Sign Out
-        </button>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="rounded-xl bg-red-700 px-6 py-3 font-black text-white transition hover:bg-red-800"
+          >
+            Sign Out
+          </button>
+
+          <Link
+            href="/"
+            className="rounded-xl border border-slate-300 bg-white px-6 py-3 font-black text-slate-700 transition hover:bg-slate-50"
+          >
+            Return Home
+          </Link>
+        </div>
       </div>
     </main>
   );
@@ -780,10 +1027,14 @@ function SummaryCard({
       <p className="text-sm font-black uppercase tracking-wider text-slate-500">
         {title}
       </p>
+
       <p className="mt-3 text-4xl font-black text-[#064d2b]">
         {value.toLocaleString("en-US")}
       </p>
-      <p className="mt-2 text-sm text-slate-600">{description}</p>
+
+      <p className="mt-2 text-sm text-slate-600">
+        {description}
+      </p>
     </div>
   );
 }
@@ -797,8 +1048,13 @@ function MiniCount({
 }) {
   return (
     <div className="rounded-xl bg-slate-50 p-3">
-      <p className="text-xl font-black text-[#064d2b]">{value}</p>
-      <p className="mt-1 text-xs font-bold text-slate-500">{label}</p>
+      <p className="text-xl font-black text-[#064d2b]">
+        {value}
+      </p>
+
+      <p className="mt-1 text-xs font-bold text-slate-500">
+        {label}
+      </p>
     </div>
   );
 }
@@ -817,7 +1073,11 @@ function StatusBadge({
   );
 }
 
-function StatusPill({ status }: { status: string }) {
+function StatusPill({
+  status,
+}: {
+  status: string;
+}) {
   const classes =
     status === "approved" || status === "active"
       ? "bg-green-100 text-green-800"
@@ -850,10 +1110,33 @@ function ToolLink({
       href={href}
       className="rounded-2xl border border-slate-200 p-5 transition hover:border-[#087531] hover:bg-green-50"
     >
-      <p className="font-black text-slate-900">{title}</p>
+      <p className="font-black text-slate-900">
+        {title}
+      </p>
+
       <p className="mt-1 text-sm leading-6 text-slate-600">
         {description}
       </p>
     </Link>
+  );
+}
+
+function ProfileRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4 rounded-xl bg-slate-50 px-4 py-3">
+      <span className="text-sm font-bold text-slate-500">
+        {label}
+      </span>
+
+      <span className="break-all text-right text-sm font-black capitalize text-slate-900">
+        {value}
+      </span>
+    </div>
   );
 }
